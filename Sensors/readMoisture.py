@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 import spidev
 import os
 import time
@@ -25,4 +23,5 @@ if __name__ == "__main__":
             time.sleep(delay)
 
     except KeyboardInterrupt:
-        print("Cancel.")
+        print
+        "Cancel."
