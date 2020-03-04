@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -19,8 +18,6 @@ import com.example.a390application.InsertPlant.InsertPlant;
 import com.example.a390application.InsertPlant.Plant;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class InsertPlantDialogFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
@@ -110,14 +107,6 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
     protected void storePlantInDatabase(Plant givenPlant) {
 
         databaseAccess = FirebaseDatabase.getInstance().getReference().child(givenPlant.getName());
-
-        //plants.get(i).getName() + "\n \n";
-        //temp += plants.get(i).getType() + "\n";
-        //temp += "Moisture: ";
-        //temp += plants.get(i).getMoisture() + "\n";
-        //temp += "Ph: ";
-        //temp += plants.get(i).getPh() + "\n";
-
         databaseAccess.setValue(givenPlant);
 
     }

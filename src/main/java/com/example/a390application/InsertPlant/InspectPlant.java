@@ -23,27 +23,4 @@ public class InspectPlant extends SQLiteOpenHelper {
 
     }
 
-    /*public long insertPlant(Plant plant){
-        long id = -1;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(Config.COLUMN_PLANT_NAME, plant.getName());
-        contentValues.put(Config.COLUMN_PLANT_MOISTURE, plant.getMoisture());
-        contentValues.put(Config.COLUMN_PLANT_PH, plant.getPh());
-
-        try{
-            id = db.insertOrThrow(Config.PLANT_TABLE_NAME, null, contentValues);
-        }
-        catch(SQLiteException e){
-            Toast.makeText(context, "Operation Failed!: " + e, Toast.LENGTH_LONG).show();
-        }
-        finally{
-            db.close();
-        }
-        return id;
-    }*/
-
 }

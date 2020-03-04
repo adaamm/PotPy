@@ -51,7 +51,6 @@ public class inspectPlantActivity extends AppCompatActivity {
 
 
         plantsListView = findViewById(R.id.plantsListView);
-        //loadPlantListView(givenID);
 
         bundle.putLong("data", givenPlant.getID());
 

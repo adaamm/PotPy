@@ -37,7 +37,7 @@ public class InsertPlant extends SQLiteOpenHelper {
 
     }
 
-    public long insertPlant(Plant plant){
+    public long insertPlant(Plant plant) {
         long id = -1;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -50,66 +50,46 @@ public class InsertPlant extends SQLiteOpenHelper {
         contentValues.put(Config.COLUMN_PLANT_PH, plant.getPh());
 
 
-        try{
+        try {
             id = db.insertOrThrow(Config.PLANT_TABLE_NAME, null, contentValues);
-        }
-        catch(SQLiteException e){
+        } catch (SQLiteException e) {
             Toast.makeText(context, "Operation Failed!: " + e, Toast.LENGTH_LONG).show();
-        }
-        finally{
+        } finally {
             db.close();
         }
         return id;
     }
 
-    public void updatePlant(Plant plant){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-
-        contentValues.put(Config.COLUMN_PLANT_MOISTURE, plant.getMoisture());
-        contentValues.put(Config.COLUMN_PLANT_PH, plant.getPh());
-
-        //db.update(Config.PLANT_TABLE_NAME, contentValues, Config.COLUMN_PLANT_NAME + " LIKE ?", new String[]{plant.getName()});
-
-        //myDataBase.update(TABLE, con, KEY_ID + "=" + id,null);
-
-        db.update(Config.PLANT_TABLE_NAME, contentValues, Config.COLUMN_PLANT_NAME + " = " + plant.getName(), null);
-
-    }
-
-    public List<Plant> getAllPlants(){
+    public List<Plant> getAllPlants() {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = null;
 
-        try{
+        try {
             cursor = db.query(Config.PLANT_TABLE_NAME, null, null, null, null, null, null);
 
-            if(cursor!=null){
-                if(cursor.moveToFirst()){
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
                     List<Plant> plants = new ArrayList<>();
 
-                    do{
+                    do {
                         int id = cursor.getInt(cursor.getColumnIndex(Config.COLUMN_PLANT_ID));
                         String name = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_NAME));
                         String type = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_TYPE));
                         double moisture = cursor.getDouble(cursor.getColumnIndex(Config.COLUMN_PLANT_MOISTURE));
                         double ph = cursor.getDouble((cursor.getColumnIndex(Config.COLUMN_PLANT_PH)));
 
-                        plants.add(new Plant(id,name,type,moisture,ph));
+                        plants.add(new Plant(id, name, type, moisture, ph));
 
-                    }while(cursor.moveToNext());
+                    } while (cursor.moveToNext());
 
                     return plants;
                 }
             }
-        }
-        catch(SQLiteException e){
+        } catch (SQLiteException e) {
             Toast.makeText(context, "Operation Failed!: " + e, Toast.LENGTH_LONG).show();
-        }
-        finally{
-            if(cursor != null){
+        } finally {
+            if (cursor != null) {
                 cursor.close();
             }
             db.close();
@@ -118,33 +98,26 @@ public class InsertPlant extends SQLiteOpenHelper {
         return Collections.emptyList();
     }
 
-    public Plant getPlantByName(String name){
-        SQLiteDatabase db = this.getReadableDatabase();
+    public void modifyPlant(Plant newPlantData) {
 
-        Cursor cursor = null;
+        SQLiteDatabase db = this.getWritableDatabase();
 
-        try{
-            cursor = db.query(Config.PLANT_TABLE_NAME, null, Config.COLUMN_PLANT_NAME + "= ?", new String[]{name}, null, null, null);
+        ContentValues contentValues = new ContentValues();
 
-            if(cursor!=null){
-                int id = cursor.getInt(cursor.getColumnIndex(Config.COLUMN_PLANT_ID));
-                String type = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_TYPE));
-                double moisture = cursor.getDouble(cursor.getColumnIndex(Config.COLUMN_PLANT_MOISTURE));
-                double ph = cursor.getDouble((cursor.getColumnIndex(Config.COLUMN_PLANT_PH)));
+        contentValues.put(Config.COLUMN_PLANT_NAME, newPlantData.getName());
+        contentValues.put(Config.COLUMN_PLANT_TYPE, newPlantData.getType());
+        contentValues.put(Config.COLUMN_PLANT_MOISTURE, newPlantData.getMoisture());
+        contentValues.put(Config.COLUMN_PLANT_PH, newPlantData.getPh());
 
-                return new Plant(id,name,type,moisture,ph);
-            }
+
+        try {
+            db.update(Config.PLANT_TABLE_NAME, contentValues, Config.COLUMN_PLANT_NAME + "=?", new String[]{newPlantData.getName()});
         }
-        catch(SQLiteException e){
+        catch (SQLiteException e) {
             Toast.makeText(context, "Operation Failed!: " + e, Toast.LENGTH_LONG).show();
         }
-        finally{
-            if(cursor != null){
-                cursor.close();
-            }
+        finally {
             db.close();
         }
-
-        return null;
     }
 }
