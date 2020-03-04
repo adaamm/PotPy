@@ -4,15 +4,16 @@
 # * Imports
 # 3rd Party Imports
 import pyrebase
+import time
 # User Imports
 
 # * Code
 # firebase setup
 config = {
-  "apiKey": "AIzaSyD9Xl2rJi3YH3Ya7OwkyXzl3G9-FspA9Rk",
-  "authDomain": "test-firebase-rasppi.firebaseapp.com",
-  "databaseURL": "https://test-firebase-rasppi.firebaseio.com",
-  "storageBucket": "test-firebase-rasppi.appspot.com"
+  "apiKey": "AIzaSyAeLC1SPoeniyf98IpanvSTzFc_Yh_DS1w",
+  "authDomain": "coen390-guarduino.firebaseapp.com",
+  "databaseURL": "https://coen390-guarduino.firebaseio.com/",
+  "storageBucket": "coen390-guarduino.appspot.com"
   }
 
 firebase = pyrebase.initialize_app(config)
@@ -24,14 +25,17 @@ db = firebase.database()
 user = auth.refresh(user['refreshToken']) # need this or we will have keyError
 
 # Writing Data
-data = {"value": 150}
-db.child("sensor-data").child("moisture-data").set(data)
+# data = {"value": 150}
+# db.child("Plant1").child("moisture").set(data)
 
 # Update Data
-db.child("sensor-data").child("moisture-data").update({"value": 155})
+for cycle in range(100000):
+  time.sleep(1)
+  print("Updating : " + str(cycle))
+  db.child("Plant1").update({"moisture": cycle})
 
 # Read Data
-all_users = db.child("sensor-data").get()
-for user in all_users.each():
-    print(user.key())
-    print(user.val()['value'])
+# all_users = db.child("Plant1").get()
+# for user in all_users.each():
+#     print(user.key())
+#     print(user.val()['value'])
