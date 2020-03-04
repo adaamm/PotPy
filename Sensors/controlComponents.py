@@ -1,3 +1,5 @@
+# This code is used to read the values from the sensors and act accordingly
+
 import components
 
 # Just for testingpurposes 
