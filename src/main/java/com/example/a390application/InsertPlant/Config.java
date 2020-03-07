@@ -12,6 +12,7 @@ public class Config {
     public static final String COLUMN_PLANT_NAME = "name";
     public static final String COLUMN_PLANT_TYPE = "type";
     public static final String COLUMN_PLANT_MOISTURE = "moisture";
-    public static final String COLUMN_PLANT_PH = "ph";
+    public static final String COLUMN_PLANT_LIGHT_INTENSITY = "light";
+    public static final String COLUMN_PLANT_TEST = "test";
 
 }

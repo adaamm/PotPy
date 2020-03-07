@@ -97,8 +97,10 @@ public class MainActivity extends AppCompatActivity {
             temp+= plants.get(i).getType() + "\n";
             temp+= "Moisture: ";
             temp+= plants.get(i).getMoisture() + "\n";
-            temp+= "Ph: ";
-            temp+= plants.get(i).getPh() + "\n";
+            temp+= "Light Intensity: ";
+            temp+= plants.get(i).getLightIntensity() + "\n";
+            temp+= "Test: ";
+            temp+= plants.get(i).getTest() + "\n";
 
 
             plantsListText.add(temp);

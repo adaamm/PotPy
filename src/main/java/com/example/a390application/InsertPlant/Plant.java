@@ -6,29 +6,41 @@ public class Plant {
     private String Name;
     private String Type;
     private double Moisture;
-    private double Ph;
+    private double LightIntensity;
+    private String Test;
 
-    public Plant(Integer ID, String name, String type, double moisture, double ph) {
+    public Plant(Integer ID, String name, String type, double moisture, double lightIntensity, String test) {
         this.ID = ID;
         Name = name;
         Type = type;
         Moisture = moisture;
-        Ph = ph;
+        LightIntensity = lightIntensity;
+        Test = test;
     }
 
+
+    public String getTest() {
+        return Test;
+    }
+
+    public void setTest(String test) {
+        Test = test;
+    }
 
     public Plant(String name, String type) {
         Name = name;
         Type = type;
         Moisture = -1;
-        Ph = -1;
+        LightIntensity = -1;
+        Test = "default";
     }
 
-    public Plant(String name, String type, double moisture, double ph) {
+    public Plant(String name, String type, double moisture, double lightIntensity, String test) {
         Name = name;
         Type = type;
         Moisture = moisture;
-        Ph = ph;
+        LightIntensity = lightIntensity;
+        Test = test;
     }
 
 
@@ -44,8 +56,8 @@ public class Plant {
         return Moisture;
     }
 
-    public double getPh() {
-        return Ph;
+    public double getLightIntensity() {
+        return LightIntensity;
     }
 
     public String getType() {
@@ -68,7 +80,7 @@ public class Plant {
         Moisture = moisture;
     }
 
-    public void setPh(double ph) {
-        Ph = ph;
+    public void setLightIntensity(double lightIntensity) {
+        LightIntensity = lightIntensity;
     }
 }

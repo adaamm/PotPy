@@ -27,7 +27,8 @@ public class InsertPlant extends SQLiteOpenHelper {
                 + Config.COLUMN_PLANT_NAME + " TEXT NOT NULL, "
                 + Config.COLUMN_PLANT_TYPE + " TEXT NOT NULL, "
                 + Config.COLUMN_PLANT_MOISTURE + " DOUBLE, "
-                + Config.COLUMN_PLANT_PH + " DOUBLE)";
+                + Config.COLUMN_PLANT_LIGHT_INTENSITY + " DOUBLE, "
+                + Config.COLUMN_PLANT_TEST + " TEXT)";
 
         db.execSQL(CREATE_TABLE_PLANT);
     }
@@ -47,7 +48,8 @@ public class InsertPlant extends SQLiteOpenHelper {
         contentValues.put(Config.COLUMN_PLANT_NAME, plant.getName());
         contentValues.put(Config.COLUMN_PLANT_TYPE, plant.getType());
         contentValues.put(Config.COLUMN_PLANT_MOISTURE, plant.getMoisture());
-        contentValues.put(Config.COLUMN_PLANT_PH, plant.getPh());
+        contentValues.put(Config.COLUMN_PLANT_LIGHT_INTENSITY, plant.getLightIntensity());
+        contentValues.put(Config.COLUMN_PLANT_TEST, plant.getTest());
 
 
         try {
@@ -77,9 +79,10 @@ public class InsertPlant extends SQLiteOpenHelper {
                         String name = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_NAME));
                         String type = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_TYPE));
                         double moisture = cursor.getDouble(cursor.getColumnIndex(Config.COLUMN_PLANT_MOISTURE));
-                        double ph = cursor.getDouble((cursor.getColumnIndex(Config.COLUMN_PLANT_PH)));
+                        double lightIntensity = cursor.getDouble((cursor.getColumnIndex(Config.COLUMN_PLANT_LIGHT_INTENSITY)));
+                        String test = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_TEST));
 
-                        plants.add(new Plant(id, name, type, moisture, ph));
+                        plants.add(new Plant(id, name, type, moisture, lightIntensity,test));
 
                     } while (cursor.moveToNext());
 
@@ -107,7 +110,8 @@ public class InsertPlant extends SQLiteOpenHelper {
         contentValues.put(Config.COLUMN_PLANT_NAME, newPlantData.getName());
         contentValues.put(Config.COLUMN_PLANT_TYPE, newPlantData.getType());
         contentValues.put(Config.COLUMN_PLANT_MOISTURE, newPlantData.getMoisture());
-        contentValues.put(Config.COLUMN_PLANT_PH, newPlantData.getPh());
+        contentValues.put(Config.COLUMN_PLANT_LIGHT_INTENSITY, newPlantData.getLightIntensity());
+        contentValues.put(Config.COLUMN_PLANT_TEST, newPlantData.getTest());
 
 
         try {
