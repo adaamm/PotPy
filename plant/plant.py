@@ -26,6 +26,17 @@ class Plant():
 
         self.sensorController = sensorController
         
+    def print_plant(self):
+        print("---")
+        print("plant :" + self.name)
+        print("type :" + self.type)
+        print("ph :" + str(self.phLevel))
+        print("light :" + str(self.lightLevel))
+        print("moisture :" + str(self.moistureLevel))
+        print("temperature :" + str(self.temperatureLevel))
+        print("---")
+        
+
     def set_moisture(self):
         self.moistureLevel = self.sensorController.get_moisture()
 
@@ -33,10 +44,12 @@ class Plant():
         self.lightLevel = self.sensorController.get_light()
 
     def set_ph(self):
-        print("under construction")
+        #print("under construction")
+        pass
 
     def set_temperature(self):
-        print("under construction")
+        #print("under construction")
+        pass
 
     def set_all_data(self):
         self.set_moisture()

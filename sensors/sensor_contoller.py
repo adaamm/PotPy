@@ -28,7 +28,7 @@ class SensorController():
         return data 
         
     def get_moisture(self):
-        output = analogInput(self.pinMap["moisture"]) 
+        output = self.analogInput(self.pinMap["moisturePin"]) 
         # Note that uncommenting the following line will change the range of numbers outputted
         #output = interp(output,[0,1023],[100,0]) # interpolate only if needed 
         moisture = int(output)
@@ -37,17 +37,19 @@ class SensorController():
         return moisture
             
     def get_light(self):
-        output = analogInput(self.pinMap["lightPin"]) 
+        output = self.analogInput(self.pinMap["lightPin"]) 
         # Note that uncommenting the following line will change the range of numbers outputted
         #output = interp(output,[0,1023],[100,0]) # interpolate only if needed 
         uv = int(output)
         return uv; 
 
     def get_ph(self):
-        print("under construction")
+       # print("under construction")
+       pass
 
     def get_temperature(self):
-        print("under construction")
+       # print("under construction")
+       pass
 
     def dry(self):
         if moistureLevel() >= 900:
