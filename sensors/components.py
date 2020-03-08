@@ -13,6 +13,9 @@ import spidev
 spi = spidev.SpiDev()  
 spi.open(0,0) 
 
+def test():
+    print("test")
+
 def analogInput(channel):          #readchannel
         spi.max_speed_hz = 1350000
         adc = spi.xfer2([1,(8+channel)<<4,0])
