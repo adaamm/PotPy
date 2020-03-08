@@ -57,6 +57,25 @@ class FirebasePlantCom:
         -------
         """
         self.db.child(plant).update({dataType: data})
+
+    def update_plant(self, plant, plantData):
+        """
+        update all plant data to firebase for a specific plant
+
+        Parameters
+        ----------
+        plant : str
+            name of the plant id
+        plantData : dict
+            type of data we want to write (moisture, name, ph, type)
+
+        Returns
+        -------
+        """
+        self.db.child(plant).update({"ph": plantData["ph"]})
+        self.db.child(plant).update({"light": plantData["light"]})
+        self.db.child(plant).update({"moisture": plantData["moisture"]})
+        self.db.child(plant).update({"temperature": plantData["temperature"]})
     
     def read(self, plant, dataType):
         """
