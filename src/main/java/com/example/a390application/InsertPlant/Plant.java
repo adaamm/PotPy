@@ -8,23 +8,18 @@ public class Plant {
     private double Moisture;
     private double LightIntensity;
     private String Test;
+    private double PH;
+    private double Temperature;
 
-    public Plant(Integer ID, String name, String type, double moisture, double lightIntensity, String test) {
+    public Plant(Integer ID, String name, String type, double moisture, double lightIntensity, String test, double ph, double temperature) {
         this.ID = ID;
         Name = name;
         Type = type;
         Moisture = moisture;
         LightIntensity = lightIntensity;
         Test = test;
-    }
-
-
-    public String getTest() {
-        return Test;
-    }
-
-    public void setTest(String test) {
-        Test = test;
+        PH = ph;
+        Temperature = temperature;
     }
 
     public Plant(String name, String type) {
@@ -33,16 +28,20 @@ public class Plant {
         Moisture = -1;
         LightIntensity = -1;
         Test = "default";
+        PH = -1;
+        Temperature = -1;
+
     }
 
-    public Plant(String name, String type, double moisture, double lightIntensity, String test) {
+    public Plant(String name, String type, double moisture, double lightIntensity, String test, double ph, double temperature) {
         Name = name;
         Type = type;
         Moisture = moisture;
         LightIntensity = lightIntensity;
         Test = test;
+        PH = ph;
+        Temperature = temperature;
     }
-
 
     public Integer getID() {
         return ID;
@@ -82,5 +81,29 @@ public class Plant {
 
     public void setLightIntensity(double lightIntensity) {
         LightIntensity = lightIntensity;
+    }
+
+    public String getTest() {
+        return Test;
+    }
+
+    public void setTest(String test) {
+        Test = test;
+    }
+
+    public double getPH() {
+        return PH;
+    }
+
+    public void setPH(double PH) {
+        this.PH = PH;
+    }
+
+    public double getTemperature() {
+        return Temperature;
+    }
+
+    public void setTemperature(double temperature) {
+        Temperature = temperature;
     }
 }

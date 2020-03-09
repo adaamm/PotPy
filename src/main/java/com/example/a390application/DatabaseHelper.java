@@ -36,8 +36,10 @@ public class DatabaseHelper {
                     double moisture = Double.parseDouble(eachPlantData.child("moisture").getValue().toString());
                     double lightIntensity = Double.parseDouble(eachPlantData.child("lightIntensity").getValue().toString());
                     String test = eachPlantData.child("test").getValue().toString();
+                    double ph = Double.parseDouble(eachPlantData.child("ph").getValue().toString());
+                    double temperature = Double.parseDouble(eachPlantData.child("temperature").getValue().toString());
 
-                    plantData.add(new Plant(name,type,moisture,lightIntensity,test));
+                    plantData.add(new Plant(name,type,moisture,lightIntensity,test,ph,temperature));
                 }
                 dataStatus.DataLoaded(plantData);
             }

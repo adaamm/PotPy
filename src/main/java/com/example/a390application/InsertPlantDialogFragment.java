@@ -1,6 +1,5 @@
 package com.example.a390application;
 
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +67,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
                 if(isUnique){
                     InsertPlant dbPlants = new InsertPlant(getActivity());
 
-                    storePlantInDatabase(new Plant(name,typePicked,-1,-1,"default"));
+                    storePlantInDatabase(new Plant(name,typePicked,-1,-1,"default",-1,-1));
                     dbPlants.insertPlant(new Plant(name,typePicked));
                     ((MainActivity)getActivity()).loadListView();
                     getDialog().dismiss();

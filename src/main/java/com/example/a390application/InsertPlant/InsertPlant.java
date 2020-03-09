@@ -28,6 +28,8 @@ public class InsertPlant extends SQLiteOpenHelper {
                 + Config.COLUMN_PLANT_TYPE + " TEXT NOT NULL, "
                 + Config.COLUMN_PLANT_MOISTURE + " DOUBLE, "
                 + Config.COLUMN_PLANT_LIGHT_INTENSITY + " DOUBLE, "
+                + Config.COLUMN_PLANT_PH + " DOUBLE, "
+                + Config.COLUMN_PLANT_TEMPERATURE + " DOUBLE, "
                 + Config.COLUMN_PLANT_TEST + " TEXT)";
 
         db.execSQL(CREATE_TABLE_PLANT);
@@ -50,6 +52,9 @@ public class InsertPlant extends SQLiteOpenHelper {
         contentValues.put(Config.COLUMN_PLANT_MOISTURE, plant.getMoisture());
         contentValues.put(Config.COLUMN_PLANT_LIGHT_INTENSITY, plant.getLightIntensity());
         contentValues.put(Config.COLUMN_PLANT_TEST, plant.getTest());
+        contentValues.put(Config.COLUMN_PLANT_PH, plant.getPH());
+        contentValues.put(Config.COLUMN_PLANT_TEMPERATURE, plant.getTemperature());
+
 
 
         try {
@@ -81,8 +86,10 @@ public class InsertPlant extends SQLiteOpenHelper {
                         double moisture = cursor.getDouble(cursor.getColumnIndex(Config.COLUMN_PLANT_MOISTURE));
                         double lightIntensity = cursor.getDouble((cursor.getColumnIndex(Config.COLUMN_PLANT_LIGHT_INTENSITY)));
                         String test = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_TEST));
+                        double ph = cursor.getDouble((cursor.getColumnIndex(Config.COLUMN_PLANT_PH)));
+                        double temperature = cursor.getDouble((cursor.getColumnIndex(Config.COLUMN_PLANT_TEMPERATURE)));
 
-                        plants.add(new Plant(id, name, type, moisture, lightIntensity,test));
+                        plants.add(new Plant(id, name, type, moisture, lightIntensity,test,ph,temperature));
 
                     } while (cursor.moveToNext());
 
@@ -112,6 +119,8 @@ public class InsertPlant extends SQLiteOpenHelper {
         contentValues.put(Config.COLUMN_PLANT_MOISTURE, newPlantData.getMoisture());
         contentValues.put(Config.COLUMN_PLANT_LIGHT_INTENSITY, newPlantData.getLightIntensity());
         contentValues.put(Config.COLUMN_PLANT_TEST, newPlantData.getTest());
+        contentValues.put(Config.COLUMN_PLANT_PH, newPlantData.getPH());
+        contentValues.put(Config.COLUMN_PLANT_TEMPERATURE, newPlantData.getTemperature());
 
 
         try {
