@@ -1,0 +1,27 @@
+#+TITLE: plant_hp
+#+AUTHOR: Philippe Vo
+#+DATE: <2020-03-16 Mon>
+
+* Defining the Health of a plant
+** Goal
+How can we know how much health does a plant have ?
+** Health (hp)
+In gaming, this describes how much life points a character has before dying.
+** Conclusion
+Maybe we have to rethink the Health bar thing. Since, we cannot actually
+determine how much. Maybe we can rephrase to "Happiness Bar".
+** Hapiness bar
+*** Conditions to be "happy"
+- water
+- light (ie. uv)
+- temperature
+- ph
+** Plants we can simulate
+Let us take three plants that have very different needs:
+- Christmas Cactus
+  - https://garden.org/plants/view/78937/Christmas-Cactus-Schlumbergera-truncata/
+- Moth orchid
+  - https://garden.org/plants/view/78237/Moth-Orchid-Phalaenopsis/
+- Ponytail Palm
+  - https://garden.org/plants/view/87773/Ponytail-Palm-Beaucarnea-recurvata/
+** Resources
