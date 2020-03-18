@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
+
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +18,7 @@ import java.util.List;
 public class InsertPlant extends SQLiteOpenHelper {
 
     private Context context;
+    protected String uniqueID = "Rami";
 
     public InsertPlant(Context context) {
         super(context, Config.DATABASE_NAME, null, Config.DATABASE_VERSION);
@@ -30,9 +34,15 @@ public class InsertPlant extends SQLiteOpenHelper {
                 + Config.COLUMN_PLANT_LIGHT_INTENSITY + " DOUBLE, "
                 + Config.COLUMN_PLANT_PH + " DOUBLE, "
                 + Config.COLUMN_PLANT_TEMPERATURE + " DOUBLE, "
-                + Config.COLUMN_PLANT_TEST + " TEXT)";
+                + Config.COLUMN_PLANT_TEST + " TEXT, "
+                + Config.COLUMN_PLANT_OWNER + " TEXT)";
 
         db.execSQL(CREATE_TABLE_PLANT);
+
+        String CREATE_TABLE_USER_ID = "CREATE TABLE " + Config.UNIQUE_ID_TABLE + " (" + Config.COLUMN_UID_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + Config.COLUMN_UNIQUE_ID + " TEXT)";
+
+        db.execSQL(CREATE_TABLE_USER_ID);
     }
 
     @Override
@@ -54,6 +64,7 @@ public class InsertPlant extends SQLiteOpenHelper {
         contentValues.put(Config.COLUMN_PLANT_TEST, plant.getTest());
         contentValues.put(Config.COLUMN_PLANT_PH, plant.getPH());
         contentValues.put(Config.COLUMN_PLANT_TEMPERATURE, plant.getTemperature());
+        contentValues.put(Config.COLUMN_PLANT_OWNER, plant.getOwnerID());
 
 
 
@@ -80,6 +91,9 @@ public class InsertPlant extends SQLiteOpenHelper {
                     List<Plant> plants = new ArrayList<>();
 
                     do {
+                        //FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        //String key = database.getReference().push().getKey();
+
                         int id = cursor.getInt(cursor.getColumnIndex(Config.COLUMN_PLANT_ID));
                         String name = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_NAME));
                         String type = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_TYPE));
@@ -88,8 +102,10 @@ public class InsertPlant extends SQLiteOpenHelper {
                         String test = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_TEST));
                         double ph = cursor.getDouble((cursor.getColumnIndex(Config.COLUMN_PLANT_PH)));
                         double temperature = cursor.getDouble((cursor.getColumnIndex(Config.COLUMN_PLANT_TEMPERATURE)));
+                        String owner = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_OWNER));
 
-                        plants.add(new Plant(id, name, type, moisture, lightIntensity,test,ph,temperature));
+
+                        plants.add(new Plant(id, name, type, moisture, lightIntensity,test,ph,temperature,owner));
 
                     } while (cursor.moveToNext());
 
@@ -121,6 +137,7 @@ public class InsertPlant extends SQLiteOpenHelper {
         contentValues.put(Config.COLUMN_PLANT_TEST, newPlantData.getTest());
         contentValues.put(Config.COLUMN_PLANT_PH, newPlantData.getPH());
         contentValues.put(Config.COLUMN_PLANT_TEMPERATURE, newPlantData.getTemperature());
+        contentValues.put(Config.COLUMN_PLANT_OWNER, newPlantData.getOwnerID());
 
 
         try {
@@ -132,5 +149,36 @@ public class InsertPlant extends SQLiteOpenHelper {
         finally {
             db.close();
         }
+    }
+
+    public String checkUID(){
+        SQLiteDatabase db = this.getWritableDatabase();;
+
+        Cursor cursor = db.query(Config.UNIQUE_ID_TABLE, null, null, null, null, null, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    uniqueID = cursor.getString(cursor.getColumnIndex(Config.COLUMN_UNIQUE_ID));
+
+                } while (cursor.moveToNext());
+            }
+            else{
+                FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance();
+                uniqueID = databaseInstance.getReference("Users").push().getKey();
+
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(Config.COLUMN_UNIQUE_ID, uniqueID);
+
+                db.insertOrThrow(Config.UNIQUE_ID_TABLE, null, contentValues);
+            }
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        db.close();
+        return uniqueID;
     }
 }

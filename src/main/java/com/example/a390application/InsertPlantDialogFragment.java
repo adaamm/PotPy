@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
 
+
+
 public class InsertPlantDialogFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
     protected List<Plant> plants;
@@ -27,7 +29,8 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
     protected Button addPlantButton;
     protected Button cancelPlantButton;
     protected String typePicked;
-    protected DatabaseReference databaseAccess;
+    protected DatabaseReference userReference;
+    protected String ownerID;
 
     @Nullable
     @Override
@@ -38,7 +41,6 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
         plantNameEditText = view.findViewById(R.id.plantNameEditText);
         plantTypeSpinner = view.findViewById(R.id.plantTypeDrop);
 
-        //getContext() might be wrong
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),  R.array.types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         plantTypeSpinner.setAdapter(adapter);
@@ -52,29 +54,36 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
         addPlantButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+
                 String name = plantNameEditText.getText().toString();
 
                 InsertPlant dbInsertPlant = new InsertPlant((MainActivity)getActivity());
                 plants = dbInsertPlant.getAllPlants();
 
-                boolean isUnique = true;
-                for(int i = 0; i < plants.size(); i++){
-                    if(plants.get(i).getName().equals(name)){
-                        isUnique = false;
+                if(!name.equals("")){
+                    boolean isUnique = true;
+                    for(int i = 0; i < plants.size(); i++){
+                        if(plants.get(i).getName().equals(name)){
+                            isUnique = false;
+                        }
+                    }
+
+                    if(isUnique){
+                        InsertPlant dbPlants = new InsertPlant(getActivity());
+
+                        storePlantInDatabase(new Plant(name,typePicked,-1,-1,"default",-1,-1,ownerID));
+                        dbPlants.insertPlant(new Plant(name,typePicked,ownerID));
+                        ((MainActivity)getActivity()).loadListView();
+                        getDialog().dismiss();
+                    }
+                    else{
+                        Toast.makeText(getContext(), "Plant name should be unique!", Toast.LENGTH_SHORT).show();
                     }
                 }
-
-                if(isUnique){
-                    InsertPlant dbPlants = new InsertPlant(getActivity());
-
-                    storePlantInDatabase(new Plant(name,typePicked,-1,-1,"default",-1,-1));
-                    dbPlants.insertPlant(new Plant(name,typePicked));
-                    ((MainActivity)getActivity()).loadListView();
-                    getDialog().dismiss();
-                }
                 else{
-                    Toast.makeText(getContext(), "Plant name should be unique!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Your poor plant still needs a name!", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
@@ -93,9 +102,6 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         typePicked = parent.getItemAtPosition(position).toString();
-
-        //For Testing
-        //Toast.makeText(parent.getContext(), typePicked, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -104,9 +110,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
     }
 
     protected void storePlantInDatabase(Plant givenPlant) {
-
-        databaseAccess = FirebaseDatabase.getInstance().getReference().child(givenPlant.getName());
-        databaseAccess.setValue(givenPlant);
-
+        userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(ownerID).child(givenPlant.getName());
+        userReference.setValue(givenPlant);
     }
 }

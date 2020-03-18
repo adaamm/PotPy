@@ -16,5 +16,11 @@ public class Config {
     public static final String COLUMN_PLANT_TEST = "test";
     public static final String COLUMN_PLANT_PH = "ph";
     public static final String COLUMN_PLANT_TEMPERATURE = "temperature";
+    public static final String COLUMN_PLANT_OWNER = "owner";
+
+    public static final String UNIQUE_ID_TABLE = "userID";
+    public static final String COLUMN_UID_ID = "_id1";
+    public static final String COLUMN_UNIQUE_ID = "uid";
+
 
 }

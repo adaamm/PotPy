@@ -10,8 +10,9 @@ public class Plant {
     private String Test;
     private double PH;
     private double Temperature;
+    private String OwnerID;
 
-    public Plant(Integer ID, String name, String type, double moisture, double lightIntensity, String test, double ph, double temperature) {
+    public Plant(Integer ID, String name, String type, double moisture, double lightIntensity, String test, double ph, double temperature, String id) {
         this.ID = ID;
         Name = name;
         Type = type;
@@ -20,9 +21,10 @@ public class Plant {
         Test = test;
         PH = ph;
         Temperature = temperature;
+        OwnerID = id;
     }
 
-    public Plant(String name, String type) {
+    public Plant(String name, String type, String id) {
         Name = name;
         Type = type;
         Moisture = -1;
@@ -30,10 +32,11 @@ public class Plant {
         Test = "default";
         PH = -1;
         Temperature = -1;
+        OwnerID = id;
 
     }
 
-    public Plant(String name, String type, double moisture, double lightIntensity, String test, double ph, double temperature) {
+    public Plant(String name, String type, double moisture, double lightIntensity, String test, double ph, double temperature, String id) {
         Name = name;
         Type = type;
         Moisture = moisture;
@@ -41,6 +44,7 @@ public class Plant {
         Test = test;
         PH = ph;
         Temperature = temperature;
+        OwnerID = id;
     }
 
     public Integer getID() {
@@ -105,5 +109,13 @@ public class Plant {
 
     public void setTemperature(double temperature) {
         Temperature = temperature;
+    }
+
+    public String getOwnerID() {
+        return OwnerID;
+    }
+
+    public void setOwnerID(String ownerID) {
+        OwnerID = ownerID;
     }
 }
