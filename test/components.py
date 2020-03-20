@@ -1,5 +1,7 @@
 
 import os
+import smbus2 
+import bme280 
 
 import RPi.GPIO as GPIO
 import time 
@@ -13,6 +15,15 @@ import spidev
 spi = spidev.SpiDev()  
 spi.open(0,0) 
 
+#following lines are needed to contact  the atmospheric sensor
+port= 1
+address = 0x77  # cchecked with i2cdetect - y 1 
+bus  = smbus2.SMBus(port)
+calibration_params = bme280.load_calibration_params(bus,address)
+data = bme280.sample(bus,address,calibration_params) 
+
+#this function is needed to read input from mpc3008
+#we have 4 channels and number of the channel should be passed to the functons
 def analogInput(channel):          #readchannel
         spi.max_speed_hz = 1350000
         adc = spi.xfer2([1,(8+channel)<<4,0])
@@ -53,8 +64,15 @@ def lightingLevel():
         uv = int(output)
         return uv; 
 
-
-
+#return humidity
+def humidity():
+	return data.humidity;
+	
+def pressure():
+	pressure = data.pressure / 10 ; 
+	return pressure ; 
+	
+	
 		
 
 
