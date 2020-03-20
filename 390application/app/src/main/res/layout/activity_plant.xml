@@ -7,6 +7,32 @@
     tools:context=".inspectPlantActivity" >
 
     <TextView
+        android:id="@+id/plantType"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="40dp"
+        android:text="Plant Type"
+        app:autoSizeTextType="uniform" />
+
+    <TextView
+        android:id="@+id/plantInfo"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="83dp"
+        android:text="plant info"
+        app:autoSizeTextType="uniform" />
+
+    <TextView
         android:id="@+id/plantName"
         android:layout_width="match_parent"
         android:layout_height="36dp"
