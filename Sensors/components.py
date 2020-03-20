@@ -4,7 +4,7 @@ import os
 import RPi.GPIO as GPIO
 import time 
 
-from numpy import interp # For linear interpolation
+% from numpy import interp # For linear interpolation
 from time import sleep 
 import spidev 
 
