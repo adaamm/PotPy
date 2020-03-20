@@ -6,7 +6,7 @@
 import time
 # User Imports
 from firebase.firebase_plant_com import FirebasePlantCom
-from sensors.sensor_contoller import SensorController
+from plant.Sensors.sensor_contoller import SensorController
 from plant.plant import Plant
 
 # * Template
