@@ -4,5 +4,6 @@
     <string-array name="types">
         <item>Cactus</item>
         <item>Aloe</item>
+        <item>Sansevieria</item>
     </string-array>
 </resources>

@@ -57,12 +57,14 @@ public class inspectPlantActivity extends AppCompatActivity {
         plantsTitle = findViewById(R.id.plantName);
         plantsType = findViewById(R.id.plantType);
         plantsInfo  = findViewById(R.id.plantInfo);
-        plantType = plantsType.getText().toString();
 
-        plantsIdealMoisture = fetchIdealMoisture(plantType);
 
         plantsTitle.setText(givenPlant.getName());
         plantsType.setText(givenPlant.getType());
+
+        plantType = plantsType.getText().toString();
+
+        plantsIdealMoisture = fetchIdealMoisture(plantType);
 
         plantInfo = /* "General Information: \n" + fetchInfo(plantsType.getText().toString()) + */
                 "\nIdeal Moisture Level: " + plantsIdealMoisture /* + /"Ideal Light Level: " +
@@ -132,17 +134,15 @@ public class inspectPlantActivity extends AppCompatActivity {
     }
 
     public double fetchIdealMoisture(String type) {
-        double idealMoisture;
-        if (type == "Cactus")
+        Toast.makeText(getApplicationContext(),type,Toast.LENGTH_SHORT).show();
+        double idealMoisture = -1;
+        if (type.equals("Cactus"))
             idealMoisture = 50;
-        else
-        if (type == "Aloe" )
+        if (type.equals("Aloe"))
             idealMoisture = 75;
-        else
-        if (type == "Sansevieria")
+        if (type.equals("Sansevieria"))
             idealMoisture = 100;
-        else
-            idealMoisture = 0;
+
         String ideal;
         ideal = Double.toString(idealMoisture);
         Toast.makeText(getApplicationContext(),ideal,Toast.LENGTH_SHORT).show();
