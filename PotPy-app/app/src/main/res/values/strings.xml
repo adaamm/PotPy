@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">390 Application</string>
-    
-    <string-array name="types">
-        <item>Cactus</item>
-        <item>Aloe</item>
-    </string-array>
-</resources>
