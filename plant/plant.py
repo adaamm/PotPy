@@ -23,6 +23,7 @@ class Plant():
         self.lightLevel = 0
         self.moistureLevel = 0
         self.temperatureLevel = 0
+        self.humidityLevel = 0 
 
         self.sensorController = sensorController
         
@@ -34,6 +35,7 @@ class Plant():
         print("light :" + str(self.lightLevel))
         print("moisture :" + str(self.moistureLevel))
         print("temperature :" + str(self.temperatureLevel))
+        print("humidity :" + str(self.humidityLevel))
         print("---")
         
 
@@ -48,20 +50,24 @@ class Plant():
         pass
 
     def set_temperature(self):
-        #print("under construction")
-        pass
+        self.temperatureLevel = self.sensorController.get_temperature()
+        
+    def set_humidity(self):
+        self.humidityLevel = self.sensorController.get_humidity()
 
     def set_all_data(self):
         self.set_moisture()
         self.set_light()
         self.set_ph()
         self.set_temperature()
+        self.set_humidity()
 
     def get_all_data(self):
-        plantData = {
+        plantdata = {
             "ph": self.phLevel,
             "light": self.lightLevel,
             "moisture": self.moistureLevel,
-            "temperature": self.temperatureLevel
+            "temperature": self.temperatureLevel,
+            "humidity":self.humidityLevel
         }
-        return plantData
+        return plantdata

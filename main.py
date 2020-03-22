@@ -6,7 +6,7 @@
 import time
 # User Imports
 from firebase.firebase_plant_com import FirebasePlantCom
-from plant.Sensors.sensor_contoller import SensorController
+from plant.Sensors.sensor_controller import SensorController
 from plant.plant import Plant
 
 # * Template
@@ -16,7 +16,7 @@ one sentence description
 Parameters
 ----------
 id : str
-    one sentence description
+        one sentence description
 
 Returns
 -------
@@ -35,7 +35,7 @@ def main():
     firebaseCOM = FirebasePlantCom()
 
     # Make Plant and its SensorController
-    sensorController1 = SensorController(moisturePin=0, lightPin=1, phPin=-1)
+    sensorController1 = SensorController(moisture=0, light=1, ph=-1)
     plant0 = Plant(name="Plant0", type_="Aloe", sensorController=sensorController1)
     
     # Gather data and send 2 Firebase

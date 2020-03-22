@@ -17,11 +17,14 @@ determine how much. Maybe we can rephrase to "Happiness Bar".
 - temperature
 - ph
 ** Plants we can simulate
-Let us take three plants that have very different needs:
 - Christmas Cactus
   - https://garden.org/plants/view/78937/Christmas-Cactus-Schlumbergera-truncata/
 - Moth orchid
   - https://garden.org/plants/view/78237/Moth-Orchid-Phalaenopsis/
 - Ponytail Palm
   - https://garden.org/plants/view/87773/Ponytail-Palm-Beaucarnea-recurvata/
+- Aloes
+  -
+- Sanseviera
+  -
 ** Resources
