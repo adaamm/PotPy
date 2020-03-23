@@ -7,4 +7,5 @@ import components
 while True : 	
 	while (components.dry() == True):
 		components.watering()
-			
+
+import time

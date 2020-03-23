@@ -68,5 +68,5 @@ print(moistureLevel())
 # To test the UV Sensor, uncomment the following line
 print(lightingLevel()) 
 
-# watering()
 
+# watering()

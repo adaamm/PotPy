@@ -1,0 +1,14 @@
+#+TITLE: generate_note
+* Firebase <-> Raspberry Pi
+** Goal
+- Have the Raspberry Pi be able to have the knowledge of which plant it is monitoring and setting appropriate configs for that plant (for the sensors)
+  - as of now, moisture is the only value that we will actually act on
+    - by providing water if moisture level are too low
+- What should be the data flow look like ?
+  - phone <-> firebase <-> pi <-> plant (sensors)
+    - get plant
+    - add plant to phone -> this will add to firebase + plant type
+    - pi detects the plant added - looks at plant type
+    - depending on plant type -> uses json database to set the plant needs on
+      the pi
+    - pi sets the needs of plant according to type of plant

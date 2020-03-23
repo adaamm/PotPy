@@ -1,6 +1,7 @@
 # * Imports
 # 3rd Party Imports
 # User Imports
+from plant.plant_need import PlantNeedJSON, MissingPlantType
 
 class Plant():
     """
@@ -17,19 +18,27 @@ class Plant():
     """
     def __init__(self, name, type_, sensorController):
         self.name = name
-        self.type = type_    
+        self.type_ = type_
 
         self.phLevel = 0
         self.lightLevel = 0
         self.moistureLevel = 0
         self.temperatureLevel = 0
 
+        # Values that we will "act" on
+        self.moistureThresholdLevel = 0
+
+        # Values to keep track for the health of the plant
+        self.phThresholdLevel = 0
+        self.lightThresholdLevel = 0
+        self.temperatureThresholdLevel = 0
+
         self.sensorController = sensorController
-        
+
     def print_plant(self):
         print("---")
         print("plant :" + self.name)
-        print("type :" + self.type)
+        print("type :" + self.type_)
         print("ph :" + str(self.phLevel))
         print("light :" + str(self.lightLevel))
         print("moisture :" + str(self.moistureLevel))
@@ -65,3 +74,24 @@ class Plant():
             "temperature": self.temperatureLevel
         }
         return plantData
+
+    def setThresholdData(self):
+        """
+        retrieve data of the plant's need based on its needs from json db
+
+        Arguments
+        ---------
+
+        Returns
+        ------
+        """
+        try:
+            plantDataJSON = PlantNeedJSON()
+            plantData = plantDataJSON.readTypeNeed(self.type_)
+
+            self.moistureThresholdLevel = plantData["moistureTLevel"]
+            self.lightThresholdLevel = plantData["lightTLevel"]
+            self.temperatureThresholdLevel = plantData["temperatureTLevel"]
+
+        except MissingPlantType:
+            print("Please add plant type needs")

@@ -1,0 +1,10 @@
+{
+    "plant": [
+        {
+            "type": "cactus",
+            "moistureTLevel": "100",
+            "temperatureTLevel": "30",
+            "lightTLevel": "150"
+        }
+    ]
+}
