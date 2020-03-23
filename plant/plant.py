@@ -16,7 +16,7 @@ class Plant():
     sensorController : SensorController
         controller for the sensors that is implemented on the plant 
     """
-    def __init__(self, name, type_, sensorController):
+    def __init__(self, name, type_, sensorController = ""):
         self.name = name
         self.type_ = type_
 
@@ -32,6 +32,9 @@ class Plant():
         self.phThresholdLevel = 0
         self.lightThresholdLevel = 0
         self.temperatureThresholdLevel = 0
+
+        # Set all the threshold values
+        self.setThresholdData()
 
         self.sensorController = sensorController
 
@@ -95,3 +98,4 @@ class Plant():
 
         except MissingPlantType:
             print("Please add plant type needs")
+            plantDataJSON.addTypeNeed(self.type_)

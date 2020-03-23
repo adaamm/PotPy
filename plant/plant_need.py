@@ -2,13 +2,16 @@
 
 # 3rd Party Imports
 import json
+import os
 
 class PlantNeedJSON():
     def __init__(self):
         """
         init. of the plant need json class
         """
-        self.dbFile = "plant_need.json"
+        dirname = os.path.dirname(__file__)
+        filename = os.path.join(dirname, 'plant_need.json')
+        self.dbFile = filename
 
     def checkTypeExist(self, type_):
         """
@@ -35,7 +38,8 @@ class PlantNeedJSON():
             else:
                 return False
 
-        except json.decoder.JSONDecodeError:
+        except json.decoder.JSONDecodeError as e:
+            print(e)
             print("database json file not built yet")
             return False
 
@@ -55,11 +59,11 @@ class PlantNeedJSON():
         """
         if self.checkTypeExist(type_):
             with open(self.dbFile) as datafile:
-                data = json.load(datafile )
+                data = json.load(datafile)
                 for plant in data['plant']:
                     if plant['type'] == type_:
                         plantNeeds = {
-                            'moistureTlevel': plant['moistureTLevel'],
+                            'moistureTLevel': plant['moistureTLevel'],
                             'temperatureTLevel': plant['temperatureTLevel'],
                             'lightTLevel': plant['lightTLevel']
                         }
@@ -88,21 +92,47 @@ class PlantNeedJSON():
             temperatureTLevel = input("input temperature threshold value : ")
             lightTLevel = input("input light threshold value : ")
 
-            data = {}
-            data['plant'] = []
-            data['plant'].append({
-                'type': type_,
-                'moistureTLevel': moistureTLevel,
-                'temperatureTLevel': temperatureTLevel,
-                'lightTLevel': lightTLevel
-            })
-
             # append to db json file
-            with open(self.dbFile, 'a+') as datafile:
+            with open(self.dbFile, 'r+') as datafile:
+                data = json.load(datafile)
+                data['plant'].append({
+                    'type': type_,
+                    'moistureTLevel': moistureTLevel,
+                    'temperatureTLevel': temperatureTLevel,
+                    'lightTLevel': lightTLevel
+                })
+                datafile.seek(0) # erase the previous data
+                datafile.truncate()
                 json.dump(data, datafile, indent = 4)
 
         else:
             print("Plannt type already exists in database")
+
+    def createDbJSON(self):
+        """
+        add the type of plant in the database of plant needs
+
+        Arguments
+        ---------
+        type_ : str
+            the plant type
+
+        Returns
+        -------
+
+        """
+        data = {}
+        data['plant'] = []
+        data['plant'].append({
+            'type': 'default',
+            'moistureTLevel': 0,
+            'temperatureTLevel': 0,
+            'lightTLevel': 0
+        })
+
+        # append to db json file
+        with open(self.dbFile, 'a+') as datafile:
+            json.dump(data, datafile, indent = 4)
 
 # SECTION : Exceptions
 # define Python user-defined exceptions
@@ -116,4 +146,5 @@ class MissingPlantType(Error):
 
 if __name__ == '__main__':
     plantJSON = PlantNeedJSON()
-    print(plantJSON.readTypeNeed("cactus"))
+    # plantJSON.createDbJSON()
+    # plantJSON.addTypeNeed("cactus")
