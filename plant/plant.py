@@ -99,3 +99,4 @@ class Plant():
         except MissingPlantType:
             print("Please add plant type needs")
             plantDataJSON.addTypeNeed(self.type_)
+            self.setThresholdData() # retry to set the data
