@@ -146,5 +146,5 @@ class MissingPlantType(Error):
 
 if __name__ == '__main__':
     plantJSON = PlantNeedJSON()
-    # plantJSON.createDbJSON()
+    plantJSON.createDbJSON()
     # plantJSON.addTypeNeed("cactus")
