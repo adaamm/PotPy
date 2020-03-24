@@ -73,7 +73,7 @@ class FirebasePlantCom:
         -------
         """
         self.db.child(plant).update({"ph": plantData["ph"]})
-        self.db.child(plant).update({"light": plantData["light"]})
+        self.db.child(plant).update({"lightIntensity": plantData["light"]})
         self.db.child(plant).update({"moisture": plantData["moisture"]})
         self.db.child(plant).update({"temperature": plantData["temperature"]})
     
