@@ -13,7 +13,7 @@ class PlantNeedJSON():
         filename = os.path.join(dirname, 'plant_need.json')
         self.dbFile = filename
 
-    def checkTypeExist(self, type_):
+    def check_type_exist(self, type_):
         """
         check it the type of plant is already in the database of plant needs
 
@@ -43,7 +43,7 @@ class PlantNeedJSON():
             print("database json file not built yet")
             return False
 
-    def readTypeNeed(self, type_):
+    def read_type_need(self, type_):
         """
         read plant needs of the type of plant that is already in the database of plant needs
 
@@ -57,7 +57,7 @@ class PlantNeedJSON():
         plantNeeds : dict
             data of the plant needs
         """
-        if self.checkTypeExist(type_):
+        if self.check_type_exist(type_):
             with open(self.dbFile) as datafile:
                 data = json.load(datafile)
                 for plant in data['plant']:
@@ -74,7 +74,7 @@ class PlantNeedJSON():
             print("Plant Type is not in database yet")
             raise MissingPlantType
 
-    def addTypeNeed(self, type_):
+    def add_type_need(self, type_):
         """
         add the type of plant in the database of plant needs
 
@@ -108,7 +108,7 @@ class PlantNeedJSON():
         else:
             print("Plannt type already exists in database")
 
-    def createDbJSON(self):
+    def create_db_json(self):
         """
         add the type of plant in the database of plant needs
 
@@ -146,5 +146,5 @@ class MissingPlantType(Error):
 
 if __name__ == '__main__':
     plantJSON = PlantNeedJSON()
-    plantJSON.createDbJSON()
-    # plantJSON.addTypeNeed("cactus")
+    plantJSON.create_db_json()
+    # plantJSON.add_type_need("cactus")

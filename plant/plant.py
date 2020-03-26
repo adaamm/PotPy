@@ -90,7 +90,7 @@ class Plant():
         """
         try:
             plantDataJSON = PlantNeedJSON()
-            plantData = plantDataJSON.readTypeNeed(self.type_)
+            plantData = plantDataJSON.read_type_need(self.type_)
 
             self.moistureThresholdLevel = plantData["moistureTLevel"]
             self.lightThresholdLevel = plantData["lightTLevel"]
@@ -98,5 +98,5 @@ class Plant():
 
         except MissingPlantType:
             print("Please add plant type needs")
-            plantDataJSON.addTypeNeed(self.type_)
+            plantDataJSON.add_type_need(self.type_)
             self.setThresholdData() # retry to set the data
