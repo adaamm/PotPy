@@ -1,0 +1,28 @@
+#+TITLE: simulation_notes
+
+* Tips
+** what we want to simulate is stuff we cannot immediately get results of
+*** ie we cant wait to build the building and then test it
+*** so for us it is
+**** we cannot wait for the moisture to get wet / dry / etc ...
+**** we cannot wait for the sun to have lots of light / medium light / no light
+**** we cannot wait for the temperature to go up and down
+***** we need to simulate these environments
+***** what we want to shortcut is time
+** How to go about it ?
+*** simulate the raspberry pi
+*** simulate plant
+*** simulate weather conditions
+** Raspberry Pi Simulation
+*** for our purpose
+- read data from sensors
+- all the rest that is done on the pi can be done on a regular computer
+** Plant Simulation
+*** for our purpose
+- how fast it can "drain" water
+- pretty much it
+** Weather Condition Simulation
+*** for our purpose
+- how much can the sun fluctuate in within how much time
+- how much can rain fluctuate in within how much time
+- how much can temperater fluctuate in within how much time
