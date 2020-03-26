@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">390 Application</string>
+    
+    <string-array name="types">
+        <item>Sansevieria</item>
+        <item>Devil\'s Ivy</item>
+        <item>English Ivy</item>
+    </string-array>
+</resources>
