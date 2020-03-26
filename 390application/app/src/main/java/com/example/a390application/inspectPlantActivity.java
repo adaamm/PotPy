@@ -136,18 +136,17 @@ public class inspectPlantActivity extends AppCompatActivity {
     public double fetchIdealMoisture(String type) {
         Toast.makeText(getApplicationContext(),type,Toast.LENGTH_SHORT).show();
         double idealMoisture = -1;
-        if (type.equals("Cactus"))
-            idealMoisture = 50;
-        if (type.equals("Aloe"))
-            idealMoisture = 75;
-        if (type.equals("Sansevieria"))
+        if (type.equals("Devil's Ivy"))
+            idealMoisture = -1;
+        else if (type.equals("English Ivy"))
+            idealMoisture = -1;
+        else if (type.equals("Sansevieria"))
             idealMoisture = 100;
 
         String ideal;
         ideal = Double.toString(idealMoisture);
         Toast.makeText(getApplicationContext(),ideal,Toast.LENGTH_SHORT).show();
         return idealMoisture;
-
 
     }
 /*
@@ -163,10 +162,6 @@ public class inspectPlantActivity extends AppCompatActivity {
             idealMoisture = 100;
         else
             idealMoisture = 0;
-
         return idealMoisture;
-
     }*/
 }
-
-

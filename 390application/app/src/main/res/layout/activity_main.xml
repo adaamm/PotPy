@@ -52,6 +52,9 @@
         android:layout_marginLeft="18dp"
         android:layout_marginTop="0dp"
         android:text="0 Plants are being monitored"
+        android:textColor="#333"
+        android:textSize="40sp"
+        android:textStyle="normal"
         app:autoSizeTextType="uniform" />
 
     <ProgressBar
