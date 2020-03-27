@@ -37,7 +37,7 @@ def main():
     # Make Plant and its SensorController
     sensorController1 = SensorController(moisture=0, light=1, ph=-1, humidity = 0, temperature = 0)
 
-    plantName = "Users/-M3ObxkDK2mLO3D7Eq"
+    plantName = "Users/-M3ObxkDK2mLO3D7Eqns/English"
     plant0 = Plant(name=plantName, type_="Aloe", sensorController=sensorController1)
     
     # Gather data and send 2 Firebase
