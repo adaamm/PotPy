@@ -1,0 +1,22 @@
+{
+    "plant": [
+        {
+            "type": "default",
+            "moistureTLevel": 0,
+            "temperatureTLevel": 0,
+            "lightTLevel": 0
+        },
+        {
+            "type": "cactus",
+            "moistureTLevel": "100",
+            "temperatureTLevel": "100",
+            "lightTLevel": "100"
+        },
+        {
+            "type": "Aloe",
+            "moistureTLevel": "50",
+            "temperatureTLevel": "50",
+            "lightTLevel": "50"
+        }
+    ]
+}
