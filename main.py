@@ -35,7 +35,7 @@ def main():
     firebaseCOM = FirebasePlantCom()
 
     # Make Plant and its SensorController
-    sensorController1 = SensorController(moisture=0, light=1, ph=-1)
+    sensorController1 = SensorController(moisture=0, light=1, ph=-1, humidity = 0, temperature = 0)
     plant0 = Plant(name="Plant0", type_="Aloe", sensorController=sensorController1)
     
     # Gather data and send 2 Firebase

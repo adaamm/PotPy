@@ -24,7 +24,7 @@ class Plant():
         self.lightLevel = 0
         self.moistureLevel = 0
         self.temperatureLevel = 0
-	self.humidityLevel = 0 
+        self.humidityLevel = 0 
 
         # Values that we will "act" on
         self.moistureThresholdLevel = 0
@@ -72,7 +72,7 @@ class Plant():
         self.set_light()
         self.set_ph()
         self.set_temperature()
-	self.set_humidity()
+        self.set_humidity()
 
     def get_all_data(self):
         plantData = {
@@ -80,7 +80,7 @@ class Plant():
             "light": self.lightLevel,
             "moisture": self.moistureLevel,
             "temperature": self.temperatureLevel,
-	    "humidity":self.humidityLevel
+            "humidity":self.humidityLevel
         }
         return plantData
 

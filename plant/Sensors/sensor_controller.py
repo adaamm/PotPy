@@ -11,11 +11,6 @@ import spidev  # Needed for SPI programming see comments below
 # User Imports
 # from components import *  #imports all functions from component
 
-# py-spidev provides a python module for interfacing with SPI devices
-# Get py-spidev from git clone https://github.com/doceme/py-spidev.git
-# Activating the SPI to use with the MCP3008 and connect analog sensors (see connections.fpz )
-spi = spidev.SpiDev()
-spi.open(0, 0)
 
 # The following lines are used for the i2c pins (sda scl ) of the PI
 # The I2C pins are connected to the bme280 but can be connected with more
@@ -35,6 +30,12 @@ class SensorController():
             "humidityPin": humidity,
             "temperaturePin": temperature
         }
+    
+        # py-spidev provides a python module for interfacing with SPI devices
+        # Get py-spidev from git clone https://github.com/doceme/py-spidev.git
+        # Activating the SPI to use with the MCP3008 and connect analog sensors 
+        self.spi = spidev.SpiDev() 
+        self.spi.open(0,0)
         
 
     # Reading input from MCP3008
