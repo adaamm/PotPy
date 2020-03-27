@@ -75,11 +75,11 @@ class SensorController():
         pressure = data.pressure / 10;  # Pressure is returned in hPa from the sensor, we divide to convert
         return pressure;
 
-    # def dry(self):
-    #     if moistureLevel() >= 900:
-    #         return True
-    #     else:
-    #         return False
+    def dry(self):
+        if self.moisture >= 900:
+            return True
+        else:
+            return False
 
     def watering(self):
         GPIO.setwarnings(False)
