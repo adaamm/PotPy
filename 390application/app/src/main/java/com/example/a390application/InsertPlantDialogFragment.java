@@ -23,13 +23,9 @@ import java.util.List;
 
 public class InsertPlantDialogFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
-    protected List<Plant> plants;
-    protected EditText plantNameEditText;
-    protected Spinner plantTypeSpinner;
-    protected Button addPlantButton;
-    protected Button cancelPlantButton;
-    protected String typePicked;
-    protected DatabaseReference userReference;
+    private List<Plant> plants;
+    private EditText plantNameEditText;
+    private String typePicked;
     protected String ownerID;
 
     @Nullable
@@ -39,7 +35,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
         View view = inflater.inflate(R.layout.fragment_insert_plant, container, false);
 
         plantNameEditText = view.findViewById(R.id.plantNameEditText);
-        plantTypeSpinner = view.findViewById(R.id.plantTypeDrop);
+        Spinner plantTypeSpinner = view.findViewById(R.id.plantTypeDrop);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),  R.array.types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -48,8 +44,8 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
         plantTypeSpinner.setOnItemSelectedListener(this);
 
 
-        addPlantButton = view.findViewById(R.id.addPlantButton);
-        cancelPlantButton = view.findViewById(R.id.backButton);
+        Button addPlantButton = view.findViewById(R.id.addPlantButton);
+        Button cancelPlantButton = view.findViewById(R.id.backButton);
 
         addPlantButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -57,7 +53,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
 
                 String name = plantNameEditText.getText().toString();
 
-                InsertPlant dbInsertPlant = new InsertPlant((MainActivity)getActivity());
+                InsertPlant dbInsertPlant = new InsertPlant(getActivity());
                 plants = dbInsertPlant.getAllPlants();
 
                 if(!name.equals("")){
@@ -109,8 +105,8 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
 
     }
 
-    protected void storePlantInDatabase(Plant givenPlant) {
-        userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(ownerID).child(givenPlant.getName());
+    private void storePlantInDatabase(Plant givenPlant) {
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(ownerID).child(givenPlant.getName());
         userReference.setValue(givenPlant);
     }
 }

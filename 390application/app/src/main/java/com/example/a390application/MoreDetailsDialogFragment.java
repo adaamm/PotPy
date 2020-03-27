@@ -12,8 +12,6 @@ import androidx.fragment.app.DialogFragment;
 public class MoreDetailsDialogFragment extends DialogFragment {
 
 
-    protected Button doneButton;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -21,7 +19,7 @@ public class MoreDetailsDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_more_details, container, false);
 
 
-        doneButton = view.findViewById(R.id.backButton);
+        Button doneButton = view.findViewById(R.id.backButton);
 
         doneButton.setOnClickListener(new View.OnClickListener(){
             @Override

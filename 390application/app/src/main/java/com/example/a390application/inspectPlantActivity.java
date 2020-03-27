@@ -20,7 +20,6 @@ public class inspectPlantActivity extends AppCompatActivity {
     protected TextView plantsTitle;
     protected TextView plantsType;
     protected TextView plantsInfo;
-    protected ListView plantsListView;
     protected FloatingActionButton moreDetailsButton;
     protected Button deletePlantButton;
     protected Bundle bundle = new Bundle();
@@ -107,9 +106,9 @@ public class inspectPlantActivity extends AppCompatActivity {
 
 
     //'Delete Plant' button not yet implemented.
-    public void removePlantByID(long id){
+    /*public void removePlantByID(long id){
 
-    }
+    }*/
 
 
     @Override
@@ -136,12 +135,17 @@ public class inspectPlantActivity extends AppCompatActivity {
     public double fetchIdealMoisture(String type) {
         Toast.makeText(getApplicationContext(),type,Toast.LENGTH_SHORT).show();
         double idealMoisture = -1;
-        if (type.equals("Devil's Ivy"))
-            idealMoisture = -1;
-        else if (type.equals("English Ivy"))
-            idealMoisture = -1;
-        else if (type.equals("Sansevieria"))
-            idealMoisture = 100;
+        switch (type) {
+            case "Devil's Ivy":
+                idealMoisture = -1;
+                break;
+            case "English Ivy":
+                idealMoisture = -1;
+                break;
+            case "Sansevieria":
+                idealMoisture = 100;
+                break;
+        }
 
         String ideal;
         ideal = Double.toString(idealMoisture);

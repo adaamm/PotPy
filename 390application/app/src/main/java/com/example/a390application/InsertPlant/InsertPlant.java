@@ -18,7 +18,7 @@ import java.util.List;
 public class InsertPlant extends SQLiteOpenHelper {
 
     private Context context;
-    protected String uniqueID = "Rami";
+    private String uniqueID = "Rami";
 
     public InsertPlant(Context context) {
         super(context, Config.DATABASE_NAME, null, Config.DATABASE_VERSION);
@@ -32,7 +32,7 @@ public class InsertPlant extends SQLiteOpenHelper {
                 + Config.COLUMN_PLANT_TYPE + " TEXT NOT NULL, "
                 + Config.COLUMN_PLANT_MOISTURE + " DOUBLE, "
                 + Config.COLUMN_PLANT_LIGHT_INTENSITY + " DOUBLE, "
-                + Config.COLUMN_PLANT_PH + " DOUBLE, "
+                + Config.COLUMN_PLANT_HUMIDITY + " DOUBLE, "
                 + Config.COLUMN_PLANT_TEMPERATURE + " DOUBLE, "
                 + Config.COLUMN_PLANT_TEST + " TEXT, "
                 + Config.COLUMN_PLANT_OWNER + " TEXT)";
@@ -50,8 +50,7 @@ public class InsertPlant extends SQLiteOpenHelper {
 
     }
 
-    public long insertPlant(Plant plant) {
-        long id = -1;
+    public void insertPlant(Plant plant) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -62,20 +61,19 @@ public class InsertPlant extends SQLiteOpenHelper {
         contentValues.put(Config.COLUMN_PLANT_MOISTURE, plant.getMoisture());
         contentValues.put(Config.COLUMN_PLANT_LIGHT_INTENSITY, plant.getLightIntensity());
         contentValues.put(Config.COLUMN_PLANT_TEST, plant.getTest());
-        contentValues.put(Config.COLUMN_PLANT_PH, plant.getPH());
+        contentValues.put(Config.COLUMN_PLANT_HUMIDITY, plant.getHumidity());
         contentValues.put(Config.COLUMN_PLANT_TEMPERATURE, plant.getTemperature());
         contentValues.put(Config.COLUMN_PLANT_OWNER, plant.getOwnerID());
 
 
 
         try {
-            id = db.insertOrThrow(Config.PLANT_TABLE_NAME, null, contentValues);
+            db.insertOrThrow(Config.PLANT_TABLE_NAME, null, contentValues);
         } catch (SQLiteException e) {
             Toast.makeText(context, "Operation Failed!: " + e, Toast.LENGTH_LONG).show();
         } finally {
             db.close();
         }
-        return id;
     }
 
     public List<Plant> getAllPlants() {
@@ -100,12 +98,12 @@ public class InsertPlant extends SQLiteOpenHelper {
                         double moisture = cursor.getDouble(cursor.getColumnIndex(Config.COLUMN_PLANT_MOISTURE));
                         double lightIntensity = cursor.getDouble((cursor.getColumnIndex(Config.COLUMN_PLANT_LIGHT_INTENSITY)));
                         String test = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_TEST));
-                        double ph = cursor.getDouble((cursor.getColumnIndex(Config.COLUMN_PLANT_PH)));
+                        double humidity = cursor.getDouble((cursor.getColumnIndex(Config.COLUMN_PLANT_HUMIDITY)));
                         double temperature = cursor.getDouble((cursor.getColumnIndex(Config.COLUMN_PLANT_TEMPERATURE)));
                         String owner = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_OWNER));
 
 
-                        plants.add(new Plant(id, name, type, moisture, lightIntensity,test,ph,temperature,owner));
+                        plants.add(new Plant(id, name, type, moisture, lightIntensity,test,humidity,temperature,owner));
 
                     } while (cursor.moveToNext());
 
@@ -135,7 +133,7 @@ public class InsertPlant extends SQLiteOpenHelper {
         contentValues.put(Config.COLUMN_PLANT_MOISTURE, newPlantData.getMoisture());
         contentValues.put(Config.COLUMN_PLANT_LIGHT_INTENSITY, newPlantData.getLightIntensity());
         contentValues.put(Config.COLUMN_PLANT_TEST, newPlantData.getTest());
-        contentValues.put(Config.COLUMN_PLANT_PH, newPlantData.getPH());
+        contentValues.put(Config.COLUMN_PLANT_HUMIDITY, newPlantData.getHumidity());
         contentValues.put(Config.COLUMN_PLANT_TEMPERATURE, newPlantData.getTemperature());
         contentValues.put(Config.COLUMN_PLANT_OWNER, newPlantData.getOwnerID());
 
@@ -152,7 +150,7 @@ public class InsertPlant extends SQLiteOpenHelper {
     }
 
     public String checkUID(){
-        SQLiteDatabase db = this.getWritableDatabase();;
+        SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.query(Config.UNIQUE_ID_TABLE, null, null, null, null, null, null);
 

@@ -8,18 +8,18 @@ public class Plant {
     private double Moisture;
     private double LightIntensity;
     private String Test;
-    private double PH;
+    private double Humidity;
     private double Temperature;
     private String OwnerID;
 
-    public Plant(Integer ID, String name, String type, double moisture, double lightIntensity, String test, double ph, double temperature, String id) {
+    Plant(Integer ID, String name, String type, double moisture, double lightIntensity, String test, double humidity, double temperature, String id) {
         this.ID = ID;
         Name = name;
         Type = type;
         Moisture = moisture;
         LightIntensity = lightIntensity;
         Test = test;
-        PH = ph;
+        Humidity = humidity;
         Temperature = temperature;
         OwnerID = id;
     }
@@ -30,19 +30,19 @@ public class Plant {
         Moisture = -1;
         LightIntensity = -1;
         Test = "default";
-        PH = -1;
+        Humidity = -1;
         Temperature = -1;
         OwnerID = id;
 
     }
 
-    public Plant(String name, String type, double moisture, double lightIntensity, String test, double ph, double temperature, String id) {
+    public Plant(String name, String type, double moisture, double lightIntensity, String test, double humidity, double temperature, String id) {
         Name = name;
         Type = type;
         Moisture = moisture;
         LightIntensity = lightIntensity;
         Test = test;
-        PH = ph;
+        Humidity = humidity;
         Temperature = temperature;
         OwnerID = id;
     }
@@ -95,12 +95,12 @@ public class Plant {
         Test = test;
     }
 
-    public double getPH() {
-        return PH;
+    public double getHumidity() {
+        return Humidity;
     }
 
-    public void setPH(double PH) {
-        this.PH = PH;
+    public void setHumidity(double Humidity) {
+        this.Humidity = Humidity;
     }
 
     public double getTemperature() {

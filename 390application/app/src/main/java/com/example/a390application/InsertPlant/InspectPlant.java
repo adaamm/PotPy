@@ -6,11 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class InspectPlant extends SQLiteOpenHelper {
 
-    private Context context;
-
     public InspectPlant(Context context) {
         super(context, Config.DATABASE_NAME, null, Config.DATABASE_VERSION);
-        this.context = context;
     }
 
     @Override

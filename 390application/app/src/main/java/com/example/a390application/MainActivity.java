@@ -1,8 +1,6 @@
 package com.example.a390application;
 
 import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -14,11 +12,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-
 import com.example.a390application.InsertPlant.InsertPlant;
 import com.example.a390application.InsertPlant.Plant;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     protected List<Plant> plants;
     protected int plantCount;
     protected InsertPlant dbInsertPlant = new InsertPlant(this );
-    protected DatabaseReference userReference;
     protected String uniqueID;
 
 
@@ -112,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             plantCount++;
             String tempTitle = "";
             String tempData = "";
-            Integer tempImages = R.drawable.notfound;
+            int tempImages = R.drawable.notfound;
 
             tempTitle += plants.get(i).getName();
             tempData+= "Type: ";
@@ -123,71 +118,85 @@ public class MainActivity extends AppCompatActivity {
             tempData+= plants.get(i).getLightIntensity() + "\n";
             tempData+= "Temperature: ";
             tempData+= plants.get(i).getTemperature() + "\n";
-            tempData+= "Ph: ";
-            tempData+= plants.get(i).getPH() + "\n";
-            tempData+= "Test: ";
-            tempData+= plants.get(i).getTest() + "\n";
+            tempData+= "Humidity: ";
+            tempData+= plants.get(i).getHumidity() + "\n";
+            //tempData+= "Test: ";
+            //tempData+= plants.get(i).getTest() + "\n";
 
             tempData+= "Health Percentage: ";
-			if(plants.get(i).getType().equals("Devil's Ivy")){
-			    double percentage = healthBarAlgoDevilsIvy(plants.get(i));
-                tempData+= percentage + "%\n";
+            switch (plants.get(i).getType()) {
+                case "Devil's Ivy": {
+                    double percentage = healthBarAlgoDevilsIvy(plants.get(i));
+                    if(percentage < 0){
+                        percentage = 0;
+                    }
+                    tempData += String.format("%.1f", percentage) + "%\n";
 
-                tempImages = R.drawable.devilivy;
+                    tempImages = R.drawable.devilivy;
 
-                //Notification sent when health reaches less than 50%.
-                if(percentage < 50){
-                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
-                            .setSmallIcon(R.drawable.alert)
-                            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.sanseivieria))
-                            .setContentTitle(plants.get(i).getName() + " needs your attention!")
-                            .setContentText("Your plant's health is lower than 50%!");
-                    notificationBuilder.setDefaults(
-                            Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
-                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
-                    notificationManager.notify(1, notificationBuilder.build());
+                    //Notification sent when health reaches less than 50%.
+                    if (percentage < 50) {
+                        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
+                                .setSmallIcon(R.drawable.alert)
+                                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.sanseivieria))
+                                .setContentTitle(plants.get(i).getName() + " needs your attention!")
+                                .setContentText("Your plant's health is lower than 50%!");
+                        notificationBuilder.setDefaults(
+                                Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
+                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
+                        notificationManager.notify(1, notificationBuilder.build());
+                    }
+                    break;
                 }
-			}
-			else if(plants.get(i).getType().equals("Sansevieria")){
-                double percentage = healthBarAlgoSansevieria(plants.get(i));
-                tempData+= percentage + "%\n";
+                case "Sansevieria": {
+                    double percentage = healthBarAlgoSansevieria(plants.get(i));
+                    if(percentage < 0){
+                        percentage = 0;
+                    }
+                    tempData += String.format("%.1f", percentage) + "%\n";
 
-                tempImages = R.drawable.sanseivieria;
+                    tempImages = R.drawable.sanseivieria;
 
-                //Notification sent when health reaches less than 50%.
-                if(percentage < 50){
-                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
-                            .setSmallIcon(R.drawable.alert)
-                            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.sanseivieria))
-                            .setContentTitle(plants.get(i).getName() + " needs your attention!")
-                            .setContentText("Your plant's health is lower than 50%!");
-                    notificationBuilder.setDefaults(
-                            Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
-                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
-                    notificationManager.notify(1, notificationBuilder.build());
+                    //Notification sent when health reaches less than 50%.
+                    if (percentage < 50) {
+                        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
+                                .setSmallIcon(R.drawable.alert)
+                                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.sanseivieria))
+                                .setContentTitle(plants.get(i).getName() + " needs your attention!")
+                                .setContentText("Your plant's health is lower than 50%!");
+                        notificationBuilder.setDefaults(
+                                Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
+                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
+                        notificationManager.notify(1, notificationBuilder.build());
+                    }
+                    break;
                 }
-			}
-			else if(plants.get(i).getType().equals("English Ivy")){
-                double percentage = healthBarAlgoEnglishIvy(plants.get(i));
-                tempData+= percentage + "%\n";
+                case "English Ivy": {
+                    double percentage = healthBarAlgoEnglishIvy(plants.get(i));
+                    if(percentage < 0){
+                        percentage = 0;
+                    }
+                    tempData += String.format("%.1f", percentage) + "%\n";
 
-                tempImages = R.drawable.englishivy;
+                    tempImages = R.drawable.englishivy;
 
-                //Notification sent when health reaches less than 50%.
-                if(percentage < 50){
-                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
-                            .setSmallIcon(R.drawable.alert)
-                            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.sanseivieria))
-                            .setContentTitle(plants.get(i).getName() + " needs your attention!")
-                            .setContentText("Your plant's health is lower than 50%!");
-                    notificationBuilder.setDefaults(
-                            Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
-                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
-                    notificationManager.notify(1, notificationBuilder.build());
+                    //Notification sent when health reaches less than 50%.
+                    if (percentage < 50) {
+                        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
+                                .setSmallIcon(R.drawable.alert)
+                                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.sanseivieria))
+                                .setContentTitle(plants.get(i).getName() + " needs your attention!")
+                                .setContentText("Your plant's health is lower than 50%!");
+                        notificationBuilder.setDefaults(
+                                Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
+                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
+                        notificationManager.notify(1, notificationBuilder.build());
+                    }
+                    break;
                 }
-			}
-			else{
-			}
+                default:
+                    break;
+            }
 
             plantTitles.add(tempTitle);
             plantImages.add(tempImages);
@@ -195,10 +204,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(plantCount == 1){
-            plantNumber.setText(plantCount + " plant is being monitored.");
+            String temp = plantCount + " plant is being monitored.";
+            plantNumber.setText(temp);
         }
         else{
-            plantNumber.setText(plantCount + " plants are being monitored.");
+            String temp = plantCount + " plants are being monitored.";
+            plantNumber.setText(temp);
         }
 
 
@@ -209,9 +220,9 @@ public class MainActivity extends AppCompatActivity {
 
     protected double healthBarAlgoSansevieria(Plant givenPlant){       //specifically for Sansevieria
 
-        double FinalTemperaturePercentage = 0;
-        double FinalMoisturePercentage = 0;
-        double LightIntensityValue = 0;
+        double FinalTemperaturePercentage;
+        double FinalMoisturePercentage;
+        //double LightIntensityValue = 0;
 
 
         // Do all calculations and store in 'FinalPercentage'.
@@ -233,15 +244,14 @@ public class MainActivity extends AppCompatActivity {
 
         // calculation final
         //double FinalPercentage = 0.33*FinalMoisturePercentage + 0.33*FinalLightIntensityPercentage + 0.33*FinalTemperaturePercentage;   // weighting , all equal 1/3
-        double FinalPercentage = 0.5*FinalMoisturePercentage + 0.5*FinalTemperaturePercentage;
-        return FinalPercentage;
+        return 0.5*FinalMoisturePercentage + 0.5*FinalTemperaturePercentage;
     }
 
     protected double healthBarAlgoEnglishIvy(Plant givenPlant){       //specifically for English Ivy/Ivy String
 
-        double FinalTemperaturePercentage = 0;
-        double FinalMoisturePercentage = 0;
-        double LightIntensityValue = 0;
+        double FinalTemperaturePercentage;
+        double FinalMoisturePercentage;
+        //double LightIntensityValue = 0;
 
 
         //Do all calculations and store in 'FinalPercentage'.
@@ -263,15 +273,14 @@ public class MainActivity extends AppCompatActivity {
 
         // calculation final
         //double FinalPercentage = 0.33*FinalMoisturePercentage + 0.33*FinalLightIntensityPercentage + 0.33*FinalTemperaturePercentage;   // weighting , all equal 1/3
-        double FinalPercentage = 0.5*FinalMoisturePercentage + 0.5*FinalTemperaturePercentage;
-        return FinalPercentage;
+        return 0.5*FinalMoisturePercentage + 0.5*FinalTemperaturePercentage;
     }
 
     protected double healthBarAlgoDevilsIvy(Plant givenPlant){       //specifically for Devil's Ivy
 
-        double FinalTemperaturePercentage = 0;
-        double FinalMoisturePercentage = 0;
-        double LightIntensityValue = 0;
+        double FinalTemperaturePercentage;
+        double FinalMoisturePercentage;
+        //double LightIntensityValue = 0;
 
         if (givenPlant.getTemperature() >= 23){
             FinalTemperaturePercentage = 100-((givenPlant.getTemperature()-23)*4.3478);     // 46 deg C = 0%
@@ -290,8 +299,7 @@ public class MainActivity extends AppCompatActivity {
 
         // calculation final
         //double FinalPercentage = 0.33*FinalMoisturePercentage + 0.33*FinalLightIntensityPercentage + 0.33*FinalTemperaturePercentage;   // weighting , all equal 1/3
-        double FinalPercentage = 0.5*FinalMoisturePercentage + 0.5*FinalTemperaturePercentage;
-        return FinalPercentage;
+        return 0.5*FinalMoisturePercentage + 0.5*FinalTemperaturePercentage;
     }
 
 
