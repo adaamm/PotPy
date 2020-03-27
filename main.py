@@ -49,8 +49,8 @@ def main():
             plantData = plant0.get_all_data()
             firebaseCOM.update_plant(plant0.name,plantData)
             plant0.print_plant()
-            if plant0.sensorController.dry():
-                plant0.watering()
+            if plant0.dry():
+                plant0.sensorController.watering()
 
     except KeyboardInterrupt:
         print('interrupted!')
