@@ -60,6 +60,12 @@ class Plant():
     def set_ph(self):
         #print("under construction")
         pass
+        
+    def dry(self):
+        if self.moistureLevel >= 900:
+            return True
+        else:
+            return False
 
     def set_temperature(self):
         self.temperatureLevel = self.sensorController.get_temperature()
