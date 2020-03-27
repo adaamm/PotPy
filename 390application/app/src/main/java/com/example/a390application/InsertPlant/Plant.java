@@ -27,11 +27,11 @@ public class Plant {
     public Plant(String name, String type, String id) {
         Name = name;
         Type = type;
-        Moisture = -1;
-        LightIntensity = -1;
+        Moisture = -10000;
+        LightIntensity = -10000;
         Test = "default";
-        Humidity = -1;
-        Temperature = -1;
+        Humidity = -10000;
+        Temperature = -10000;
         OwnerID = id;
 
     }

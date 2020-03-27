@@ -67,7 +67,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
                     if(isUnique){
                         InsertPlant dbPlants = new InsertPlant(getActivity());
 
-                        storePlantInDatabase(new Plant(name,typePicked,-1,-1,"default",-1,-1,ownerID));
+                        storePlantInDatabase(new Plant(name,typePicked,-10000,-10000,"default",-10000,-10000,ownerID));
                         dbPlants.insertPlant(new Plant(name,typePicked,ownerID));
                         ((MainActivity)getActivity()).loadListView();
                         getDialog().dismiss();

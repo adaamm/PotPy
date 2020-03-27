@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     protected InsertPlant dbInsertPlant = new InsertPlant(this );
     protected String uniqueID;
 
+    /*
+    MAKE A SLOT IN FIREBASE WHERE THE USER WILL SPECIFY WHICH PLANT HE/SHE WANTS TO MONITOR.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,13 +116,36 @@ public class MainActivity extends AppCompatActivity {
             tempData+= "Type: ";
             tempData+= plants.get(i).getType() + "\n";
             tempData+= "Moisture: ";
-            tempData+= plants.get(i).getMoisture() + "\n";
+            if(plants.get(i).getMoisture() <= -10000){
+                tempData+= "N/A" + "\n";
+            }
+            else{
+                tempData+= String.format("%.1f",plants.get(i).getMoisture()) + "\n";
+            }
+
             tempData+= "Light Intensity: ";
-            tempData+= plants.get(i).getLightIntensity() + "\n";
+            if(plants.get(i).getLightIntensity() <= -10000){
+                tempData+= "N/A" + "\n";
+            }
+            else{
+                tempData+= String.format("%.1f",plants.get(i).getLightIntensity()) + "\n";
+            }
+
             tempData+= "Temperature: ";
-            tempData+= plants.get(i).getTemperature() + "\n";
+            if(plants.get(i).getTemperature() <= -10000){
+                tempData+= "N/A" + "\n";
+            }
+            else{
+                tempData+= String.format("%.1f",plants.get(i).getTemperature()) + "\n";
+            }
             tempData+= "Humidity: ";
-            tempData+= plants.get(i).getHumidity() + "\n";
+
+            if(plants.get(i).getHumidity() <= -10000){
+                tempData+= "N/A" + "\n";
+            }
+            else{
+                tempData+= String.format("%.1f",plants.get(i).getHumidity()) + "\n";
+            }
             //tempData+= "Test: ";
             //tempData+= plants.get(i).getTest() + "\n";
 
