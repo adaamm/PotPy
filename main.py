@@ -36,7 +36,9 @@ def main():
 
     # Make Plant and its SensorController
     sensorController1 = SensorController(moisture=0, light=1, ph=-1, humidity = 0, temperature = 0)
-    plant0 = Plant(name="Plant0", type_="Aloe", sensorController=sensorController1)
+
+    plantName = "Users/-M3ObxkDK2mLO3D7Eq"
+    plant0 = Plant(name=plantName, type_="Aloe", sensorController=sensorController1)
     
     # Gather data and send 2 Firebase
     print("Gathering data from sensors and sending to Firebase ...")
@@ -46,7 +48,7 @@ def main():
             plant0.set_all_data()
             plantData = plant0.get_all_data()
             firebaseCOM.update_plant(plant0.name,plantData)
-            #plant0.print_plant()
+            plant0.print_plant()
 
     except KeyboardInterrupt:
         print('interrupted!')
