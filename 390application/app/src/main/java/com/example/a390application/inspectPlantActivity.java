@@ -1,14 +1,20 @@
 package com.example.a390application;
 
+import android.app.Notification;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
 import com.example.a390application.InsertPlant.InsertPlant;
 import com.example.a390application.InsertPlant.Plant;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,6 +26,7 @@ public class inspectPlantActivity extends AppCompatActivity {
     protected TextView plantsTitle;
     protected TextView plantsType;
     protected TextView plantsInfo;
+    protected ImageView plantImage;
     protected FloatingActionButton moreDetailsButton;
     protected Button deletePlantButton;
     protected Bundle bundle = new Bundle();
@@ -56,12 +63,30 @@ public class inspectPlantActivity extends AppCompatActivity {
         plantsTitle = findViewById(R.id.plantName);
         plantsType = findViewById(R.id.plantType);
         plantsInfo  = findViewById(R.id.plantInfo);
+        plantImage = findViewById(R.id.plantImage);
 
 
         plantsTitle.setText(givenPlant.getName());
         plantsType.setText(givenPlant.getType());
 
         plantType = plantsType.getText().toString();
+
+        switch (plantType) {
+            case "Devil's Ivy": {
+                plantImage.setImageResource(R.drawable.devilivy);
+                break;
+            }
+            case "Sansevieria": {
+                plantImage.setImageResource(R.drawable.sanseivieria);
+                break;
+            }
+            case "English Ivy": {
+                plantImage.setImageResource(R.drawable.englishivy);
+                break;
+            }
+            default:
+                break;
+        }
 
         plantsIdealMoisture = fetchIdealMoisture(plantType);
 
@@ -74,22 +99,11 @@ public class inspectPlantActivity extends AppCompatActivity {
 
         bundle.putLong("data", givenPlant.getID());
 
-        moreDetailsButton = findViewById(R.id.moreDetailsFragment);
+
         deletePlantButton = findViewById(R.id.deletePlant);
 
 
-        moreDetailsButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                MoreDetailsDialogFragment dialog = new MoreDetailsDialogFragment();
 
-                dialog.setArguments(bundle);
-
-                //////////
-                dialog.show(getSupportFragmentManager(), "MoreDetailsFragment");
-                /////////
-            }
-        });
 
 
         //'Delete Plant' button not yet implemented

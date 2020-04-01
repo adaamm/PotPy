@@ -6,17 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".inspectPlantActivity" >
 
+    <ImageView
+        android:id="@+id/plantImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/plantType"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentBottom="false"
+        android:layout_marginEnd="211dp"
+        android:layout_marginRight="211dp"
+        android:layout_marginBottom="441dp"
+        android:background="#009688"
+        app:srcCompat="@drawable/notfound" />
+
     <TextView
         android:id="@+id/plantType"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/plantName"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="40dp"
         android:text="Plant Type"
+        android:textColorHighlight="#040303"
+        android:textIsSelectable="false"
+        android:textSize="30sp"
+        android:textStyle="bold|italic"
         app:autoSizeTextType="uniform" />
 
     <TextView
@@ -26,23 +44,30 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="83dp"
+        android:layout_marginStart="-3dp"
+        android:layout_marginLeft="-3dp"
+        android:layout_marginTop="503dp"
         android:text="plant info"
         app:autoSizeTextType="uniform" />
 
     <TextView
         android:id="@+id/plantName"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
+        android:fontFamily="serif"
+        android:soundEffectsEnabled="true"
         android:text="Plant Name"
+        android:textAllCaps="true"
+        android:textColor="#01685F"
+        android:textIsSelectable="false"
+        android:textSize="36sp"
+        android:textStyle="bold"
         app:autoSizeTextType="uniform" />
 
     <Button
