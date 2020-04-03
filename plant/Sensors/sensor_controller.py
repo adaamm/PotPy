@@ -1,13 +1,15 @@
 
 # * Imports
 # 3rd Party Imports
-import smbus2
-import bme280
-import RPi.GPIO as GPIO
 import time
+
+import RPi.GPIO as GPIO
+import bme280
+import smbus2
 # from numpy import interp # For linear interpolation
 # from time import sleep #uncomment when need to use a delay
 import spidev  # Needed for SPI programming see comments below
+
 # User Imports
 # from components import *  #imports all functions from component
 
@@ -20,6 +22,10 @@ address = 0x77  # checked with i2cdetect - y 1 in command line
 bus = smbus2.SMBus(port)
 calibration_params = bme280.load_calibration_params(bus, address)
 data = bme280.sample(bus, address, calibration_params)
+
+# Voltages read by the uv analog sensor
+# Declared here so that it is not defined everytime the function is called
+uv_voltages = [50, 227, 318, 408, 503, 606, 696, 795, 881, 976, 1079, 1170];
 
 class SensorController():
     def __init__(self, moisture, light, ph, humidity, temperature):
@@ -57,8 +63,9 @@ class SensorController():
     def get_light(self):
         output = self.analogInput(self.pinMap["lightPin"]) 
         # Note that uncommenting the following line will change the range of numbers outputted
-        #output = interp(output,[0,1023],[100,0]) # interpolate only if needed 
-        uv = int(output)
+        #output = interp(output,[0,1023],[100,0]) # interpolate only if needed
+        sensor_voltage = int(output) / 1024 * 3.3
+        uv = uv_voltages.index(closest(uv_voltages, sensor_voltage))
         return uv; 
 
     def get_ph(self):
@@ -75,11 +82,6 @@ class SensorController():
         pressure = data.pressure / 10;  # Pressure is returned in hPa from the sensor, we divide to convert
         return pressure;
 
-    # def dry(self):
-    #     if moistureLevel() >= 900:
-    #         return True
-    #     else:
-    #         return False
 
     def watering(self):
         GPIO.setwarnings(False)
@@ -89,3 +91,6 @@ class SensorController():
         time.sleep(2)
         GPIO.output(18,GPIO.HIGH)
         time.sleep(2)
+# Python program to find the closest number in a list
+def closest(lst, K):
+    return lst[min(range(len(lst)), key=lambda i: abs(lst[i] - K))]

@@ -1,11 +1,11 @@
 ## The following contains all of the functions needed to communicate with the components
 
-# import os
-import smbus2
-import bme280
-import RPi.GPIO as GPIO
 import time
 
+import RPi.GPIO as GPIO
+import bme280
+# import os
+import smbus2
 # from numpy import interp # For linear interpolation
 # from time import sleep #uncomment when need to use a delay
 import spidev  # Needed for SPI programming see comments below
@@ -67,7 +67,9 @@ def lightingLevel():
     output = analogInput(1)
     # Note that uncommenting the following line will change the range of numbers outputted
     # output = interp(output,[0,1023],[100,0]) # interpolate only if needed
-    uv = int(output)
+    uv_voltages = [50,227,318,408,503,606,696,795,881,976,1079,1170];
+    sensor_voltage = int(output)/1024*3.3
+    uv = uv_voltages.index(closest(uv_voltages,sensor_voltage))
     return uv;
 
 
@@ -80,3 +82,6 @@ def pressure():
     pressure = data.pressure / 10; # Pressure is returned in hPa from the sensor, we divide to convert
     return pressure;
 
+# Python program to find the closest number in a list
+def closest(lst, K):
+    return lst[min(range(len(lst)), key=lambda i: abs(lst[i] - K))]
