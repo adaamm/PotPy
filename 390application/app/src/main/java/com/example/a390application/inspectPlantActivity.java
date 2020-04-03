@@ -27,11 +27,10 @@ public class inspectPlantActivity extends AppCompatActivity {
     protected TextView plantsType;
     protected TextView plantsInfo;
     protected ImageView plantImage;
-    protected FloatingActionButton moreDetailsButton;
     protected Button deletePlantButton;
     protected Bundle bundle = new Bundle();
     protected long givenID;
-    protected double plantsIdealMoisture;
+    protected String plantsIdealMoisture;
     protected String plantInfo;
     protected String plantType;
 
@@ -90,9 +89,9 @@ public class inspectPlantActivity extends AppCompatActivity {
 
         plantsIdealMoisture = fetchIdealMoisture(plantType);
 
-        plantInfo = /* "General Information: \n" + fetchInfo(plantsType.getText().toString()) + */
-                "\nIdeal Moisture Level: " + plantsIdealMoisture /* + /"Ideal Light Level: " +
-                fetchIdealLightingLevel(plantsType.getText().toString())*/;
+        plantInfo =
+                "\nMoisture Level: " + plantsIdealMoisture + "\nLight Level: " +
+                fetchIdealLightingLevel(plantType);
 
         plantsInfo.setText(plantInfo);
 
@@ -146,40 +145,37 @@ public class inspectPlantActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public double fetchIdealMoisture(String type) {
+    public String fetchIdealMoisture(String type) {
         Toast.makeText(getApplicationContext(),type,Toast.LENGTH_SHORT).show();
-        double idealMoisture = -1;
+        String idealMoisture = "Not Defined";
         switch (type) {
             case "Devil's Ivy":
-                idealMoisture = -1;
+                idealMoisture = "Dry to Moderate";
                 break;
             case "English Ivy":
-                idealMoisture = -1;
+                idealMoisture = "Wet to Moderate";
                 break;
             case "Sansevieria":
-                idealMoisture = 100;
+                idealMoisture = "Drought-tolerant";
                 break;
         }
-
-        String ideal;
-        ideal = Double.toString(idealMoisture);
-        Toast.makeText(getApplicationContext(),ideal,Toast.LENGTH_SHORT).show();
         return idealMoisture;
 
     }
-/*
-    public double fetchIdealLightingLevel(String type) {
-        double idealMoisture;
-        if (type == "Cactus")
-            idealMoisture = 50;
-        else
-        if (type == "Aloe" )
-            idealMoisture = 75;
-        else
-        if (type == "Sansevieria")
-            idealMoisture = 100;
-        else
-            idealMoisture = 0;
-        return idealMoisture;
-    }*/
+
+    public String fetchIdealLightingLevel(String type) {
+        String idealLight = "Not Defined";
+        switch (type) {
+            case "Devil's Ivy":
+                idealLight = "Partial to Full Shade";
+                break;
+            case "English Ivy":
+                idealLight  = "Full Sun to Partial Shade";
+                break;
+            case "Sansevieria":
+                idealLight  = "Partial Shade";
+                break;
+        }
+        return idealLight;
+    }
 }
