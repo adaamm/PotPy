@@ -54,7 +54,9 @@ def main():
                 "temperature": 1,
                 "humidity": 1
             }
-            firebaseCOM.update_plant(plant0.name,plantData)
+            piID = 1
+            piIDPath = "PI-IDs/" + str(piID)
+            firebaseCOM.update_pi_data(piIDPath, plantData)
             plant0.print_plant()
 
     except KeyboardInterrupt:

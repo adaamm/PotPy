@@ -1,5 +1,5 @@
- # * author : Philippe Vo 
- # * date : Feb-28-2020 09:16:42
+# * author : Philippe Vo 
+# * date : Feb-28-2020 09:16:42
  
 # * Imports
 # 3rd Party Imports
@@ -58,25 +58,25 @@ class FirebasePlantCom:
         """
         self.db.child(plant).update({dataType: data})
 
-    def update_plant(self, plant, plantData):
+    def update_pi_data(self, piID, plantData):
         """
-        update all plant data to firebase for a specific plant
+        update the pi on firebase given the piID
 
         Parameters
         ----------
-        plant : str
-            name of the plant id
+        piID : int
+            name of the pi id
         plantData : dict
             type of data we want to write (moisture, name, ph, type)
 
         Returns
         -------
         """
-        self.db.child(plant).update({"ph": plantData["ph"]})
-        self.db.child(plant).update({"lightIntensity": plantData["light"]})
-        self.db.child(plant).update({"moisture": plantData["moisture"]})
-        self.db.child(plant).update({"temperature": plantData["temperature"]})
-        self.db.child(plant).update({"humidity": plantData["humidity"]})
+        # self.db.child(plant).update({"ph": plantData["ph"]})
+        self.db.child(piID).update({"light": plantData["light"]})
+        self.db.child(piID).update({"moisture": plantData["moisture"]})
+        self.db.child(piID).update({"temperature": plantData["temperature"]})
+        self.db.child(piID).update({"humidity": plantData["humidity"]})
     
     def read(self, plant, dataType):
         """
