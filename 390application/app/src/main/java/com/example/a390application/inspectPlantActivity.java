@@ -91,7 +91,11 @@ public class inspectPlantActivity extends AppCompatActivity {
 
         switch (plantType) {
             case "Devil's Ivy": {
-
+                plantsInfo2.setText("Hi! I am " + givenPlant.getName() + ". I love to grow and grow and grow -" +
+                        " but I am also relatively low-maintenance, so I won’t eat up too much space in your diary. " +
+                        "Simply pop me in a spot that receives indirect sunlight (although I will do just fine by a shady " +
+                        "window), water me when the soil’s dry and voila! Did I mention my trailing vines are pros at " +
+                        "removing pollutants like benzene, trichloroethylene, xylene and formaldehyde from the air, too?");
                 break;
             }
             case "Sansevieria": {
