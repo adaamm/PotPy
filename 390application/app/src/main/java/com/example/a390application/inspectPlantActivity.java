@@ -145,7 +145,6 @@ public class inspectPlantActivity extends AppCompatActivity {
 
     //'Delete Plant' button not yet implemented.
     /*public void removePlantByID(long id){
-
     }*/
 
 

@@ -56,7 +56,8 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
                 InsertPlant dbInsertPlant = new InsertPlant(getActivity());
                 plants = dbInsertPlant.getAllPlants();
 
-                if(!name.equals("")){
+                //Firebase path limitation.
+                if(!name.equals("") && !name.contains(".") && !name.contains("#") && !name.contains("$") && !name.contains("[") && !name.contains("]")){
                     boolean isUnique = true;
                     for(int i = 0; i < plants.size(); i++){
                         if(plants.get(i).getName().equals(name)){
@@ -77,7 +78,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
                     }
                 }
                 else{
-                    Toast.makeText(getContext(), "Your poor plant still needs a name!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Plant name must not be empty nor contain any of '.#$[]'", Toast.LENGTH_SHORT).show();
                 }
 
             }

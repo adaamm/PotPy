@@ -33,4 +33,13 @@
         android:paddingLeft="5dp"
         android:textColor="#333"
         />
+
+    <ProgressBar
+        android:id="@+id/health_percentage"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/plantInformation" />
+
 </RelativeLayout>

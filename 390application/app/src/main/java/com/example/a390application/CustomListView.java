@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,15 +18,17 @@ public class CustomListView extends ArrayAdapter<String> {
     private ArrayList<String> plantNames;
     private ArrayList<String> plantData;
     private ArrayList<Integer> correspondingImage;
+    private ArrayList<Integer> plantPercents;
     private Activity context;
 
-    CustomListView(Activity context, ArrayList<String> plantNames, ArrayList<String> plantData, ArrayList<Integer> correspondingImage){
+    CustomListView(Activity context, ArrayList<String> plantNames, ArrayList<String> plantData, ArrayList<Integer> correspondingImage, ArrayList<Integer> plantPercents){
         super(context, R.layout.custom_list_view, plantNames);
 
         this.context = context;
         this.plantNames = plantNames;
         this.plantData = plantData;
         this.correspondingImage = correspondingImage;
+        this.plantPercents = plantPercents;
     }
 
     @SuppressLint("InflateParams")
@@ -48,6 +52,7 @@ public class CustomListView extends ArrayAdapter<String> {
         viewHolder.title.setText(plantNames.get(position));
         viewHolder.data.setText(plantData.get(position));
         viewHolder.icon.setImageResource(correspondingImage.get(position));
+        viewHolder.healthPercentage.setProgress(plantPercents.get(position));
 
         return r;
     }
@@ -56,11 +61,13 @@ public class CustomListView extends ArrayAdapter<String> {
         TextView title;
         TextView data;
         ImageView icon;
+        ProgressBar healthPercentage;
 
         ViewHolder(View v){
             title = v.findViewById(R.id.plantNameTitle);
             data = v.findViewById(R.id.plantInformation);
             icon = v.findViewById(R.id.imageOfPlantInList);
+            healthPercentage = v.findViewById(R.id.health_percentage);
         }
 
     }
