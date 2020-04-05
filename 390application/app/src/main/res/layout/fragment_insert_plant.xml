@@ -20,18 +20,36 @@
         android:id="@+id/plantNameEditText"
         android:layout_width="wrap_content"
         android:layout_height="103dp"
+        android:layout_below="@+id/plantTypeDrop"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginStart="28dp"
         android:layout_marginLeft="28dp"
-        android:layout_marginTop="118dp"
+        android:layout_marginTop="23dp"
         android:layout_marginEnd="28dp"
         android:layout_marginRight="28dp"
         android:ems="10"
         android:hint="Name your new plant!"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/PiIdEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="103dp"
+        android:layout_below="@+id/plantNameEditText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginRight="26dp"
+        android:ems="10"
+        android:hint="Enter the ID associated with your PI!"
         android:inputType="textPersonName" />
 
     <Button

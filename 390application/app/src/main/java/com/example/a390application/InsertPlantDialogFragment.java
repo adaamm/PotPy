@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import com.example.a390application.InsertPlant.InsertPlant;
+import com.example.a390application.InsertPlant.PI;
 import com.example.a390application.InsertPlant.Plant;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,6 +26,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
 
     private List<Plant> plants;
     private EditText plantNameEditText;
+    private EditText PiIdEditText;
     private String typePicked;
     protected String ownerID;
 
@@ -35,6 +37,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
         View view = inflater.inflate(R.layout.fragment_insert_plant, container, false);
 
         plantNameEditText = view.findViewById(R.id.plantNameEditText);
+        PiIdEditText = view.findViewById(R.id.PiIdEditText);
         Spinner plantTypeSpinner = view.findViewById(R.id.plantTypeDrop);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),  R.array.types, android.R.layout.simple_spinner_item);
@@ -52,6 +55,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
             public void onClick(View v) {
 
                 String name = plantNameEditText.getText().toString();
+                String PiId = PiIdEditText.getText().toString();
 
                 InsertPlant dbInsertPlant = new InsertPlant(getActivity());
                 plants = dbInsertPlant.getAllPlants();
@@ -68,8 +72,10 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
                     if(isUnique){
                         InsertPlant dbPlants = new InsertPlant(getActivity());
 
-                        storePlantInDatabase(new Plant(name,typePicked,-10000,-10000,"default",-10000,-10000,ownerID));
+                        storePlantInDatabase(new Plant(name,typePicked,-10000,-10000,"default",-10000,-10000,ownerID),PiId);
                         dbPlants.insertPlant(new Plant(name,typePicked,ownerID));
+
+
                         ((MainActivity)getActivity()).loadListView();
                         getDialog().dismiss();
                     }
@@ -106,8 +112,10 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
 
     }
 
-    private void storePlantInDatabase(Plant givenPlant) {
+    private void storePlantInDatabase(Plant givenPlant, String PiId) {
         DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(ownerID).child(givenPlant.getName());
         userReference.setValue(givenPlant);
+        DatabaseReference PiReference = FirebaseDatabase.getInstance().getReference().child("PIs").child(PiId);
+        PiReference.setValue(new PI(givenPlant.getName(),givenPlant.getOwnerID()));
     }
 }
