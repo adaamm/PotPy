@@ -32,13 +32,12 @@ def main():
     print("Starting Pot-O-Duino ...")
     
     # Sign in 2 Firebase
-    firebaseCOM = FirebasePlantCom()
+    firebaseCOM = FirebasePlantCom(piID = "1")
 
     # Make Plant and its SensorController
     sensorController1 = SensorController(moisture=0, light=1, ph=-1, humidity = 0, temperature = 0)
 
-    plantName = "Users/-M3ObxkDK2mLO3D7Eqns/English"
-    plant0 = Plant(name=plantName, type_="Aloe", sensorController=sensorController1)
+    plant0 = Plant(name=firebaseCOM.plantName, type_="Aloe", sensorController=sensorController1)
     
     # Gather data and send 2 Firebase
     print("Gathering data from sensors and sending to Firebase ...")
@@ -47,7 +46,9 @@ def main():
             time.sleep(0.01)
             plant0.set_all_data()
             plantData = plant0.get_all_data()
-            firebaseCOM.update_plant(plant0.name,plantData)
+
+            piIDPath = firebaseCOM.get_firebasePlantPath() # getting the path to the appropriate branch to update on firebase
+            firebaseCOM.update_pi_data(piIDPath, plantData)
             plant0.print_plant()
             if plant0.dry():
                 plant0.sensorController.watering()

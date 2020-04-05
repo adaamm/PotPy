@@ -23,7 +23,7 @@ class FirebasePlantCom:
         }
     }
     """
-    def __init__(self):
+    def __init__(self, piID):
         self.config = {
         "apiKey": "AIzaSyAeLC1SPoeniyf98IpanvSTzFc_Yh_DS1w",
         "authDomain": "coen390-guarduino.firebaseapp.com",
@@ -39,6 +39,23 @@ class FirebasePlantCom:
 
         # before the 1 hour expiry:
         self.user = self.auth.refresh(self.user['refreshToken']) # need this or we will have keyError
+
+        # Pi ID
+        self.piID = piID
+        self.plantName = ""
+        self.firebasePlantPath = "" # this is the path used to know where we want to update the plants data information
+
+    def get_firebasePlantPath(self):
+        """
+        depending on the pi ID, it will search for the userID and plantName that the user currently wants to monitor
+        """
+        data = self.db.child("PIs/" + self.piID).get()
+        userID = data.val()["ownerID"]
+        self.plantName = data.val()["name"]
+
+        path = "Users/" + userID + "/" + self.plantName
+
+        return path
 
     def update(self, plant, dataType, data):
         """
@@ -58,7 +75,7 @@ class FirebasePlantCom:
         """
         self.db.child(plant).update({dataType: data})
 
-    def update_pi_data(self, piID, plantData):
+    def update_pi_data(self, path, plantData):
         """
         update the pi on firebase given the piID
 
@@ -73,10 +90,10 @@ class FirebasePlantCom:
         -------
         """
         # self.db.child(plant).update({"ph": plantData["ph"]})
-        self.db.child(piID).update({"light": plantData["light"]})
-        self.db.child(piID).update({"moisture": plantData["moisture"]})
-        self.db.child(piID).update({"temperature": plantData["temperature"]})
-        self.db.child(piID).update({"humidity": plantData["humidity"]})
+        self.db.child(path).update({"lightIntensity": plantData["light"]})
+        self.db.child(path).update({"moisture": plantData["moisture"]})
+        self.db.child(path).update({"temperature": plantData["temperature"]})
+        self.db.child(path).update({"humidity": plantData["humidity"]})
     
     def read(self, plant, dataType):
         """
