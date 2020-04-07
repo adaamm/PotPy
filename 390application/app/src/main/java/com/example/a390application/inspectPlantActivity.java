@@ -28,6 +28,7 @@ public class inspectPlantActivity extends AppCompatActivity {
     protected TextView plantsInfo;
     protected TextView plantsInfo2;
     protected ImageView plantImage;
+    protected Button takesImage;
     protected Button deletePlantButton;
     protected Bundle bundle = new Bundle();
     protected long givenID;
@@ -63,6 +64,7 @@ public class inspectPlantActivity extends AppCompatActivity {
         plantsInfo = findViewById(R.id.plantInfo);
         plantsInfo2 = findViewById(R.id.plantInfo2);
         plantImage = findViewById(R.id.plantImage);
+        takesImage = findViewById(R.id.takeImage);
 
 
 
@@ -83,6 +85,10 @@ public class inspectPlantActivity extends AppCompatActivity {
             }
             case "English Ivy": {
                 plantImage.setImageResource(R.drawable.englishivy);
+                break;
+            }
+            case "Spider": {
+                plantImage.setImageResource(R.drawable.spider);
                 break;
             }
             default:
@@ -107,11 +113,17 @@ public class inspectPlantActivity extends AppCompatActivity {
                 break;
             }
             case "English Ivy": {
-                plantsInfo2.setText("Hi! I am " + givenPlant.getName() + ". I am a superb climber, " +
-                        "clinging to almost any surface by means of small roots that grow along my stems. " +
-                        "Taking care of me is a snap, so you can plant me in distant and hard-to-reach areas " +
-                        "without worrying about my maintenance.");
+                plantsInfo2.setText("Hi! I am " + givenPlant.getName() + ". I am a superb climber, "
+                        + "clinging to almost any surface by means of small roots that grow along my stems. "
+                        + "Taking care of me is a snap, so you can plant me in distant and hard-to-reach areas "
+                        + "without worrying about my maintenance.");
                 break;
+            }
+            case "Spider": {
+                plantsInfo2.setText("Hi! I am " + givenPlant.getName() + ". I am an easy-to-grow houseplants that " +
+                        "looks especially nice in a hanging basket. During the summer, I produce tiny white flowers " +
+                        "on long stems, as well as babies called “pups.” The pups look like tiny spiders, hence my name!" +
+                        " I was once highlighted by NASA for my air-purifying ability. There you go! We have now been introduced.");
             }
             default:
                 break;
@@ -181,6 +193,9 @@ public class inspectPlantActivity extends AppCompatActivity {
             case "Sansevieria":
                 idealMoisture = "Drought-tolerant";
                 break;
+            case "Spider":
+                idealMoisture = "Moderate";
+                break;
         }
         return idealMoisture;
 
@@ -196,6 +211,9 @@ public class inspectPlantActivity extends AppCompatActivity {
                 idealHumidty = "Average to High";
                 break;
             case "Sansevieria":
+                idealHumidty = "Average";
+                break;
+            case "Spider":
                 idealHumidty = "Average";
                 break;
         }
@@ -214,6 +232,9 @@ public class inspectPlantActivity extends AppCompatActivity {
             case "Sansevieria":
                 idealLight = "Partial Shade";
                 break;
+            case "Spider":
+                idealLight = "Partial Shade";
+                break;
         }
         return idealLight;
     }
@@ -229,6 +250,9 @@ public class inspectPlantActivity extends AppCompatActivity {
                 break;
             case "Sansevieria":
                 idealTemperature = "21-32 C ";
+                break;
+            case "Spider":
+                idealTemperature = "13-27 C";
                 break;
         }
         return idealTemperature;
