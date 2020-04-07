@@ -144,9 +144,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="102dp"
-        android:layout_marginRight="102dp"
-        android:layout_marginBottom="199dp"
+        android:layout_marginEnd="265dp"
+        android:layout_marginRight="265dp"
+        android:layout_marginBottom="441dp"
         android:clickable="true"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 

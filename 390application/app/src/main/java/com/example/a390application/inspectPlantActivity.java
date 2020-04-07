@@ -2,8 +2,10 @@ package com.example.a390application;
 
 import android.app.Notification;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,7 +30,7 @@ public class inspectPlantActivity extends AppCompatActivity {
     protected TextView plantsInfo;
     protected TextView plantsInfo2;
     protected ImageView plantImage;
-    protected Button takesImage;
+    protected FloatingActionButton takeImageFloatingButton;
     protected Button deletePlantButton;
     protected Bundle bundle = new Bundle();
     protected long givenID;
@@ -64,7 +66,6 @@ public class inspectPlantActivity extends AppCompatActivity {
         plantsInfo = findViewById(R.id.plantInfo);
         plantsInfo2 = findViewById(R.id.plantInfo2);
         plantImage = findViewById(R.id.plantImage);
-        takesImage = findViewById(R.id.takeImage);
 
 
 
@@ -131,7 +132,8 @@ public class inspectPlantActivity extends AppCompatActivity {
 
         plantInfo =
                 "Moisture: " + fetchIdealMoisture(plantType) + "\nLight: " +
-                        fetchIdealLightingLevel(plantType) + "\nTemperature: " + fetchIdealTemperature(plantType) + "\nHumidity: " + fetchIdealHumidity(plantType);
+                        fetchIdealLightingLevel(plantType) + "\nTemperature: "
+                        + fetchIdealTemperature(plantType) + "\nHumidity: " + fetchIdealHumidity(plantType);
 
         plantsInfo.setText(plantInfo);
 
@@ -140,17 +142,32 @@ public class inspectPlantActivity extends AppCompatActivity {
 
 
         deletePlantButton = findViewById(R.id.deletePlant);
+        takeImageFloatingButton = findViewById(R.id.takeImage);
+
+
+        takeImageFloatingButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "I want image", Toast.LENGTH_SHORT).show();
+                dispatchTakePictureIntent();
+
+
+
+            }
+        });
+
+
 
 
         //'Delete Plant' button not yet implemented
-        deletePlantButton.setOnClickListener(new View.OnClickListener() {
+        /*deletePlantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //https://developer.android.com/training/data-storage/sqlite check here
 
             }
-        });
+        });*/
 
     }
 
@@ -158,6 +175,7 @@ public class inspectPlantActivity extends AppCompatActivity {
     //'Delete Plant' button not yet implemented.
     /*public void removePlantByID(long id){
     }*/
+
 
 
     @Override
@@ -257,4 +275,23 @@ public class inspectPlantActivity extends AppCompatActivity {
         }
         return idealTemperature;
     }
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            plantImage.setImageBitmap(imageBitmap);
+        }
+    }
+
 }
