@@ -6,7 +6,7 @@ import components
 # print(moistureLevel())
 
 # To test the UV Sensor, uncomment the following line
-# print(lightingLevel())
+print(components.lightingLevel())
 
 # watering()
 
