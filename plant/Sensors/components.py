@@ -67,9 +67,9 @@ def lightingLevel():
     output = analogInput(1)
     # Note that uncommenting the following line will change the range of numbers outputted
     # output = interp(output,[0,1023],[100,0]) # interpolate only if needed
-    uv_voltages = [50,227,318,408,503,606,696,795,881,976,1079,1170];
+    uv_voltages = [50,227,318,408,503,606,696,795,881,976,1079,1170]
     sensor_voltage = int(output)/1024*3.3
-    uv = uv_voltages.index(closest(uv_voltages,sensor_voltage))
+    uv = (uv_voltages.index(closest(uv_voltages,sensor_voltage)))+1
     return uv;
 
 
