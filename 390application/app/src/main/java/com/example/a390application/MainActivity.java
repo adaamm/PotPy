@@ -166,6 +166,18 @@ public class MainActivity extends AppCompatActivity {
                         tempData+= " " + emojiSad + "\n";
                     }
                 }
+  //********************************************//             //*************************************//
+                else if(plants.get(i).getType().equals("Spider")){
+                    if(moistureSmileySpider(plants.get(i))>=75){
+                        tempData+= " " + emojiHappy + "\n";
+                    }
+                    else if((moistureSmileySpider(plants.get(i))<75) && (moistureSmileySpider(plants.get(i))>=50)){
+                        tempData+= " " + emojiAverage + "\n";
+                    }
+                    else{
+                        tempData+= " " + emojiSad + "\n";
+                    }
+                }
                 else{
 
                 }
@@ -218,6 +230,19 @@ public class MainActivity extends AppCompatActivity {
                         tempData+= " " + emojiSad + "\n";
                     }
                 }
+    //********************************************//             //*************************************//
+                else if(plants.get(i).getType().equals("Spider")){
+                    if(tempSmileySpider(plants.get(i))>=75){
+                        tempData+= " " + emojiHappy + "\n";
+                    }
+                    else if((tempSmileySpider(plants.get(i))<75) && (tempSmileySpider(plants.get(i))>=50)){
+                        tempData+= " " + emojiAverage + "\n";
+                    }
+                    else{
+                        tempData+= " " + emojiSad + "\n";
+                    }
+                }
+
                 else{
 
                 }
@@ -283,14 +308,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 }
-                case "English Ivy": {
-                    percentage = healthBarAlgoEnglishIvy(plants.get(i));
+//********************************************//             //*************************************//
+                case "Spider": {
+                    percentage = healthBarAlgoSpider(plants.get(i));
                     if(percentage < 0){
                         percentage = 0;
                     }
                     tempData += String.format("%.1f", percentage) + "%\n";
 
-                    tempImages = R.drawable.englishivy;
+                    tempImages = R.drawable.spider;
 
                     //Notification sent when health reaches less than 50%.
                     if (percentage < 50) {
@@ -304,6 +330,29 @@ public class MainActivity extends AppCompatActivity {
                         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
                         notificationManager.notify(1, notificationBuilder.build());
                     }
+                    break;
+                }
+                case "English Ivy": {
+                        percentage = healthBarAlgoEnglishIvy(plants.get(i));
+                        if(percentage < 0){
+                            percentage = 0;
+                        }
+                        tempData += String.format("%.1f", percentage) + "%\n";
+
+                        tempImages = R.drawable.englishivy;
+
+                        //Notification sent when health reaches less than 50%.
+                        if (percentage < 50) {
+                            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
+                                    .setSmallIcon(R.drawable.alert)
+                                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.sanseivieria))
+                                    .setContentTitle(plants.get(i).getName() + " needs your attention!")
+                                    .setContentText("Your plant's health is lower than 50%!");
+                            notificationBuilder.setDefaults(
+                                    Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
+                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
+                            notificationManager.notify(1, notificationBuilder.build());
+                        }
                     break;
                 }
                 default:
@@ -392,6 +441,8 @@ public class MainActivity extends AppCompatActivity {
         return FinalTemperaturePercentage;
     }
 
+
+
     protected double healthBarAlgoEnglishIvy(Plant givenPlant){       //specifically for English Ivy/Ivy String
 
         double FinalTemperaturePercentage;
@@ -444,6 +495,65 @@ public class MainActivity extends AppCompatActivity {
         }                                                                                   // 20 deg C = 100%
         else{
             FinalTemperaturePercentage = 50+(givenPlant.getTemperature() * 2.5);            // -20deg C = 0%
+        }
+
+        return FinalTemperaturePercentage;
+    }
+//********************************************//             //*************************************//
+    protected double healthBarAlgoSpider(Plant givenPlant){       //specifically for English Ivy/Ivy String
+
+        double FinalTemperaturePercentage;
+        double FinalMoisturePercentage;
+        //double LightIntensityValue = 0;
+
+
+        //Do all calculations and store in 'FinalPercentage'.
+        //givenPlant.getTemperature()' accesses temperature.
+
+        if (givenPlant.getTemperature() >= 20){
+            FinalTemperaturePercentage = 100-((givenPlant.getTemperature()-20)*3.75);       // 40deg C = 25%
+        }                                                                                   // 20 deg C = 100%
+        else{
+            FinalTemperaturePercentage = 50+(givenPlant.getTemperature() * 2.5);            // -20deg C = 0%
+        }
+
+        if (givenPlant.getMoisture() >= 256){
+            FinalMoisturePercentage = Math.abs(100-((givenPlant.getMoisture()-256)*0.1304));     // 1023 pts (Dry) = 0%
+        }                                                                                   // 256 pts = 100%
+        else{
+            FinalMoisturePercentage = 50 + (givenPlant.getMoisture() * 0.1953);             // 0 pts (wet)  = 50%
+        }
+
+        // calculation final
+        //double FinalPercentage = 0.33*FinalMoisturePercentage + 0.33*FinalLightIntensityPercentage + 0.33*FinalTemperaturePercentage;   // weighting , all equal 1/3
+        return 0.5*FinalMoisturePercentage + 0.5*FinalTemperaturePercentage;
+    }
+//********************************************//             //*************************************//
+    protected double moistureSmileySpider(Plant givenPlant){       //specifically for Sansevieria
+
+        double FinalMoisturePercentage;
+
+        if (givenPlant.getMoisture() >= 767){
+            FinalMoisturePercentage = 100-((givenPlant.getMoisture()-512)*0.1953);      // 1023 pts (Dry) = 0%
+        }                                                                               // 512 pts = 100%
+        else{
+            FinalMoisturePercentage = givenPlant.getMoisture() * 0.1953;                    // 0 pts = 0 %
+        }
+
+        return FinalMoisturePercentage;
+    }
+
+//********************************************//             //*************************************//
+
+    protected double tempSmileySpider(Plant givenPlant){       //specifically for Sansevieria
+
+        double FinalTemperaturePercentage;
+
+        if (givenPlant.getTemperature() >= 23){
+            FinalTemperaturePercentage = 100-((givenPlant.getTemperature()-23)*4.3478);     // 46 deg C = 0%
+        }                                                                                   // 23 deg C = 100%
+        else{
+            FinalTemperaturePercentage = givenPlant.getTemperature() * 4.3478;              // 0 deg C = 0%
         }
 
         return FinalTemperaturePercentage;

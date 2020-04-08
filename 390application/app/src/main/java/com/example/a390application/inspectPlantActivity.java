@@ -36,6 +36,8 @@ public class inspectPlantActivity extends AppCompatActivity {
     protected long givenID;
     protected String plantInfo;
     protected String plantType;
+    protected Plant givenPlant;
+
 
 
     @Override
@@ -48,7 +50,7 @@ public class inspectPlantActivity extends AppCompatActivity {
         Intent intent = getIntent();
         givenID = intent.getLongExtra("plantID", 0);
 
-        Plant givenPlant = null;
+        givenPlant = null;
 
         InsertPlant dbInsertPlant = new InsertPlant(this);
 
@@ -77,19 +79,49 @@ public class inspectPlantActivity extends AppCompatActivity {
 
         switch (plantType) {
             case "Devil's Ivy": {
-                plantImage.setImageResource(R.drawable.devilivy);
+                Bitmap bitmap = new ImageSaver(this).
+                        setFileName(givenPlant.getName() +".jpg").
+                        setDirectory("dir_name").
+                        load();
+                if (bitmap == null)
+                    plantImage.setImageResource(R.drawable.devilivy);
+                else
+                    plantImage.setImageBitmap(bitmap);
                 break;
+
+
             }
             case "Sansevieria": {
-                plantImage.setImageResource(R.drawable.sanseivieria);
+                Bitmap bitmap = new ImageSaver(this).
+                        setFileName(givenPlant.getName() +".jpg").
+                        setDirectory("dir_name").
+                        load();
+                if (bitmap == null)
+                    plantImage.setImageResource(R.drawable.sanseivieria);
+                else
+                    plantImage.setImageBitmap(bitmap);
                 break;
             }
             case "English Ivy": {
-                plantImage.setImageResource(R.drawable.englishivy);
+                Bitmap bitmap = new ImageSaver(this).
+                        setFileName(givenPlant.getName() +".jpg").
+                        setDirectory("dir_name").
+                        load();
+                if (bitmap == null)
+                    plantImage.setImageResource(R.drawable.englishivy);
+                else
+                    plantImage.setImageBitmap(bitmap);
                 break;
             }
             case "Spider": {
-                plantImage.setImageResource(R.drawable.spider);
+                Bitmap bitmap = new ImageSaver(this).
+                        setFileName(givenPlant.getName() +".jpg").
+                        setDirectory("dir_name").
+                        load();
+                if (bitmap == null)
+                    plantImage.setImageResource(R.drawable.spider);
+                else
+                    plantImage.setImageBitmap(bitmap);
                 break;
             }
             default:
@@ -175,7 +207,6 @@ public class inspectPlantActivity extends AppCompatActivity {
     //'Delete Plant' button not yet implemented.
     /*public void removePlantByID(long id){
     }*/
-
 
 
     @Override
@@ -291,6 +322,11 @@ public class inspectPlantActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             plantImage.setImageBitmap(imageBitmap);
+            new ImageSaver(this)
+                    .setFileName(givenPlant.getName() +".jpg")
+                    .setExternal(false)//image save in external directory or app folder default value is false
+                    .setDirectory("dir_name")
+                    .save(imageBitmap); //Bitmap from your code
         }
     }
 
