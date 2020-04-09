@@ -83,15 +83,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                goToChild(plants.get(position).getID());
+                goToChild(plants.get(position).getID(),uniqueID);
             }
         });
     }
 
-    protected void goToChild(long id){
+    protected void goToChild(long id, String userid){
         Intent intent = new Intent(this, inspectPlantActivity.class);
 
         intent.putExtra("plantID", id);
+        intent.putExtra("userID", userid);
         startActivity(intent);
     }
 

@@ -65,8 +65,6 @@ public class InsertPlant extends SQLiteOpenHelper {
         contentValues.put(Config.COLUMN_PLANT_TEMPERATURE, plant.getTemperature());
         contentValues.put(Config.COLUMN_PLANT_OWNER, plant.getOwnerID());
 
-
-
         try {
             db.insertOrThrow(Config.PLANT_TABLE_NAME, null, contentValues);
         } catch (SQLiteException e) {
