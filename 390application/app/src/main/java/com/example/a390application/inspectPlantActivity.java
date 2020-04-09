@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,7 +21,10 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.a390application.InsertPlant.InsertPlant;
 import com.example.a390application.InsertPlant.Plant;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 public class inspectPlantActivity extends AppCompatActivity {
@@ -37,7 +41,7 @@ public class inspectPlantActivity extends AppCompatActivity {
     protected String plantInfo;
     protected String plantType;
     protected Plant givenPlant;
-
+    protected String userID;
 
 
     @Override
@@ -49,6 +53,8 @@ public class inspectPlantActivity extends AppCompatActivity {
         //The plant picked in the list
         Intent intent = getIntent();
         givenID = intent.getLongExtra("plantID", 0);
+        userID = intent.getStringExtra("userID");
+        Toast.makeText(getApplicationContext(), userID, Toast.LENGTH_SHORT).show();
 
         givenPlant = null;
 
@@ -322,12 +328,25 @@ public class inspectPlantActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             plantImage.setImageBitmap(imageBitmap);
+            encodeBitmapAndSaveToFirebase(imageBitmap);
             new ImageSaver(this)
                     .setFileName(givenPlant.getName() +".jpg")
                     .setExternal(false)//image save in external directory or app folder default value is false
                     .setDirectory("dir_name")
                     .save(imageBitmap); //Bitmap from your code
         }
+    }
+
+    public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference().child("Users")
+                .child(userID)
+                .child(givenPlant.getName())
+                .child("Image");
+        ref.setValue(imageEncoded);
     }
 
 }
