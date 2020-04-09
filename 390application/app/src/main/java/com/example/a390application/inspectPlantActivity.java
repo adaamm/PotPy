@@ -195,9 +195,7 @@ public class inspectPlantActivity extends AppCompatActivity {
         /*deletePlantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //https://developer.android.com/training/data-storage/sqlite check here
-
             }
         });*/
 
