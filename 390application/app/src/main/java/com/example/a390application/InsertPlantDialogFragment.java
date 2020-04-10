@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +27,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
 
     private List<Plant> plants;
     private EditText plantNameEditText;
-    private EditText PiIdEditText;
+    //private EditText PiIdEditText;
     private String typePicked;
     protected String ownerID;
 
@@ -37,7 +38,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
         View view = inflater.inflate(R.layout.fragment_insert_plant, container, false);
 
         plantNameEditText = view.findViewById(R.id.plantNameEditText);
-        PiIdEditText = view.findViewById(R.id.PiIdEditText);
+        //PiIdEditText = view.findViewById(R.id.PiIdEditText);
         Spinner plantTypeSpinner = view.findViewById(R.id.plantTypeDrop);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),  R.array.types, android.R.layout.simple_spinner_item);
@@ -55,7 +56,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
             public void onClick(View v) {
 
                 String name = plantNameEditText.getText().toString();
-                String PiId = PiIdEditText.getText().toString();
+                //String PiId = PiIdEditText.getText().toString();
 
                 InsertPlant dbInsertPlant = new InsertPlant(getActivity());
                 plants = dbInsertPlant.getAllPlants();
@@ -72,7 +73,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
                     if(isUnique){
                         InsertPlant dbPlants = new InsertPlant(getActivity());
 
-                        storePlantInDatabase(new Plant(name,typePicked,-10000,-10000,"default",-10000,-10000,ownerID),PiId);
+                        storePlantInDatabase(new Plant(name,typePicked,-10000,-10000,"default",-10000,-10000,ownerID));
                         dbPlants.insertPlant(new Plant(name,typePicked,ownerID));
 
 
@@ -112,10 +113,8 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
 
     }
 
-    private void storePlantInDatabase(Plant givenPlant, String PiId) {
+    private void storePlantInDatabase(Plant givenPlant) {
         DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(ownerID).child(givenPlant.getName());
         userReference.setValue(givenPlant);
-        DatabaseReference PiReference = FirebaseDatabase.getInstance().getReference().child("PIs").child(PiId);
-        PiReference.setValue(new PI(givenPlant.getName(),givenPlant.getOwnerID()));
     }
 }

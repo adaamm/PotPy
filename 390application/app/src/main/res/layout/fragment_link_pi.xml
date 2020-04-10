@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/addPlantButton"
+        android:id="@+id/linkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -14,29 +14,28 @@
         android:layout_marginEnd="62dp"
         android:layout_marginRight="70dp"
         android:layout_marginBottom="82dp"
-        android:text="ADD" />
+        android:text="LINK" />
 
     <EditText
-        android:id="@+id/plantNameEditText"
+        android:id="@+id/PiIdEditText"
         android:layout_width="wrap_content"
         android:layout_height="103dp"
-        android:layout_below="@+id/plantTypeDrop"
+        android:layout_below="@+id/plantOptions"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginRight="28dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginRight="26dp"
         android:ems="10"
-        android:hint="Name your new plant!"
+        android:hint="ID of the Raspberry Pi Kit"
         android:inputType="textPersonName" />
 
-
     <Button
-        android:id="@+id/backButton"
+        android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -49,17 +48,33 @@
         android:text="CANCEL" />
 
     <Spinner
-        android:id="@+id/plantTypeDrop"
+        android:id="@+id/plantOptions"
         android:layout_width="wrap_content"
         android:layout_height="95dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="100dp"
-        android:layout_marginStart="27dp"
-        android:layout_marginLeft="27dp"
-        android:layout_marginEnd="26dp"
-        android:layout_marginRight="26dp" />
+        android:layout_marginEnd="23dp"
+        android:layout_marginRight="23dp" />
+
+    <TextView
+        android:id="@+id/note"
+        android:layout_width="349dp"
+        android:layout_height="173dp"
+        android:layout_below="@+id/PiIdEditText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="49dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:text="TextView" />
 
 </RelativeLayout>

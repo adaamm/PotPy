@@ -3,12 +3,14 @@ package com.example.a390application;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,CHANNEL_1_ID);
     private NotificationManagerCompat notificationManager;
     public static final String CHANNEL_1_ID =  "channel1";
+    protected Button linkPiButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         notificationManager = NotificationManagerCompat.from(this);
 
         uniqueID = dbInsertPlant.checkUID();
-        Toast.makeText(getApplicationContext(), uniqueID, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), uniqueID, Toast.LENGTH_SHORT).show();
 
         new DatabaseHelper(uniqueID).readPlants(new DatabaseHelper.DataStatus() {
             @Override
@@ -62,12 +65,39 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 loadListView();
-                findViewById(R.id.loading).setVisibility(View.GONE);
+                findViewById(R.id.loading).setVisibility(View.INVISIBLE);
             }
         });
 
         plantNumber = findViewById(R.id.plantName);
         plantsListView = findViewById(R.id.plantsListView);
+
+        linkPiButton = findViewById(R.id.linkPiButton);
+
+        linkPiButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                plants = dbInsertPlant.getAllPlants();
+
+                ArrayList<String> getCurrentPlants = new ArrayList<>();
+
+                for(int i = 0; i < plants.size(); i++) {
+                    getCurrentPlants.add(plants.get(i).getName());
+                }
+
+                //Bundle sendDataToDialog = new Bundle();
+
+                //sendDataToDialog.putStringArrayList("currentPlants", currentPlants);
+
+                //.setArguments(args);
+                LinkPiDialogFragment dialog = new LinkPiDialogFragment();
+                dialog.ownerID = uniqueID;
+                dialog.currentPlants = getCurrentPlants;
+
+                dialog.show(getSupportFragmentManager(), "LinkPiDialogFragment");
+            }
+        });
 
 
         addPlantFloatingButton = findViewById(R.id.addPlantFloatingButton);
@@ -100,7 +130,11 @@ public class MainActivity extends AppCompatActivity {
             //CharSequence name = getString(R.string.channel_name);
             //String description = getString(R.string.channel_description);
             //int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel1 = new NotificationChannel(CHANNEL_1_ID, "Channel 1", NotificationManager.IMPORTANCE_HIGH); // Importance High makes a sound and appears as a heads-upn otif
+            NotificationChannel channel1 = new NotificationChannel(CHANNEL_1_ID, "Channel 1", NotificationManager.IMPORTANCE_HIGH); // Importance High makes a sound and appears as a heads-up notif
+
+            //*******************************ADDED THIS LINE TO STOP THE CREEPY SOUND THAT COMES EVERY TIME A NOTIF IS DISPLAYED********************
+            channel1.setSound(null,null);
+
             channel1.setDescription("This is channel 1");
 
             // Register the channel with the system; you can't change the importance
@@ -304,6 +338,12 @@ public class MainActivity extends AppCompatActivity {
                         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
                         //notificationId is a unique int for each notification that you must define
                         //4 and 5 is high and max importance respectively. Try 4 first
+
+                        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                                new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+                        notificationBuilder.setContentIntent(contentIntent);
                         notificationManager.notify(4, notificationBuilder.build());
                     }
 
@@ -318,43 +358,46 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case "Sansevieria": {
                     percentage = healthBarAlgoSansevieria(plants.get(i));
+
+                    //Notification sent when health reaches less than 50%.
+                    if (percentage < 50 && percentage >=0) {
+                        //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
+                        // NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,CHANNEL_1_ID);
+                        createNotificationChannel();
+                        notificationBuilder.setSmallIcon(R.drawable.alert);
+                        notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.sanseivieria));
+                        notificationBuilder.setContentTitle(plants.get(i).getName() + " needs your attention!");
+                        //.setContentTitle("Test")
+                        notificationBuilder.setContentText("Your plant's health is lower than 50%!");
+                        notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+                        //notificationBuilder.setDefaults(
+                        //Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
+                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                        //notificationId is a unique int for each notification that you must define
+                        //4 and 5 is high and max importance respectively. Try 4 first
+
+                        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                                new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+                        notificationBuilder.setContentIntent(contentIntent);
+
+                        notificationManager.notify(4, notificationBuilder.build());
+
+
+                    }
+
                     if(percentage < 0){
                         percentage = 0;
                     }
+
                     tempData += String.format("%.1f", percentage) + "%\n";
 
                     tempImages = R.drawable.sanseivieria;
 
-                    //Notification sent when health reaches less than 50%.
-                    if (percentage < 50) {
-                        if (percentage < 50 && percentage >=0) {
-                            //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
-                            //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,CHANNEL_1_ID);
-                            createNotificationChannel();
-                            notificationBuilder.setSmallIcon(R.drawable.alert);
-                            notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.sanseivieria));
-                            notificationBuilder.setContentTitle(plants.get(i).getName() + " needs your attention!");
-                            //.setContentTitle("Test")
-                            notificationBuilder.setContentText("Your plant's health is lower than 50%!");
-                            notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
-                            //notificationBuilder.setDefaults(
-                            //Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
-                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-                            //notificationId is a unique int for each notification that you must define
-                            //4 and 5 is high and max importance respectively. Try 4 first
-                            notificationManager.notify(4, notificationBuilder.build());
-                        }
-                    }
                     break;
                 }
-case "English Ivy": {
+                case "English Ivy": {
                     percentage = healthBarAlgoEnglishIvy(plants.get(i));
-                    if(percentage < 0){
-                        percentage = 0;
-                    }
-                    tempData += String.format("%.1f", percentage) + "%\n";
-
-                    tempImages = R.drawable.englishivy;
 
                     //Notification sent when health reaches less than 50%.
                     if (percentage < 50 && percentage >=0) {
@@ -372,32 +415,63 @@ case "English Ivy": {
                         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
                         //notificationId is a unique int for each notification that you must define
                         //4 and 5 is high and max importance respectively. Try 4 first
+
+                        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                                new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+                        notificationBuilder.setContentIntent(contentIntent);
+
                         notificationManager.notify(4, notificationBuilder.build());
                     }
+
+                    if(percentage < 0){
+                        percentage = 0;
+                    }
+
+                    tempData += String.format("%.1f", percentage) + "%\n";
+
+                    tempImages = R.drawable.englishivy;
                     break;
                 }
                 //********************************************//             //*************************************//
                 case "Spider": {
                     percentage = healthBarAlgoSpider(plants.get(i));
+
+                    //Notification sent when health reaches less than 50%.
+                    if (percentage < 50 && percentage >=0) {
+                        //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
+                        //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,CHANNEL_1_ID);
+                        createNotificationChannel();
+                        notificationBuilder.setSmallIcon(R.drawable.alert);
+                        notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.spider));
+                        notificationBuilder.setContentTitle(plants.get(i).getName() + " needs your attention!");
+                        //.setContentTitle("Test")
+                        notificationBuilder.setContentText("Your plant's health is lower than 50%!");
+                        notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+                        //notificationBuilder.setDefaults(
+                        //Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
+                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                        //notificationId is a unique int for each notification that you must define
+                        //4 and 5 is high and max importance respectively. Try 4 first
+
+                        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                                new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+                        notificationBuilder.setContentIntent(contentIntent);
+
+                        notificationManager.notify(4, notificationBuilder.build());
+                    }
+
                     if(percentage < 0){
                         percentage = 0;
                     }
+
                     tempData += String.format("%.1f", percentage) + "%\n";
 
                     tempImages = R.drawable.spider;
 
-                    //Notification sent when health reaches less than 50%.
-                    if (percentage < 50) {
-                        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
-                                .setSmallIcon(R.drawable.alert)
-                                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.sanseivieria))
-                                .setContentTitle(plants.get(i).getName() + " needs your attention!")
-                                .setContentText("Your plant's health is lower than 50%!");
-                        notificationBuilder.setDefaults(
-                                Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
-                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
-                        notificationManager.notify(1, notificationBuilder.build());
-                    }
                     break;
                 }
                 default:
