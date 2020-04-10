@@ -2,7 +2,7 @@
 
 import components
 
-# To test the moisture sensor, uncomment the followingline
+# To test the moisture sensor, uncomment the following line
 # print(moistureLevel())
 
 # To test the UV Sensor, uncomment the following line
@@ -10,9 +10,8 @@ print(lightingLevel())
 
 # watering()
 
-# Just for testingpurposes 
+# Just for testing purposes
 # print(components.dry())
-while True : 	
-	while (components.dry() == True):
-		components.watering()
-			
+while True:
+    while components.dry():
+        components.watering()

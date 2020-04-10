@@ -33,3 +33,6 @@ We also have a submersible (DC Motor) water pump with a tube that will give wate
 #### The connections are as follow
 ![Connections](docs/images/fritzingconnections.png)
 
+## The Software 
+This project features an Android app which was designed using Android Studio and Java. 
+We also used python to program the raspberyy pi and the image classification which uses PyTorch. 

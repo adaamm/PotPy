@@ -1,2 +1,4 @@
 /env
 .env
+/plant/Classifier/data/
+/plant/Classifier/data_dir.py
