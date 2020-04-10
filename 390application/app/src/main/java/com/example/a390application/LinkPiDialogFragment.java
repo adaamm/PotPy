@@ -1,0 +1,110 @@
+package com.example.a390application;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import com.example.a390application.InsertPlant.InsertPlant;
+import com.example.a390application.InsertPlant.PI;
+import com.example.a390application.InsertPlant.Plant;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+public class LinkPiDialogFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
+
+    private List<Plant> plants;
+    private EditText PiIdEditText;
+    private String plantPicked;
+    protected String ownerID;
+    protected ArrayList<String> currentPlants = new ArrayList<>();
+    private TextView note;
+
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_link_pi, container, false);
+
+        PiIdEditText = view.findViewById(R.id.PiIdEditText);
+        Spinner plantOptionsSpinner = view.findViewById(R.id.plantOptions);
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, currentPlants);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        plantOptionsSpinner.setAdapter(adapter);
+
+        plantOptionsSpinner.setOnItemSelectedListener(this);
+
+        note = view.findViewById(R.id.note);
+        note.setText("Please Note: \nIf the all sensors of the Raspberry PI you are linking are already in use, the oldest link will be removed and will be replaced by this new link.");
+
+        Button linkButton = view.findViewById(R.id.linkButton);
+        Button cancelPlantButton = view.findViewById(R.id.cancelButton);
+
+        linkButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                String PiId = PiIdEditText.getText().toString();
+
+                InsertPlant dbInsertPlant = new InsertPlant(getActivity());
+                plants = dbInsertPlant.getAllPlants();
+
+                for(int i = 0; i < plants.size(); i++) {
+                    if(plants.get(i).getName().equals(plantPicked)){
+                        storePlantInDatabase(plants.get(i), PiId);
+                        break;
+                    }
+                }
+
+                getDialog().dismiss();
+
+            }
+        });
+
+        cancelPlantButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                getDialog().dismiss();
+            }
+        });
+
+
+
+        return view;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        plantPicked = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    private void storePlantInDatabase(Plant givenPlant, String PiId) {
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(ownerID).child(givenPlant.getName());
+        userReference.setValue(givenPlant);
+        DatabaseReference PiReference = FirebaseDatabase.getInstance().getReference().child("PIs").child(PiId);
+        PiReference.setValue(new PI(givenPlant.getName(),givenPlant.getOwnerID()));
+    }
+}

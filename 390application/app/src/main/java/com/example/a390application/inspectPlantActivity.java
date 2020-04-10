@@ -54,7 +54,6 @@ public class inspectPlantActivity extends AppCompatActivity {
         Intent intent = getIntent();
         givenID = intent.getLongExtra("plantID", 0);
         userID = intent.getStringExtra("userID");
-        Toast.makeText(getApplicationContext(), userID, Toast.LENGTH_SHORT).show();
 
         givenPlant = null;
 
