@@ -1,5 +1,6 @@
 from torch.autograd import Variable
 
+
 # Main function for predicting
 def predict_image(image, device, model, test_transforms):
     image_tensor = test_transforms(image).float()
@@ -9,4 +10,3 @@ def predict_image(image, device, model, test_transforms):
     output = model(input)
     index = output.data.cpu().numpy().argmax()
     return index
-
