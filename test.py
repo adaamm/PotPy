@@ -23,7 +23,6 @@ Returns
 id : str
     one sentence description
 """
-
 # * Code
 def main():
     """
@@ -32,7 +31,7 @@ def main():
     print("Starting Pot-O-Duino ...")
     
     # Sign in 2 Firebase
-    firebaseCOM = FirebasePlantCom(piID = "1")
+    firebaseCOM = FirebasePlantCom(piID = "123")
 
     # Make Plant and its SensorController
     # sensorController1 = SensorController(moisture=0, light=1, ph=-1, humidity = 0, temperature = 0)
@@ -56,7 +55,7 @@ def main():
             }
             piID = 1
             piIDPath = firebaseCOM.get_firebasePlantPath()
-            print(piIDPath)
+            # print(piIDPath)
             firebaseCOM.update_pi_data(piIDPath, plantData)
             # plant0.print_plant()
 
