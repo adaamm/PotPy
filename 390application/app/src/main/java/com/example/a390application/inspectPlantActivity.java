@@ -35,7 +35,6 @@ public class inspectPlantActivity extends AppCompatActivity {
     protected TextView plantsInfo;
     protected TextView plantsInfo2;
 
-    protected FloatingActionButton takeImageFloatingButton;
     protected Button deletePlantButton;
     protected Bundle bundle = new Bundle();
     protected long givenID;
@@ -43,6 +42,7 @@ public class inspectPlantActivity extends AppCompatActivity {
     protected String plantType;
     protected Plant givenPlant;
     protected String userID;
+    protected ImageView plantImage;
 
 
     @Override
@@ -73,6 +73,7 @@ public class inspectPlantActivity extends AppCompatActivity {
         plantsType = findViewById(R.id.plantType);
         plantsInfo = findViewById(R.id.plantInfo);
         plantsInfo2 = findViewById(R.id.plantInfo2);
+        plantImage = findViewById(R.id.plantImage);
 
 
 
@@ -178,17 +179,9 @@ public class inspectPlantActivity extends AppCompatActivity {
 
 
         deletePlantButton = findViewById(R.id.deletePlant);
-        takeImageFloatingButton = findViewById(R.id.takeImage);
 
 
-        takeImageFloatingButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "I want image", Toast.LENGTH_SHORT).show();
-                dispatchTakePictureIntent();
 
-            }
-        });
 
 
 
