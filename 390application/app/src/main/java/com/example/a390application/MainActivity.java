@@ -256,6 +256,55 @@ public class MainActivity extends AppCompatActivity {
             }
             else{
                 tempData+= String.format("%.1f",plants.get(i).getLightIntensity()) + "\n";
+                if(plants.get(i).getType().equals("Devil's Ivy")){
+                    if(lightintensitySmileyDevilsIvy(plants.get(i))>=75){
+                        tempData+= " " + emojiHappy + "\n";
+                    }
+                    else if((lightintensitySmileyDevilsIvy(plants.get(i))<75) && (lightintensitySmileyDevilsIvy(plants.get(i))>=40)){
+                        tempData+= " " + emojiAverage + "\n";
+                    }
+                    else{
+                        tempData+= " " + emojiSad + "\n";
+                    }
+                }
+                else if(plants.get(i).getType().equals("Sansevieria")){
+                    if(lightintensitySmileySansevieria(plants.get(i))>=75){
+                        tempData+= " " + emojiHappy + "\n";
+                    }
+                    else if((lightintensitySmileySansevieria(plants.get(i))<75) && (lightintensitySmileySansevieria(plants.get(i))>=40)){
+                        tempData+= " " + emojiAverage + "\n";
+                    }
+                    else{
+                        tempData+= " " + emojiSad + "\n";
+                    }
+                }
+                else if(plants.get(i).getType().equals("English Ivy")){
+                    if(lightintensitySmileyEnglishIvy(plants.get(i))>=75){
+                        tempData+= " " + emojiHappy + "\n";
+                    }
+                    else if((lightintensitySmileyEnglishIvy(plants.get(i))<75) && (lightintensitySmileyEnglishIvy(plants.get(i))>=40)){
+                        tempData+= " " + emojiAverage + "\n";
+                    }
+                    else{
+                        tempData+= " " + emojiSad + "\n";
+                    }
+                }
+
+                else if(plants.get(i).getType().equals("Spider")){
+                    if(lightintensitySmileySpider(plants.get(i))>=75){
+                        tempData+= " " + emojiHappy + "\n";
+                    }
+                    else if((lightintensitySmileySpider(plants.get(i))<75) && (lightintensitySmileySpider(plants.get(i))>=40)){
+                        tempData+= " " + emojiAverage + "\n";
+                    }
+                    else{
+                        tempData+= " " + emojiSad + "\n";
+                    }
+                }
+
+                else{
+
+                }
             }
 
             tempData+= "Temperature: ";
@@ -512,7 +561,7 @@ public class MainActivity extends AppCompatActivity {
 
         double FinalTemperaturePercentage;
         double FinalMoisturePercentage;
-        //double LightIntensityValue = 0;
+        double FinalLightIntensityPercentage;
 
 
         // Do all calculations and store in 'FinalPercentage'.
@@ -531,10 +580,24 @@ public class MainActivity extends AppCompatActivity {
         else{
             FinalMoisturePercentage = givenPlant.getMoisture() * 0.1304;                    // 0 pts = 0 %
         }
+		
+		if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
+            FinalLightIntensityPercentage = 0;}
+        else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
+            FinalLightIntensityPercentage = 100;}
+        else if (givenPlant.getLightIntensity()==2) {                                       // case uv = 2
+            FinalLightIntensityPercentage = 80;}
+        else if (givenPlant.getLightIntensity()==3) {                                       // case uv = 3
+            FinalLightIntensityPercentage = 40;}
+        else if (givenPlant.getLightIntensity()==4) {                                       // case uv = 4
+            FinalLightIntensityPercentage = 20;}
+        else{                                                                               // all other cases
+            FinalLightIntensityPercentage = 0;
+        }
 
         // calculation final
         //double FinalPercentage = 0.33*FinalMoisturePercentage + 0.33*FinalLightIntensityPercentage + 0.33*FinalTemperaturePercentage;   // weighting , all equal 1/3
-        return 0.5*FinalMoisturePercentage + 0.5*FinalTemperaturePercentage;
+        return 0.33*FinalMoisturePercentage + 0.33*FinalTemperaturePercentage + 0.33*FinalLightIntensityPercentage;
     }
 
     protected double moistureSmileySansevieria(Plant givenPlant){       //specifically for Sansevieria
@@ -568,15 +631,35 @@ public class MainActivity extends AppCompatActivity {
 
         return FinalTemperaturePercentage;
     }
+	
+	protected double lightintensitySmileySansevieria(Plant givenPlant){
+
+        double FinalLightIntensityPercentage;
 
 
+        // Do all calculations and store in 'FinalPercentage'.
+        //givenPlant.getTemperature()' accesses temperature.
+        if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
+            FinalLightIntensityPercentage = 0;}
+        else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
+            FinalLightIntensityPercentage = 100;}
+        else if (givenPlant.getLightIntensity()==2) {                                       // case uv = 2
+            FinalLightIntensityPercentage = 80;}
+        else if (givenPlant.getLightIntensity()==3) {                                       // case uv = 3
+            FinalLightIntensityPercentage = 40;}
+        else if (givenPlant.getLightIntensity()==4) {                                       // case uv = 4
+            FinalLightIntensityPercentage = 20;}
+        else{                                                                               // all other cases
+            FinalLightIntensityPercentage = 0;
+        }
+        return FinalLightIntensityPercentage;
+    }
 
     protected double healthBarAlgoEnglishIvy(Plant givenPlant){       //specifically for English Ivy/Ivy String
 
         double FinalTemperaturePercentage;
         double FinalMoisturePercentage;
-        //double LightIntensityValue = 0;
-
+		double FinalLightIntensityPercentage;
 
         //Do all calculations and store in 'FinalPercentage'.
         //givenPlant.getTemperature()' accesses temperature.
@@ -594,10 +677,25 @@ public class MainActivity extends AppCompatActivity {
         else{
             FinalMoisturePercentage = 50 + (givenPlant.getMoisture() * 0.1953);             // 0 pts (wet)  = 50%
         }
+		
+        if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
+            FinalLightIntensityPercentage = 0;}
+        else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
+            FinalLightIntensityPercentage = 100;}
+        else if (givenPlant.getLightIntensity()==2) {                                       // case uv = 2
+            FinalLightIntensityPercentage = 80;}
+        else if (givenPlant.getLightIntensity()==3) {                                       // case uv = 3
+            FinalLightIntensityPercentage = 40;}
+        else if (givenPlant.getLightIntensity()==4) {                                       // case uv = 4
+            FinalLightIntensityPercentage = 20;}
+        else{                                                                               // all other cases
+            FinalLightIntensityPercentage = 0;
+        }
 
         // calculation final
         //double FinalPercentage = 0.33*FinalMoisturePercentage + 0.33*FinalLightIntensityPercentage + 0.33*FinalTemperaturePercentage;   // weighting , all equal 1/3
-        return 0.5*FinalMoisturePercentage + 0.5*FinalTemperaturePercentage;
+        return 0.33*FinalMoisturePercentage + 0.33*FinalTemperaturePercentage + 0.33*FinalLightIntensityPercentage;
+
     }
 
     protected double moistureSmileyEnglishIvy(Plant givenPlant){       //specifically for Sansevieria
@@ -627,12 +725,34 @@ public class MainActivity extends AppCompatActivity {
 
         return FinalTemperaturePercentage;
     }
+	
+	protected double lightintensitySmileyEnglishIvy(Plant givenPlant){
+
+        double FinalLightIntensityPercentage;
+
+        // Do all calculations and store in 'FinalPercentage'.
+        //givenPlant.getTemperature()' accesses temperature.
+        if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
+            FinalLightIntensityPercentage = 0;}
+        else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
+            FinalLightIntensityPercentage = 100;}
+        else if (givenPlant.getLightIntensity()==2) {                                       // case uv = 2
+            FinalLightIntensityPercentage = 80;}
+        else if (givenPlant.getLightIntensity()==3) {                                       // case uv = 3
+            FinalLightIntensityPercentage = 40;}
+        else if (givenPlant.getLightIntensity()==4) {                                       // case uv = 4
+            FinalLightIntensityPercentage = 20;}
+        else{                                                                               // all other cases
+            FinalLightIntensityPercentage = 0;
+        }
+        return FinalLightIntensityPercentage;
+    }
 
     protected double healthBarAlgoDevilsIvy(Plant givenPlant){       //specifically for Devil's Ivy
 
         double FinalTemperaturePercentage;
         double FinalMoisturePercentage;
-        //double LightIntensityValue = 0;
+        double FinalLightIntensityPercentage;
 
         if (givenPlant.getTemperature() >= 23){
             FinalTemperaturePercentage = 100-((givenPlant.getTemperature()-23)*4.3478);     // 46 deg C = 0%
@@ -648,10 +768,24 @@ public class MainActivity extends AppCompatActivity {
         else{
             FinalMoisturePercentage = givenPlant.getMoisture() * 0.1953;                // 0 pts (wet) = 0%
         }
+		
+		if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
+            FinalLightIntensityPercentage = 0;}
+        else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
+            FinalLightIntensityPercentage = 100;}
+        else if (givenPlant.getLightIntensity()==2) {                                       // case uv = 2
+            FinalLightIntensityPercentage = 80;}
+        else if (givenPlant.getLightIntensity()==3) {                                       // case uv = 3
+            FinalLightIntensityPercentage = 40;}
+        else if (givenPlant.getLightIntensity()==4) {                                       // case uv = 4
+            FinalLightIntensityPercentage = 20;}
+        else{                                                                               // all other cases
+            FinalLightIntensityPercentage = 0;
+        }
 
         // calculation final
         //double FinalPercentage = 0.33*FinalMoisturePercentage + 0.33*FinalLightIntensityPercentage + 0.33*FinalTemperaturePercentage;   // weighting , all equal 1/3
-        return 0.5*FinalMoisturePercentage + 0.5*FinalTemperaturePercentage;
+        return 0.33*FinalMoisturePercentage + 0.33*FinalTemperaturePercentage + 0.33*FinalLightIntensityPercentage;
     }
 
     protected double moistureSmileyDevilsIvy(Plant givenPlant){       //specifically for Sansevieria
@@ -681,22 +815,44 @@ public class MainActivity extends AppCompatActivity {
 
         return FinalTemperaturePercentage;
     }
+	
+	protected double lightintensitySmileyDevilsIvy(Plant givenPlant){
+
+        double FinalLightIntensityPercentage;
+        // Do all calculations and store in 'FinalPercentage'.
+        //givenPlant.getTemperature()' accesses temperature.
+        if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
+            FinalLightIntensityPercentage = 0;}
+        else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
+            FinalLightIntensityPercentage = 100;}
+        else if (givenPlant.getLightIntensity()==2) {                                       // case uv = 2
+            FinalLightIntensityPercentage = 80;}
+        else if (givenPlant.getLightIntensity()==3) {                                       // case uv = 3
+            FinalLightIntensityPercentage = 40;}
+        else if (givenPlant.getLightIntensity()==4) {                                       // case uv = 4
+            FinalLightIntensityPercentage = 20;}
+        else{                                                                               // all other cases
+            FinalLightIntensityPercentage = 0;
+        }
+        return FinalLightIntensityPercentage;
+    }
+	
     //********************************************//             //*************************************//
     protected double healthBarAlgoSpider(Plant givenPlant){       //specifically for English Ivy/Ivy String
 
         double FinalTemperaturePercentage;
         double FinalMoisturePercentage;
-        //double LightIntensityValue = 0;
+        double FinalLightIntensityPercentage;
 
 
         //Do all calculations and store in 'FinalPercentage'.
         //givenPlant.getTemperature()' accesses temperature.
 
-        if (givenPlant.getTemperature() >= 20){
-            FinalTemperaturePercentage = 100-((givenPlant.getTemperature()-20)*3.75);       // 40deg C = 25%
-        }                                                                                   // 20 deg C = 100%
+        if (givenPlant.getTemperature() >= 23){
+            FinalTemperaturePercentage = 100-((givenPlant.getTemperature()-23)*4.3478);     // 46 deg C = 0%
+        }                                                                                   // 23 deg C = 100%
         else{
-            FinalTemperaturePercentage = 50+(givenPlant.getTemperature() * 2.5);            // -20deg C = 0%
+            FinalTemperaturePercentage = givenPlant.getTemperature() * 4.3478;              // 0 deg C = 0%
         }
 
         if (givenPlant.getMoisture() >= 256){
@@ -705,10 +861,24 @@ public class MainActivity extends AppCompatActivity {
         else{
             FinalMoisturePercentage = 50 + (givenPlant.getMoisture() * 0.1953);             // 0 pts (wet)  = 50%
         }
+		
+		if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
+            FinalLightIntensityPercentage = 0;}
+        else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
+            FinalLightIntensityPercentage = 100;}
+        else if (givenPlant.getLightIntensity()==2) {                                       // case uv = 2
+            FinalLightIntensityPercentage = 80;}
+        else if (givenPlant.getLightIntensity()==3) {                                       // case uv = 3
+            FinalLightIntensityPercentage = 40;}
+        else if (givenPlant.getLightIntensity()==4) {                                       // case uv = 4
+            FinalLightIntensityPercentage = 20;}
+        else{                                                                               // all other cases
+            FinalLightIntensityPercentage = 0;
+        }
 
-        // calculation final
+       // calculation final
         //double FinalPercentage = 0.33*FinalMoisturePercentage + 0.33*FinalLightIntensityPercentage + 0.33*FinalTemperaturePercentage;   // weighting , all equal 1/3
-        return 0.5*FinalMoisturePercentage + 0.5*FinalTemperaturePercentage;
+        return 0.33*FinalMoisturePercentage + 0.33*FinalTemperaturePercentage + 0.33*FinalLightIntensityPercentage;
     }
 
     protected double moistureSmileySpider(Plant givenPlant){       //specifically for Sansevieria
@@ -737,6 +907,28 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return FinalTemperaturePercentage;
+    }
+	
+	protected double lightintensitySmileySpider(Plant givenPlant){
+
+        double FinalLightIntensityPercentage;
+
+        // Do all calculations and store in 'FinalPercentage'.
+        //givenPlant.getTemperature()' accesses temperature.
+        if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
+            FinalLightIntensityPercentage = 0;}
+        else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
+            FinalLightIntensityPercentage = 100;}
+        else if (givenPlant.getLightIntensity()==2) {                                       // case uv = 2
+            FinalLightIntensityPercentage = 80;}
+        else if (givenPlant.getLightIntensity()==3) {                                       // case uv = 3
+            FinalLightIntensityPercentage = 40;}
+        else if (givenPlant.getLightIntensity()==4) {                                       // case uv = 4
+            FinalLightIntensityPercentage = 20;}
+        else{                                                                               // all other cases
+            FinalLightIntensityPercentage = 0;
+        }
+        return FinalLightIntensityPercentage;
     }
 
     protected String getEmoji(int unicode){

@@ -15,29 +15,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import com.example.a390application.InsertPlant.InsertPlant;
-import com.example.a390application.InsertPlant.PI;
 import com.example.a390application.InsertPlant.Plant;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.FutureTask;
 
 
 public class InsertPlantDialogFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
@@ -146,6 +138,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
         DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(ownerID).child(givenPlant.getName());
         userReference.setValue(givenPlant);
     }
+
 // not using this anymore
     public void onLaunchCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -163,17 +156,16 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
         if (requestCode == GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
 
-
-
-            /*try {
+            try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(getActivity()).getContentResolver(), uri);
 
-                new ImageSaver(this)
-                        .setFileName(givenPlant.getName() +".jpg")
+                //Since no plant has been added yet at this stage, naming the plant isn't needed right?
+                new ImageSaver(getActivity())
+                        .setFileName("givenPlant.jpg")
                         .setExternal(false)//image save in external directory or app folder default value is false
                         .setDirectory("dir_name")
-                        .save(imageBitmap); //Bitmap from your code
-*//*
+                        .save(bitmap); //Bitmap from your code
+
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                 String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
@@ -190,29 +182,42 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
 
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
-
-
+            }
         }
-    }
 
-/*
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            plantImage.setImageBitmap(imageBitmap);
+            //plantImage.setImageBitmap(imageBitmap);
             encodeBitmapAndSaveToFirebase(imageBitmap);
-            /*
-            new ImageSaver(this)
-                    .setFileName(givenPlant.getName() +".jpg")
+
+            //Since no plant has been added yet at this stage, naming the plant isn't needed right?
+            new ImageSaver(getActivity())
+                    .setFileName("givenPlant.jpg")
                     .setExternal(false)//image save in external directory or app folder default value is false
                     .setDirectory("dir_name")
                     .save(imageBitmap); //Bitmap from your code
         }
     }
+
+
+    /*@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //plantImage.setImageBitmap(imageBitmap);
+            encodeBitmapAndSaveToFirebase(imageBitmap);
+
+            //Since no plant has been added yet at this stage, naming the plant isn't needed right?
+            new ImageSaver(getActivity())
+                    .setFileName("givenPlant.jpg")
+                    .setExternal(false)//image save in external directory or app folder default value is false
+                    .setDirectory("dir_name")
+                    .save(imageBitmap); //Bitmap from your code
+        }
+    }*/
 
 
     public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
@@ -225,6 +230,6 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
                 //.child(givenPlant.getName())
                 .child("Image");
         ref.setValue(imageEncoded);
-    }*/
+    }
 
 }
