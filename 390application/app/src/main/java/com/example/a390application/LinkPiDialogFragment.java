@@ -80,9 +80,9 @@ public class LinkPiDialogFragment extends DialogFragment implements AdapterView.
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             try {
                                 checkPiPassword(PiId, dataSnapshot.child("PIs").child(PiId).child("password").getValue().toString(), PiPassword);
-                                Toast.makeText(getContext(), dataSnapshot.child("PIs").child(PiId).child("password").getValue().toString(), Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getContext(), dataSnapshot.child("PIs").child(PiId).child("password").getValue().toString(), Toast.LENGTH_SHORT).show();
                             } catch (Exception e) {
-                                Toast.makeText(getContext(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getContext(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
                                 Toast.makeText(getContext(), "There is no PI with that Id!", Toast.LENGTH_SHORT).show();
                             }
                         }
