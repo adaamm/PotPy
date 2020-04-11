@@ -17,8 +17,11 @@ import androidx.fragment.app.DialogFragment;
 import com.example.a390application.InsertPlant.InsertPlant;
 import com.example.a390application.InsertPlant.PI;
 import com.example.a390application.InsertPlant.Plant;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,7 @@ public class LinkPiDialogFragment extends DialogFragment implements AdapterView.
 
     private List<Plant> plants;
     private EditText PiIdEditText;
+    private EditText PiPwEditText;
     private String plantPicked;
     protected String ownerID;
     protected ArrayList<String> currentPlants = new ArrayList<>();
@@ -42,6 +46,7 @@ public class LinkPiDialogFragment extends DialogFragment implements AdapterView.
         View view = inflater.inflate(R.layout.fragment_link_pi, container, false);
 
         PiIdEditText = view.findViewById(R.id.PiIdEditText);
+        PiPwEditText = view.findViewById(R.id.PwEditText);
         Spinner plantOptionsSpinner = view.findViewById(R.id.plantOptions);
 
 
@@ -53,7 +58,7 @@ public class LinkPiDialogFragment extends DialogFragment implements AdapterView.
         plantOptionsSpinner.setOnItemSelectedListener(this);
 
         note = view.findViewById(R.id.note);
-        note.setText("Please Note: \nIf the all sensors of the Raspberry PI you are linking are already in use, the oldest link will be removed and will be replaced by this new link.");
+        note.setText("Please Note: \nIf all the sensors of the Raspberry PI you are linking are already in use, the oldest link will be removed and will be replaced by this new link.");
 
         Button linkButton = view.findViewById(R.id.linkButton);
         Button cancelPlantButton = view.findViewById(R.id.cancelButton);
@@ -62,20 +67,37 @@ public class LinkPiDialogFragment extends DialogFragment implements AdapterView.
             @Override
             public void onClick(View v) {
 
-                String PiId = PiIdEditText.getText().toString();
 
-                InsertPlant dbInsertPlant = new InsertPlant(getActivity());
-                plants = dbInsertPlant.getAllPlants();
 
-                for(int i = 0; i < plants.size(); i++) {
-                    if(plants.get(i).getName().equals(plantPicked)){
-                        storePlantInDatabase(plants.get(i), PiId);
-                        break;
-                    }
+                final String PiId = PiIdEditText.getText().toString();
+                final String PiPassword = PiPwEditText.getText().toString();
+
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+                if(!PiPassword.equals("") && !PiPassword.contains(".") && !PiPassword.contains("#") && !PiPassword.contains("$") && !PiPassword.contains("[") && !PiPassword.contains("]")) {
+                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            try {
+                                checkPiPassword(PiId, dataSnapshot.child("PIs").child(PiId).child("password").getValue().toString(), PiPassword);
+                                //Toast.makeText(getContext(), dataSnapshot.child("PIs").child(PiId).child("password").getValue().toString(), Toast.LENGTH_SHORT).show();
+                            } catch (Exception e) {
+                                //Toast.makeText(getContext(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), "There is no PI with that Id!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(getContext(), "Plant name must not be empty nor contain any of '.#$[]'", Toast.LENGTH_SHORT).show();
                 }
 
                 getDialog().dismiss();
-
             }
         });
 
@@ -101,10 +123,25 @@ public class LinkPiDialogFragment extends DialogFragment implements AdapterView.
 
     }
 
-    private void storePlantInDatabase(Plant givenPlant, String PiId) {
-        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(ownerID).child(givenPlant.getName());
-        userReference.setValue(givenPlant);
+    private void checkPiPassword(String PiId, String PiPassword, String givenPassword) {
+        if (PiPassword.equals(givenPassword)) {
+            InsertPlant dbInsertPlant = new InsertPlant(getActivity());
+            plants = dbInsertPlant.getAllPlants();
+
+            for (int i = 0; i < plants.size(); i++) {
+                if (plants.get(i).getName().equals(plantPicked)) {
+                    linkPlant(plants.get(i), PiId,PiPassword);
+                    break;
+                }
+            }
+        } else {
+            Toast.makeText(getContext(), "Password is incorrect!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private void linkPlant(Plant givenPlant, String PiId, String password) {
         DatabaseReference PiReference = FirebaseDatabase.getInstance().getReference().child("PIs").child(PiId);
-        PiReference.setValue(new PI(givenPlant.getName(),givenPlant.getOwnerID()));
+        PiReference.setValue(new PI(givenPlant.getName(),givenPlant.getOwnerID(),password));
     }
 }
