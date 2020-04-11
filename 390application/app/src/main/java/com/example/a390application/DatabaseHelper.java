@@ -38,16 +38,17 @@ class DatabaseHelper {
                 for (DataSnapshot users : dataSnapshot.child("Users").getChildren()) {
                     if (ownerID.equals(users.getKey())) {
                         for (DataSnapshot eachPlantData : users.getChildren()) {
-                            String name = eachPlantData.child("name").getValue().toString();
-                            String type = eachPlantData.child("type").getValue().toString();
-                            double moisture = Double.parseDouble(eachPlantData.child("moisture").getValue().toString());
-                            double lightIntensity = Double.parseDouble(eachPlantData.child("lightIntensity").getValue().toString());
-                            String test = eachPlantData.child("test").getValue().toString();
-                            double humidity = Double.parseDouble(eachPlantData.child("humidity").getValue().toString());
-                            double temperature = Double.parseDouble(eachPlantData.child("temperature").getValue().toString());
+                            if(!eachPlantData.getKey().equals("ImageImageImage")){
+                                String name = eachPlantData.child("name").getValue().toString();
+                                String type = eachPlantData.child("type").getValue().toString();
+                                double moisture = Double.parseDouble(eachPlantData.child("moisture").getValue().toString());
+                                double lightIntensity = Double.parseDouble(eachPlantData.child("lightIntensity").getValue().toString());
+                                String test = eachPlantData.child("test").getValue().toString();
+                                double humidity = Double.parseDouble(eachPlantData.child("humidity").getValue().toString());
+                                double temperature = Double.parseDouble(eachPlantData.child("temperature").getValue().toString());
 
-
-                            plantData.add(new Plant(name, type, moisture, lightIntensity, test, humidity, temperature, ownerID));
+                                plantData.add(new Plant(name, type, moisture, lightIntensity, test, humidity, temperature, ownerID));
+                            }
                         }
                     }
                 }

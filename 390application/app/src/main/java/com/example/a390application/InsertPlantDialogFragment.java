@@ -173,7 +173,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
                         .getReference().child("Users")
                         .child(ownerID)
                         //.child(givenPlant.getName())
-                        .child("Image");
+                        .child("ImageImageImage");
                 ref.setValue(imageEncoded);
                 Toast.makeText(getContext(), "Done!", Toast.LENGTH_SHORT).show();
 
@@ -228,7 +228,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
                 .getReference().child("Users")
                 .child(ownerID)
                 //.child(givenPlant.getName())
-                .child("Image");
+                .child("ImageImageImage");
         ref.setValue(imageEncoded);
     }
 
