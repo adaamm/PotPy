@@ -1,5 +1,5 @@
- # * author : Philippe Vo 
- # * date : Feb-28-2020 09:16:42
+# * author : Philippe Vo 
+# * date : Feb-28-2020 09:16:42
  
 # * Imports
 # 3rd Party Imports
@@ -23,7 +23,7 @@ class FirebasePlantCom:
         }
     }
     """
-    def __init__(self):
+    def __init__(self, piID):
         self.config = {
         "apiKey": "AIzaSyAeLC1SPoeniyf98IpanvSTzFc_Yh_DS1w",
         "authDomain": "coen390-guarduino.firebaseapp.com",
@@ -39,6 +39,23 @@ class FirebasePlantCom:
 
         # before the 1 hour expiry:
         self.user = self.auth.refresh(self.user['refreshToken']) # need this or we will have keyError
+
+        # Pi ID
+        self.piID = piID
+        self.plantName = ""
+        self.firebasePlantPath = "" # this is the path used to know where we want to update the plants data information
+
+    def get_firebasePlantPath(self):
+        """
+        depending on the pi ID, it will search for the userID and plantName that the user currently wants to monitor
+        """
+        data = self.db.child("PIs/" + self.piID).get()
+        userID = data.val()["ownerID"]
+        self.plantName = data.val()["name"]
+
+        path = "Users/" + userID + "/" + self.plantName
+
+        return path
 
     def update(self, plant, dataType, data):
         """
@@ -58,25 +75,25 @@ class FirebasePlantCom:
         """
         self.db.child(plant).update({dataType: data})
 
-    def update_plant(self, plant, plantData):
+    def update_pi_data(self, path, plantData):
         """
-        update all plant data to firebase for a specific plant
+        update the pi on firebase given the piID
 
         Parameters
         ----------
-        plant : str
-            name of the plant id
+        piID : int
+            name of the pi id
         plantData : dict
             type of data we want to write (moisture, name, ph, type)
 
         Returns
         -------
         """
-        self.db.child(plant).update({"ph": plantData["ph"]})
-        self.db.child(plant).update({"lightIntensity": plantData["light"]})
-        self.db.child(plant).update({"moisture": plantData["moisture"]})
-        self.db.child(plant).update({"temperature": plantData["temperature"]})
-        self.db.child(plant).update({"humidity": plantData["humidity"]})
+        # self.db.child(plant).update({"ph": plantData["ph"]})
+        self.db.child(path).update({"lightIntensity": plantData["light"]})
+        self.db.child(path).update({"moisture": plantData["moisture"]})
+        self.db.child(path).update({"temperature": plantData["temperature"]})
+        self.db.child(path).update({"humidity": plantData["humidity"]})
     
     def read(self, plant, dataType):
         """
