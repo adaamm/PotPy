@@ -1,7 +1,7 @@
 from PIL import Image
 from torch.autograd import Variable
 from torchvision import transforms
-from Classifier.data_dir import *
+#from plant.classifier.data_dir import *
 
 
 def image_loader(image_name):
