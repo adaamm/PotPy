@@ -1,6 +1,10 @@
 package com.example.a390application;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +24,8 @@ import com.example.a390application.InsertPlant.PI;
 import com.example.a390application.InsertPlant.Plant;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 
@@ -30,6 +37,9 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
     //private EditText PiIdEditText;
     private String typePicked;
     protected String ownerID;
+    protected ImageView plantImage;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Nullable
     @Override
@@ -40,6 +50,7 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
         plantNameEditText = view.findViewById(R.id.plantNameEditText);
         //PiIdEditText = view.findViewById(R.id.PiIdEditText);
         Spinner plantTypeSpinner = view.findViewById(R.id.plantTypeDrop);
+        plantImage = view.findViewById(R.id.plantImage);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),  R.array.types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -116,5 +127,40 @@ public class InsertPlantDialogFragment extends DialogFragment implements Adapter
     private void storePlantInDatabase(Plant givenPlant) {
         DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(ownerID).child(givenPlant.getName());
         userReference.setValue(givenPlant);
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            plantImage.setImageBitmap(imageBitmap);
+            encodeBitmapAndSaveToFirebase(imageBitmap);
+            new ImageSaver(this)
+                    .setFileName(givenPlant.getName() +".jpg")
+                    .setExternal(false)//image save in external directory or app folder default value is false
+                    .setDirectory("dir_name")
+                    .save(imageBitmap); //Bitmap from your code
+        }
+    }
+
+    public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference().child("Users")
+                .child(userID)
+                .child(givenPlant.getName())
+                .child("Image");
+        ref.setValue(imageEncoded);
     }
 }

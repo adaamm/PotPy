@@ -34,7 +34,7 @@ public class inspectPlantActivity extends AppCompatActivity {
     protected TextView plantsType;
     protected TextView plantsInfo;
     protected TextView plantsInfo2;
-    protected ImageView plantImage;
+
     protected FloatingActionButton takeImageFloatingButton;
     protected Button deletePlantButton;
     protected Bundle bundle = new Bundle();
@@ -73,7 +73,7 @@ public class inspectPlantActivity extends AppCompatActivity {
         plantsType = findViewById(R.id.plantType);
         plantsInfo = findViewById(R.id.plantInfo);
         plantsInfo2 = findViewById(R.id.plantInfo2);
-        plantImage = findViewById(R.id.plantImage);
+
 
 
 
@@ -306,41 +306,4 @@ public class inspectPlantActivity extends AppCompatActivity {
         }
         return idealTemperature;
     }
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            plantImage.setImageBitmap(imageBitmap);
-            encodeBitmapAndSaveToFirebase(imageBitmap);
-            new ImageSaver(this)
-                    .setFileName(givenPlant.getName() +".jpg")
-                    .setExternal(false)//image save in external directory or app folder default value is false
-                    .setDirectory("dir_name")
-                    .save(imageBitmap); //Bitmap from your code
-        }
-    }
-
-    public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-        DatabaseReference ref = FirebaseDatabase.getInstance()
-                .getReference().child("Users")
-                .child(userID)
-                .child(givenPlant.getName())
-                .child("Image");
-        ref.setValue(imageEncoded);
-    }
-
 }
