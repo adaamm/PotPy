@@ -2,6 +2,7 @@ package com.example.a390application;
 
 import android.app.Notification;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -57,7 +58,7 @@ public class inspectPlantActivity extends AppCompatActivity {
 
         givenPlant = null;
 
-        InsertPlant dbInsertPlant = new InsertPlant(this);
+        final InsertPlant dbInsertPlant = new InsertPlant(this);
 
         List<Plant> plants = dbInsertPlant.getAllPlants();
         for (int i = 0; i < plants.size(); i++) {
@@ -93,8 +94,6 @@ public class inspectPlantActivity extends AppCompatActivity {
                 else
                     plantImage.setImageBitmap(bitmap);
                 break;
-
-
             }
             case "Sansevieria": {
                 Bitmap bitmap = new ImageSaver(this).
@@ -188,30 +187,26 @@ public class inspectPlantActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "I want image", Toast.LENGTH_SHORT).show();
                 dispatchTakePictureIntent();
 
-
-
             }
         });
 
 
 
 
-        //'Delete Plant' button not yet implemented
-        /*deletePlantButton.setOnClickListener(new View.OnClickListener() {
+        deletePlantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //https://developer.android.com/training/data-storage/sqlite check here
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(givenPlant.getOwnerID()).child(givenPlant.getName());
+                reference.removeValue();
 
+                dbInsertPlant.removePlant(givenPlant);
+
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
-        });*/
-
+        });
     }
-
-
-    //'Delete Plant' button not yet implemented.
-    /*public void removePlantByID(long id){
-    }*/
 
 
     @Override

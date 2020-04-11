@@ -147,6 +147,20 @@ public class InsertPlant extends SQLiteOpenHelper {
         }
     }
 
+    public void removePlant(Plant newPlantData) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            db.delete(Config.PLANT_TABLE_NAME, Config.COLUMN_PLANT_NAME + "=?", new String[]{newPlantData.getName()});
+        }
+        catch (SQLiteException e) {
+            Toast.makeText(context, "Operation Failed!: " + e, Toast.LENGTH_LONG).show();
+        }
+        finally {
+            db.close();
+        }
+    }
+
     public String checkUID(){
         SQLiteDatabase db = this.getWritableDatabase();
 

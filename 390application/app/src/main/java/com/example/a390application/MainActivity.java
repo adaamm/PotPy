@@ -20,8 +20,12 @@ import androidx.core.app.NotificationCompat.Action;
 import androidx.core.app.NotificationCompat.InboxStyle;
 import androidx.core.app.NotificationManagerCompat;
 import com.example.a390application.InsertPlant.InsertPlant;
+import com.example.a390application.InsertPlant.PI;
 import com.example.a390application.InsertPlant.Plant;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +47,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
+        /*USED TO CREATE A NEW PI ID*/
+        //Plant plant = new Plant("DEFAULT","Spider","DEFAULT");
+        //DatabaseReference PiReference = FirebaseDatabase.getInstance().getReference().child("PIs").child("123");
+        //PiReference.setValue(new PI(plant.getName(),plant.getOwnerID(),"password"));
+
         notificationManager = NotificationManagerCompat.from(this);
 
         uniqueID = dbInsertPlant.checkUID();
@@ -224,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                         tempData+= " " + emojiSad + "\n";
                     }
                 }
-  //********************************************//             //*************************************//
+
                 else if(plants.get(i).getType().equals("Spider")){
                     if(moistureSmileySpider(plants.get(i))>=75){
                         tempData+= " " + emojiHappy + "\n";
@@ -288,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
                         tempData+= " " + emojiSad + "\n";
                     }
                 }
-    //********************************************//             //*************************************//
+
                 else if(plants.get(i).getType().equals("Spider")){
                     if(tempSmileySpider(plants.get(i))>=75){
                         tempData+= " " + emojiHappy + "\n";
@@ -701,22 +710,20 @@ public class MainActivity extends AppCompatActivity {
         //double FinalPercentage = 0.33*FinalMoisturePercentage + 0.33*FinalLightIntensityPercentage + 0.33*FinalTemperaturePercentage;   // weighting , all equal 1/3
         return 0.5*FinalMoisturePercentage + 0.5*FinalTemperaturePercentage;
     }
-//********************************************//             //*************************************//
-    protected double moistureSmileySpider(Plant givenPlant){       //specifically for Sansevieria
 
+    protected double moistureSmileySpider(Plant givenPlant){       //specifically for Sansevieria
         double FinalMoisturePercentage;
 
-        if (givenPlant.getMoisture() >= 767){
-            FinalMoisturePercentage = 100-((givenPlant.getMoisture()-512)*0.1953);      // 1023 pts (Dry) = 0%
-        }                                                                               // 512 pts = 100%
+        if (givenPlant.getMoisture() >= 256){
+            FinalMoisturePercentage = Math.abs(100-((givenPlant.getMoisture()-256)*0.1304));     // 1023 pts (Dry) = 0%
+        }                                                                                   // 256 pts = 100%
         else{
-            FinalMoisturePercentage = givenPlant.getMoisture() * 0.1953;                    // 0 pts = 0 %
+            FinalMoisturePercentage = 50 + (givenPlant.getMoisture() * 0.1953);             // 0 pts (wet)  = 50%
         }
 
         return FinalMoisturePercentage;
     }
 
-//********************************************//             //*************************************//
 
     protected double tempSmileySpider(Plant givenPlant){       //specifically for Sansevieria
 
