@@ -10,7 +10,6 @@ from plant.Sensors.sensor_controller import SensorController
 from plant.plant import Plant
 from ai.img_plant_controller import run_img_guessing
 
-# *Code
 class MainRun:
     def __init__(self):
         """
@@ -19,8 +18,9 @@ class MainRun:
         self.firebaseCOM = FirebasePlantCom(piID = "123")
 
         # setinng up listener for image of plant
-        self.imgUpdatePiIDPath = self.firebaseCOM.get_image_path_update()
-        self.imgPiIDPath = self.firebaseCOM.get_image_path()
+        self.imgUpdatePiIDPath = self.firebaseCOM.piPath + "/imgUpdate"
+        self.imgPiIDPath = self.firebaseCOM.piPath + "/Image"
+
         my_stream = self.firebaseCOM.db.child(self.imgUpdatePiIDPath).stream(self.stream_img_handler)
 
     # NOTE : NEW
@@ -28,11 +28,19 @@ class MainRun:
         """
         monitors the imgs that gets taken and activates a function when there is a change
         """
+        # Get the image data
         data = self.firebaseCOM.db.child(self.imgPiIDPath).get()
         base64Img =  data.val()
 
+        # Guess the plant
         plantType = run_img_guessing(base64Img)
-        print(plantType)
+        print("Plant guessed : ", plantType)
+
+        # write the type on firebase
+        self.firebaseCOM.db.child(self.firebaseCOM.piPath).update({"type": plantType})
+
+        # update imgUpdate
+        self.firebaseCOM.db.child(self.firebaseCOM.piPath).update({"imgUpdate": "true"})
 
     # * Code
     def main(self):

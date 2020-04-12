@@ -44,20 +44,15 @@ class FirebasePlantCom:
         self.piID = piID
         self.plantName = ""
         self.firebasePlantPath = "" # this is the path used to know where we want to update the plants data information
-        #
-    def get_image_path(self):
+
+        # img paths
+        self.piPath = "PIs/" + self.piID
+
+    def get_user_path(self):
         data = self.db.child("PIs/" + self.piID).get()
         userID = data.val()["ownerID"]
 
-        path = "Users/" + userID + "/ImageImageImage"
-
-        return path
-
-    def get_image_path_update(self):
-        data = self.db.child("PIs/" + self.piID).get()
-        userID = data.val()["ownerID"]
-
-        path = "Users/" + userID + "/imgUpdate"
+        path = "Users/" + userID
 
         return path
 
