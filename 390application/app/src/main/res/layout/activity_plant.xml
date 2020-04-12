@@ -25,7 +25,7 @@
 
     <TextView
         android:id="@+id/idealCondition"
-        android:layout_width="wrap_content"
+        android:layout_width="266dp"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="false"
         android:layout_alignTop="@id/plantImage"
@@ -39,7 +39,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/design_default_color_primary_dark"
         android:textColorHighlight="#673AB7"
-        android:textSize="24sp" />
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/speciality"
@@ -51,7 +51,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="9dp"
         android:layout_marginLeft="-6dp"
-        android:layout_marginTop="169dp"
+        android:layout_marginTop="192dp"
         android:fontFamily="casual"
         android:text="My Personality"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -102,7 +102,7 @@
         android:fontFamily="sans-serif-light"
         android:text="plant info"
         android:textColor="#000000"
-        android:textSize="18sp"
+        android:textSize="15sp"
         app:autoSizeTextType="none" />
 
     <TextView
