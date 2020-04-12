@@ -1,19 +1,26 @@
 package com.example.a390application;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationCompat.Action;
@@ -26,8 +33,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private NotificationManagerCompat notificationManager;
     public static final String CHANNEL_1_ID =  "channel1";
     protected Button linkPiButton;
+    protected FloatingActionButton findType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +65,23 @@ public class MainActivity extends AppCompatActivity {
         //PiReference.setValue(new PI(plant.getName(),plant.getOwnerID(),"password"));
 
         notificationManager = NotificationManagerCompat.from(this);
+
+        findType = findViewById(R.id.takeImage);
+
+        findType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
+                //onLaunchCamera();
+
+                DetectPlantTypeDialogFragment dialog = new DetectPlantTypeDialogFragment();
+                dialog.ownerID = uniqueID;
+
+                dialog.show(getSupportFragmentManager(), "LinkPiDialogFragment");
+
+            }
+        });
 
         uniqueID = dbInsertPlant.checkUID();
         //Toast.makeText(getApplicationContext(), uniqueID, Toast.LENGTH_SHORT).show();
