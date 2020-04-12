@@ -152,6 +152,16 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
                         .child(givenPiId)
                         .child("Image");
                 ref.setValue(imageEncoded);
+                ref = FirebaseDatabase.getInstance()
+                        .getReference().child("PIs")
+                        .child(givenPiId)
+                        .child("imgUpdate");
+                ref.setValue("false");
+                ref = FirebaseDatabase.getInstance()
+                        .getReference().child("PIs")
+                        .child(givenPiId)
+                        .child("type");
+                ref.setValue("N/A");
                 Toast.makeText(getActivity(), "Done! Please wait for the response.", Toast.LENGTH_SHORT).show();
 
                 try {
