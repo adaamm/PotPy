@@ -5,13 +5,17 @@ public class PI {
     private String PlantName;
     private String OwnerID;
     private String Password;
+    private String imgUpdate;
+    private String image;
 
 
 
-    public PI(String PlantName, String id, String pw) {
+    public PI(String PlantName, String id, String pw, String imgu, String img) {
         this.PlantName = PlantName;
         OwnerID = id;
         Password = pw;
+        imgUpdate = imgu;
+        image = img;
     }
 
 
@@ -37,5 +41,21 @@ public class PI {
 
     public void setPassword(String password) {
         Password = password;
+    }
+
+    public String getImgUpdate() {
+        return imgUpdate;
+    }
+
+    public void setImgUpdate(String imgUpdate) {
+        this.imgUpdate = imgUpdate;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

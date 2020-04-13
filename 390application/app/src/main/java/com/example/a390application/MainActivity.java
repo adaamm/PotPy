@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    
+
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
                 tempData+= "N/A" + "\n";
             }
             else{
-                tempData+= String.format("%.1f",plants.get(i).getMoisture());
+                tempData+= String.format("%.0f",plants.get(i).getMoisture());
                 if(plants.get(i).getType().equals("Devil's Ivy")){
                     if(moistureSmileyDevilsIvy(plants.get(i))>=75){
                         tempData+= " " + emojiHappy + "\n";
@@ -278,12 +278,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            tempData+= "Light Intensity: ";
+            tempData+= "UV Index: ";
             if(plants.get(i).getLightIntensity() <= -10000){
                 tempData+= "N/A" + "\n";
             }
             else{
-                tempData+= String.format("%.1f",plants.get(i).getLightIntensity()) + "\n";
+                tempData+= String.format("%.0f",plants.get(i).getLightIntensity());
                 if(plants.get(i).getType().equals("Devil's Ivy")){
                     if(lightintensitySmileyDevilsIvy(plants.get(i))>=75){
                         tempData+= " " + emojiHappy + "\n";
@@ -392,14 +392,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            tempData+= "Humidity: ";
-
-            if(plants.get(i).getHumidity() <= -10000){
-                tempData+= "N/A" + "\n";
-            }
-            else{
-                tempData+= String.format("%.1f",plants.get(i).getHumidity()) + "\n";
-            }
+//            tempData+= "Humidity: ";
+//
+//            if(plants.get(i).getHumidity() <= -10000){
+//                tempData+= "N/A" + "\n";
+//            }
+//            else{
+//                tempData+= String.format("%.f",plants.get(i).getHumidity()) + "\n";
+//            }
             //tempData+= "Test: ";
             //tempData+= plants.get(i).getTest() + "\n";
 
@@ -416,6 +416,8 @@ public class MainActivity extends AppCompatActivity {
                         notificationBuilder.setSmallIcon(R.drawable.alert);
                         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.devilivy));
                         notificationBuilder.setContentTitle(plants.get(i).getName() + " needs your attention!");
+                        notificationBuilder.setOnlyAlertOnce(true);
+                        notificationBuilder.setOngoing(false);
                         //.setContentTitle("Test")
                         notificationBuilder.setContentText("Your plant's health is lower than 50%!");
                         notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
@@ -456,6 +458,8 @@ public class MainActivity extends AppCompatActivity {
                         //.setContentTitle("Test")
                         notificationBuilder.setContentText("Your plant's health is lower than 50%!");
                         notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+                        notificationBuilder.setOnlyAlertOnce(true);
+                        notificationBuilder.setOngoing(false);
                         //notificationBuilder.setDefaults(
                         //Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
                         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -496,6 +500,8 @@ public class MainActivity extends AppCompatActivity {
                         //.setContentTitle("Test")
                         notificationBuilder.setContentText("Your plant's health is lower than 50%!");
                         notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+                        notificationBuilder.setOnlyAlertOnce(true);
+                        notificationBuilder.setOngoing(false);
                         //notificationBuilder.setDefaults(
                         //Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
                         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -535,6 +541,8 @@ public class MainActivity extends AppCompatActivity {
                         //.setContentTitle("Test")
                         notificationBuilder.setContentText("Your plant's health is lower than 50%!");
                         notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+                        notificationBuilder.setOnlyAlertOnce(true);
+                        notificationBuilder.setOngoing(false);
                         //notificationBuilder.setDefaults(
                         //Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
                         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -608,7 +616,7 @@ public class MainActivity extends AppCompatActivity {
         else{
             FinalMoisturePercentage = givenPlant.getMoisture() * 0.1304;                    // 0 pts = 0 %
         }
-		
+
 		if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
             FinalLightIntensityPercentage = 0;}
         else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
@@ -659,7 +667,7 @@ public class MainActivity extends AppCompatActivity {
 
         return FinalTemperaturePercentage;
     }
-	
+
 	protected double lightintensitySmileySansevieria(Plant givenPlant){
 
         double FinalLightIntensityPercentage;
@@ -705,7 +713,7 @@ public class MainActivity extends AppCompatActivity {
         else{
             FinalMoisturePercentage = 50 + (givenPlant.getMoisture() * 0.1953);             // 0 pts (wet)  = 50%
         }
-		
+
         if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
             FinalLightIntensityPercentage = 0;}
         else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
@@ -753,7 +761,7 @@ public class MainActivity extends AppCompatActivity {
 
         return FinalTemperaturePercentage;
     }
-	
+
 	protected double lightintensitySmileyEnglishIvy(Plant givenPlant){
 
         double FinalLightIntensityPercentage;
@@ -796,7 +804,7 @@ public class MainActivity extends AppCompatActivity {
         else{
             FinalMoisturePercentage = givenPlant.getMoisture() * 0.1953;                // 0 pts (wet) = 0%
         }
-		
+
 		if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
             FinalLightIntensityPercentage = 0;}
         else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
@@ -843,7 +851,7 @@ public class MainActivity extends AppCompatActivity {
 
         return FinalTemperaturePercentage;
     }
-	
+
 	protected double lightintensitySmileyDevilsIvy(Plant givenPlant){
 
         double FinalLightIntensityPercentage;
@@ -864,7 +872,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return FinalLightIntensityPercentage;
     }
-	
+
     //********************************************//             //*************************************//
     protected double healthBarAlgoSpider(Plant givenPlant){       //specifically for English Ivy/Ivy String
 
@@ -889,7 +897,7 @@ public class MainActivity extends AppCompatActivity {
         else{
             FinalMoisturePercentage = 50 + (givenPlant.getMoisture() * 0.1953);             // 0 pts (wet)  = 50%
         }
-		
+
 		if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
             FinalLightIntensityPercentage = 0;}
         else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
@@ -936,7 +944,7 @@ public class MainActivity extends AppCompatActivity {
 
         return FinalTemperaturePercentage;
     }
-	
+
 	protected double lightintensitySmileySpider(Plant givenPlant){
 
         double FinalLightIntensityPercentage;

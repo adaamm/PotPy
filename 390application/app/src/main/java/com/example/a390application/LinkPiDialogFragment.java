@@ -58,7 +58,7 @@ public class LinkPiDialogFragment extends DialogFragment implements AdapterView.
         plantOptionsSpinner.setOnItemSelectedListener(this);
 
         note = view.findViewById(R.id.note);
-        note.setText("Please Note: \nIf all the sensors of the Raspberry PI you are linking are already in use, the oldest link will be removed and will be replaced by this new link.");
+        note.setText("Please Note: \n\n-If the Potpy reaches its maximum plant monitoring capacity then the oldest plant won't be monitored anymore and will be replaced by this new one.\n\n-Adding a plant that's already being monitored won't make a change.");
 
         Button linkButton = view.findViewById(R.id.linkButton);
         Button cancelPlantButton = view.findViewById(R.id.cancelButton);
@@ -142,6 +142,6 @@ public class LinkPiDialogFragment extends DialogFragment implements AdapterView.
 
     private void linkPlant(Plant givenPlant, String PiId, String password) {
         DatabaseReference PiReference = FirebaseDatabase.getInstance().getReference().child("PIs").child(PiId);
-        PiReference.setValue(new PI(givenPlant.getName(),givenPlant.getOwnerID(),password));
+        PiReference.setValue(new PI(givenPlant.getName(),givenPlant.getOwnerID(),password,"true","N/A"));
     }
 }
