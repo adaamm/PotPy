@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
                 tempData+= "N/A" + "\n";
             }
             else{
-                tempData+= String.format("%.0f",plants.get(i).getMoisture());
+                tempData+= String.format("%.0f",plants.get(i).getMoisture()) + " units";
                 if(plants.get(i).getType().equals("Devil's Ivy")){
                     if(moistureSmileyDevilsIvy(plants.get(i))>=75){
                         tempData+= " " + emojiHappy + "\n";
@@ -340,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
                 tempData+= "N/A" + "\n";
             }
             else{
-                tempData+= String.format("%.1f",plants.get(i).getTemperature());
+                tempData+= String.format("%.1f",plants.get(i).getTemperature()) + " °C";
                 if(plants.get(i).getType().equals("Devil's Ivy")){
                     if(tempSmileyDevilsIvy(plants.get(i))>=75){
                         tempData+= " " + emojiHappy + "\n";
