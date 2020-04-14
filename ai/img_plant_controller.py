@@ -22,8 +22,10 @@ def decode_image(base64_image):
 
 def image_loader(image_name):
     """load image, returns cuda tensor"""
-    imsize = 256
-    loader = transforms.Compose([transforms.Scale(imsize), transforms.ToTensor()])
+    imsize = 224
+    loader = transforms.Compose([transforms.Resize([224, 224]),
+                                      transforms.ToTensor(),
+                                      ])
     image = Image.open(image_name)
     image = loader(image).float()
     image = Variable(image)
@@ -31,9 +33,12 @@ def image_loader(image_name):
     return image.cpu()  # assumes that you're using GPU
 
 def guess_type(image_path, model_path, trainloader):
+    to_pil = transforms.ToPILImage()
     image = image_loader(image_path)
+    image = to_pil(image)
     model = model_path
     out = model(image)
+    model.eval()
     index = out.data.cpu().numpy().argmax()
     return trainloader.dataset.classes[index]
 
@@ -58,6 +63,8 @@ def run_img_guessing(base64_image):
 
     imgFilePath = decode_image(base64_image)
     model = torch.load(modelPath)
+    model.eval()
+   
     plantName = guess_type(imgFilePath, model, trainloader)
 
     return plantName
