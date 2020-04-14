@@ -34,13 +34,10 @@ def guess_type(image_path, model_path, trainloader):
     to_pil = transforms.ToPILImage()
     image = image_loader(image_path)
     image = to_pil(image)
-    test_transforms = transforms.Compose([transforms.Resize([224, 224]),
-                                      transforms.ToTensor(),
-                                      ])
     model = model_path
-    image_tensor = test_transforms(image).float()
     image_tensor = image.tensor.unsqueeze_(0)
     input = Variable(image_tensor)
+    input = input.to("cpu")
     out = model(image_tensor)
     index = out.data.cpu().numpy().argmax()
     return trainloader.dataset.classes[index]
