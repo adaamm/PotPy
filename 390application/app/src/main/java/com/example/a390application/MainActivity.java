@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
                 tempData+= "N/A" + "\n";
             }
             else{
-                tempData+= String.format("%.0f",plants.get(i).getMoisture()) + " units";
+                tempData+= String.format("%.0f",(1023-plants.get(i).getMoisture())) + " units";
                 if(plants.get(i).getType().equals("Devil's Ivy")){
                     if(moistureSmileyDevilsIvy(plants.get(i))>=75){
                         tempData+= " " + emojiHappy + "\n";
@@ -610,11 +610,11 @@ public class MainActivity extends AppCompatActivity {
             FinalTemperaturePercentage = givenPlant.getTemperature() * 4.3478;              // 0 deg C = 0%
         }
 
-        if (givenPlant.getMoisture() >= 767){
-            FinalMoisturePercentage = 100-((givenPlant.getMoisture()-767)*0.1953);          // 1023 pts = 50%
+        if ((1023-givenPlant.getMoisture()) >= 767){
+            FinalMoisturePercentage = 100-(((1023-givenPlant.getMoisture())-767)*0.1953);          // 1023 pts = 50%
         }                                                                                   // 767 pts = 100%
         else{
-            FinalMoisturePercentage = givenPlant.getMoisture() * 0.1304;                    // 0 pts = 0 %
+            FinalMoisturePercentage = (1023-givenPlant.getMoisture()) * 0.1304;                    // 0 pts = 0 %
         }
 
 		if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
@@ -640,11 +640,11 @@ public class MainActivity extends AppCompatActivity {
 
         double FinalMoisturePercentage;
 
-        if (givenPlant.getMoisture() >= 767){
-            FinalMoisturePercentage = 100-((givenPlant.getMoisture()-767)*0.1953);          // 1023 pts = 50%
+        if ((1023-givenPlant.getMoisture()) >= 767){
+            FinalMoisturePercentage = 100-(((1023-givenPlant.getMoisture())-767)*0.1953);          // 1023 pts = 50%
         }                                                                                   // 767 pts = 100%
         else{
-            FinalMoisturePercentage = givenPlant.getMoisture() * 0.1304;                    // 0 pts = 0 %
+            FinalMoisturePercentage = (1023-givenPlant.getMoisture()) * 0.1304;                    // 0 pts = 0 %
         }
 
         return FinalMoisturePercentage;
@@ -707,11 +707,11 @@ public class MainActivity extends AppCompatActivity {
             FinalTemperaturePercentage = 50+(givenPlant.getTemperature() * 2.5);            // -20deg C = 0%
         }
 
-        if (givenPlant.getMoisture() >= 256){
-            FinalMoisturePercentage = Math.abs(100-((givenPlant.getMoisture()-256)*0.1304));     // 1023 pts (Dry) = 0%
+        if ((1023-givenPlant.getMoisture()) >= 256){
+            FinalMoisturePercentage = Math.abs(100-(((1023-givenPlant.getMoisture())-256)*0.1304));     // 1023 pts (Dry) = 0%
         }                                                                                   // 256 pts = 100%
         else{
-            FinalMoisturePercentage = 50 + (givenPlant.getMoisture() * 0.1953);             // 0 pts (wet)  = 50%
+            FinalMoisturePercentage = 50 + ((1023-givenPlant.getMoisture()) * 0.1953);             // 0 pts (wet)  = 50%
         }
 
         if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
@@ -738,11 +738,11 @@ public class MainActivity extends AppCompatActivity {
 
         double FinalMoisturePercentage;
 
-        if (givenPlant.getMoisture() >= 256){
-            FinalMoisturePercentage = Math.abs(100-((givenPlant.getMoisture()-256)*0.1304));     // 1023 pts (Dry) = 0%
+        if ((1023-givenPlant.getMoisture()) >= 256){
+            FinalMoisturePercentage = Math.abs(100-(((1023-givenPlant.getMoisture())-256)*0.1304));     // 1023 pts (Dry) = 0%
         }                                                                                   // 256 pts = 100%
         else{
-            FinalMoisturePercentage = 50 + (givenPlant.getMoisture() * 0.1953);             // 0 pts (wet)  = 50%
+            FinalMoisturePercentage = 50 + ((1023-givenPlant.getMoisture()) * 0.1953);             // 0 pts (wet)  = 50%
         }
 
         return FinalMoisturePercentage;
@@ -798,11 +798,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        if (givenPlant.getMoisture() >= 512){
-            FinalMoisturePercentage = 100-((givenPlant.getMoisture()-512)*0.1953);      // 1023 pts (Dry) = 0%
+        if ((1023-givenPlant.getMoisture()) >= 512){
+            FinalMoisturePercentage = 100-(((1023-givenPlant.getMoisture())-512)*0.1953);      // 1023 pts (Dry) = 0%
         }                                                                               // 512 pts = 100%
         else{
-            FinalMoisturePercentage = givenPlant.getMoisture() * 0.1953;                // 0 pts (wet) = 0%
+            FinalMoisturePercentage = (1023-givenPlant.getMoisture()) * 0.1953;                // 0 pts (wet) = 0%
         }
 
 		if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
@@ -828,11 +828,11 @@ public class MainActivity extends AppCompatActivity {
 
         double FinalMoisturePercentage;
 
-        if (givenPlant.getMoisture() >= 512){
-            FinalMoisturePercentage = 100-((givenPlant.getMoisture()-512)*0.1953);      // 1023 pts (Dry) = 0%
+        if ((1023-givenPlant.getMoisture()) >= 512){
+            FinalMoisturePercentage = 100-(((1023-givenPlant.getMoisture())-512)*0.1953);      // 1023 pts (Dry) = 0%
         }                                                                               // 512 pts = 100%
         else{
-            FinalMoisturePercentage = givenPlant.getMoisture() * 0.1953;                // 0 pts (wet) = 0%
+            FinalMoisturePercentage = (1023-givenPlant.getMoisture()) * 0.1953;                // 0 pts (wet) = 0%
         }
 
         return FinalMoisturePercentage;
@@ -844,7 +844,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (givenPlant.getTemperature() >= 23){
             FinalTemperaturePercentage = 100-((givenPlant.getTemperature()-23)*4.3478);     // 46 deg C = 0%
-        }                                                                                   // 23 deg C = 100%
+        }                                                                                  // 23 deg C = 100%
         else{
             FinalTemperaturePercentage = givenPlant.getTemperature() * 4.3478;              // 0 deg C = 0%
         }
@@ -891,11 +891,11 @@ public class MainActivity extends AppCompatActivity {
             FinalTemperaturePercentage = givenPlant.getTemperature() * 4.3478;              // 0 deg C = 0%
         }
 
-        if (givenPlant.getMoisture() >= 256){
-            FinalMoisturePercentage = Math.abs(100-((givenPlant.getMoisture()-256)*0.1304));     // 1023 pts (Dry) = 0%
+        if ((1023-givenPlant.getMoisture()) >= 256){
+            FinalMoisturePercentage = Math.abs(100-(((1023-givenPlant.getMoisture())-256)*0.1304));     // 1023 pts (Dry) = 0%
         }                                                                                   // 256 pts = 100%
         else{
-            FinalMoisturePercentage = 50 + (givenPlant.getMoisture() * 0.1953);             // 0 pts (wet)  = 50%
+            FinalMoisturePercentage = 50 + ((1023-givenPlant.getMoisture()) * 0.1953);             // 0 pts (wet)  = 50%
         }
 
 		if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
@@ -920,11 +920,11 @@ public class MainActivity extends AppCompatActivity {
     protected double moistureSmileySpider(Plant givenPlant){       //specifically for Sansevieria
         double FinalMoisturePercentage;
 
-        if (givenPlant.getMoisture() >= 256){
-            FinalMoisturePercentage = Math.abs(100-((givenPlant.getMoisture()-256)*0.1304));     // 1023 pts (Dry) = 0%
+        if ((1023-givenPlant.getMoisture()) >= 256){
+            FinalMoisturePercentage = Math.abs(100-(((1023-givenPlant.getMoisture())-256)*0.1304));     // 1023 pts (Dry) = 0%
         }                                                                                   // 256 pts = 100%
         else{
-            FinalMoisturePercentage = 50 + (givenPlant.getMoisture() * 0.1953);             // 0 pts (wet)  = 50%
+            FinalMoisturePercentage = 50 + ((1023-givenPlant.getMoisture()) * 0.1953);             // 0 pts (wet)  = 50%
         }
 
         return FinalMoisturePercentage;
