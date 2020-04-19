@@ -1,40 +1,27 @@
 package com.example.a390application;
 
-import android.app.Notification;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
 import com.example.a390application.InsertPlant.InsertPlant;
 import com.example.a390application.InsertPlant.Plant;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 
+//This plant will load the appropriate page associated with the type of the plant which was pressed by the user in the main page.
+//Also, a button used to remove the plant from both the App & Firebase is included in the page.
 public class inspectPlantActivity extends AppCompatActivity {
 
     protected TextView plantsTitle;
     protected TextView plantsType;
     protected TextView plantsInfo;
     protected TextView plantsInfo2;
-
     protected Button deletePlantButton;
     protected Bundle bundle = new Bundle();
     protected long givenID;
@@ -51,7 +38,7 @@ public class inspectPlantActivity extends AppCompatActivity {
         setContentView(R.layout.activity_plant);
 
 
-        //The plant picked in the list
+        //The plant picked in the list.
         Intent intent = getIntent();
         givenID = intent.getLongExtra("plantID", 0);
         userID = intent.getStringExtra("userID");
@@ -68,14 +55,11 @@ public class inspectPlantActivity extends AppCompatActivity {
             }
         }
 
-
         plantsTitle = findViewById(R.id.plantName);
         plantsType = findViewById(R.id.plantType);
         plantsInfo = findViewById(R.id.plantInfo);
         plantsInfo2 = findViewById(R.id.plantInfo2);
         plantImage = findViewById(R.id.plantImage);
-
-
 
 
         plantsTitle.setText(givenPlant.getName());
@@ -135,38 +119,43 @@ public class inspectPlantActivity extends AppCompatActivity {
 
         switch (plantType) {
             case "Devil's Ivy": {
-                plantsInfo2.setText("Hi! I am " + givenPlant.getName() + ". I love to grow and grow and grow -" +
+                String info = "Hi! I am " + givenPlant.getName() + ". I love to grow and grow and grow -" +
                         " but I am also relatively low-maintenance, so I won’t eat up too much space in your diary. " +
                         "Simply pop me in a spot that receives indirect sunlight (although I will do just fine by a shady " +
                         "window), water me when the soil’s dry and voila! Did I mention my trailing vines are pros at " +
-                        "removing pollutants like benzene, trichloroethylene, xylene and formaldehyde from the air, too?");
+                        "removing pollutants like benzene, trichloroethylene, xylene and formaldehyde from the air, too?";
+                plantsInfo2.setText(info);
                 break;
             }
             case "Sansevieria": {
-                plantsInfo2.setText("Hi! I am " + givenPlant.getName() + ". I am virtually indestructible. " +
+                String info = "Hi! I am " + givenPlant.getName() + ". I am virtually indestructible. " +
                         "I grow in any light level, including those shadowy corners indoors just begging for some " +
                         "greenery. There’s just one tricky aspect to taking care of me, and that’s knowing how often " +
                         "to water me. The short answer is to water me only when the soil is almost thoroughly dry. " +
-                        "Even then, it won’t hurt to wait another few days, especially if you overwatered me by accident.");
+                        "Even then, it won’t hurt to wait another few days, especially if you overwatered me by accident.";
+                plantsInfo2.setText(info);
                 break;
             }
             case "English Ivy": {
-                plantsInfo2.setText("Hi! I am " + givenPlant.getName() + ". I am a superb climber, "
+                String info = "Hi! I am " + givenPlant.getName() + ". I am a superb climber, "
                         + "clinging to almost any surface by means of small roots that grow along my stems. "
                         + "Taking care of me is a snap, so you can plant me in distant and hard-to-reach areas "
-                        + "without worrying about my maintenance.");
+                        + "without worrying about my maintenance.";
+                plantsInfo2.setText(info);
                 break;
             }
             case "Spider": {
-                plantsInfo2.setText("Hi! I am " + givenPlant.getName() + ". I am an easy-to-grow houseplants that " +
+                String info = "Hi! I am " + givenPlant.getName() + ". I am an easy-to-grow houseplants that " +
                         "looks especially nice in a hanging basket. During the summer, I produce tiny white flowers " +
                         "on long stems, as well as babies called “pups.” The pups look like tiny spiders, hence my name!" +
-                        " I was once highlighted by NASA for my air-purifying ability. There you go! We have now been introduced.");
+                        " I was once highlighted by NASA for my air-purifying ability. There you go! We have now been introduced.";
+                plantsInfo2.setText(info);
             }
             default:
                 break;
         }
 
+        //Fetches the ideal values (moisture/Lighting/Temperature/Humidity) of the plant depending on its type.
         plantInfo =
                 "Moisture: " + fetchIdealMoisture(plantType) + "\nLight: " +
                         fetchIdealLightingLevel(plantType) + "\nTemperature: "
@@ -180,12 +169,7 @@ public class inspectPlantActivity extends AppCompatActivity {
 
         deletePlantButton = findViewById(R.id.deletePlant);
 
-
-
-
-
-
-
+        //This button will remove the plant from both the App & Firebase when pressed.
         deletePlantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,7 +189,6 @@ public class inspectPlantActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //loadPlantListView(givenID);
     }
 
     @Override
@@ -223,6 +206,7 @@ public class inspectPlantActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    //Fetches the ideal moisture value depending on the plant type.
     public String fetchIdealMoisture(String type) {
         String idealMoisture = "Not Defined";
         switch (type) {
@@ -243,6 +227,7 @@ public class inspectPlantActivity extends AppCompatActivity {
 
     }
 
+    //Fetches the ideal humidity value depending on the plant type.
     public String fetchIdealHumidity(String type) {
         String idealHumidty = "Not Defined";
         switch (type) {
@@ -262,6 +247,7 @@ public class inspectPlantActivity extends AppCompatActivity {
         return idealHumidty;
     }
 
+    //Fetches the ideal lighting value depending on the plant type.
     public String fetchIdealLightingLevel(String type) {
         String idealLight = "Not Defined";
         switch (type) {
@@ -281,6 +267,7 @@ public class inspectPlantActivity extends AppCompatActivity {
         return idealLight;
     }
 
+    //Fetches the ideal Temperature value depending on the plant type.
     public String fetchIdealTemperature(String type) {
         String idealTemperature = "Not Defined";
         switch (type) {

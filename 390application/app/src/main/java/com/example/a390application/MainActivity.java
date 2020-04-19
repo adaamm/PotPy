@@ -1,43 +1,25 @@
 package com.example.a390application;
 
-import android.app.Activity;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationCompat.Action;
-import androidx.core.app.NotificationCompat.InboxStyle;
 import androidx.core.app.NotificationManagerCompat;
 import com.example.a390application.InsertPlant.InsertPlant;
-import com.example.a390application.InsertPlant.PI;
 import com.example.a390application.InsertPlant.Plant;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,43 +31,41 @@ public class MainActivity extends AppCompatActivity {
     protected InsertPlant dbInsertPlant = new InsertPlant(this );
     protected String uniqueID;
     private NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,CHANNEL_1_ID);
-    private NotificationManagerCompat notificationManager;
     public static final String CHANNEL_1_ID =  "channel1";
     protected Button linkPiButton;
     protected FloatingActionButton findType;
+    //private NotificationManagerCompat notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*USED TO CREATE A NEW PI ID*/
+        /*USED TO CREATE A NEW PI ID IN FIREBASE*/
         //Plant plant = new Plant("DEFAULT","Spider","DEFAULT");
         //DatabaseReference PiReference = FirebaseDatabase.getInstance().getReference().child("PIs").child("123");
         //PiReference.setValue(new PI(plant.getName(),plant.getOwnerID(),"password"));
 
-        notificationManager = NotificationManagerCompat.from(this);
+        //notificationManager = NotificationManagerCompat.from(this);
 
         findType = findViewById(R.id.takeImage);
 
+        //Sends the user to the dialog fragment that will handle the request.
         findType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
-                //onLaunchCamera();
-
                 DetectPlantTypeDialogFragment dialog = new DetectPlantTypeDialogFragment();
                 dialog.ownerID = uniqueID;
 
-                dialog.show(getSupportFragmentManager(), "LinkPiDialogFragment");
+                dialog.show(getSupportFragmentManager(), "DetectTypeDialogFragment");
 
             }
         });
 
         uniqueID = dbInsertPlant.checkUID();
-        //Toast.makeText(getApplicationContext(), uniqueID, Toast.LENGTH_SHORT).show();
 
+        //Here, the app will update the plant's readings on the app whenever a change is detected in Firebase in their appropriate sections.
         new DatabaseHelper(uniqueID).readPlants(new DatabaseHelper.DataStatus() {
             @Override
             public void DataLoaded(List<Plant> plantData) {
@@ -93,11 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
 
                 for(int i = 0; i < plantData.size(); i++){
-
-                    //FOR TESTING
-                    //String checkData = plantData.get(i).getName() + " " + plantData.get(i).getType() + " " + plantData.get(i).getMoisture() + " " + plantData.get(i).getPh();
-                    //Toast.makeText(getApplicationContext(), checkData, Toast.LENGTH_SHORT).show();
-
                     dbInsertPlant.modifyPlant(plantData.get(i));
                 }
 
@@ -111,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         linkPiButton = findViewById(R.id.linkPiButton);
 
+        //Sends the user to the dialog fragment that will handle the request.
         linkPiButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -122,12 +98,6 @@ public class MainActivity extends AppCompatActivity {
                 for(int i = 0; i < plants.size(); i++) {
                     getCurrentPlants.add(plants.get(i).getName());
                 }
-
-                //Bundle sendDataToDialog = new Bundle();
-
-                //sendDataToDialog.putStringArrayList("currentPlants", currentPlants);
-
-                //.setArguments(args);
                 LinkPiDialogFragment dialog = new LinkPiDialogFragment();
                 dialog.ownerID = uniqueID;
                 dialog.currentPlants = getCurrentPlants;
@@ -141,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
         loadListView();
 
+        //Sends the user to the dialog fragment that will handle the request.
         addPlantFloatingButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -151,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //This portion will send the user to the page that concerns the plant he/she pressed on in the Listview.
         plantsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -161,27 +133,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
+        // Create the NotificationChannel, but only on API 26+ because the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //CharSequence name = getString(R.string.channel_name);
-            //String description = getString(R.string.channel_description);
-            //int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel1 = new NotificationChannel(CHANNEL_1_ID, "Channel 1", NotificationManager.IMPORTANCE_HIGH); // Importance High makes a sound and appears as a heads-up notif
+            // Importance High makes the notification appear as a heads-up notif.
+            NotificationChannel channel1 = new NotificationChannel(CHANNEL_1_ID, "Channel 1", NotificationManager.IMPORTANCE_HIGH);
 
-            //*******************************ADDED THIS LINE TO STOP THE CREEPY SOUND THAT COMES EVERY TIME A NOTIF IS DISPLAYED********************
+            //A muted notification.
             channel1.setSound(null,null);
 
             channel1.setDescription("This is channel 1");
 
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
+            // Register the channel with the system; you can't change the importance or other notification behaviors after this.
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel1);
         }
     }
 
+    //This method will send the user to the page that concerns the plant he/she pressed on in the Listview.
     protected void goToChild(long id, String user){
         Intent intent = new Intent(this, inspectPlantActivity.class);
 
@@ -190,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //This method updates the plants and their data in the Listview on the main page.
     protected void loadListView(){
 
         plants = dbInsertPlant.getAllPlants();
@@ -220,14 +190,21 @@ public class MainActivity extends AppCompatActivity {
 
 
             tempTitle += plants.get(i).getName();
+
             tempData+= "Type: ";
             tempData+= plants.get(i).getType() + "\n";
+
             tempData+= "Moisture: ";
+
+            //If no value was collected yet, 'N/A' will be displayed.
             if(plants.get(i).getMoisture() <= -10000){
                 tempData+= "N/A" + "\n";
             }
             else{
+                //Formats the data to have no decimals.
                 tempData+= String.format("%.0f",(1023-plants.get(i).getMoisture())) + " units";
+
+                //Depending on the plant type, a different criteria is used to detect how close are the data we collected to the desired values that the plant prefers.
                 if(plants.get(i).getType().equals("Devil's Ivy")){
                     if(moistureSmileyDevilsIvy(plants.get(i))>=75){
                         tempData+= " " + emojiHappy + "\n";
@@ -273,17 +250,19 @@ public class MainActivity extends AppCompatActivity {
                         tempData+= " " + emojiSad + "\n";
                     }
                 }
-                else{
-
-                }
             }
 
             tempData+= "UV Index: ";
+
+            //If no value was collected yet, 'N/A' will be displayed.
             if(plants.get(i).getLightIntensity() <= -10000){
                 tempData+= "N/A" + "\n";
             }
             else{
+                //Formats the data to have no decimals.
                 tempData+= String.format("%.0f",plants.get(i).getLightIntensity());
+
+                //Depending on the plant type, a different criteria is used to detect how close are the data we collected to the desired values that the plant prefers.
                 if(plants.get(i).getType().equals("Devil's Ivy")){
                     if(lightintensitySmileyDevilsIvy(plants.get(i))>=75){
                         tempData+= " " + emojiHappy + "\n";
@@ -329,18 +308,19 @@ public class MainActivity extends AppCompatActivity {
                         tempData+= " " + emojiSad + "\n";
                     }
                 }
-
-                else{
-
-                }
             }
 
             tempData+= "Temperature: ";
+
+            //If no value was collected yet, 'N/A' will be displayed.
             if(plants.get(i).getTemperature() <= -10000){
                 tempData+= "N/A" + "\n";
             }
             else{
+                //Formats the data to have one decimal value.
                 tempData+= String.format("%.1f",plants.get(i).getTemperature()) + " °C";
+
+                //Depending on the plant type, a different criteria is used to detect how close are the data we collected to the desired values that the plant prefers.
                 if(plants.get(i).getType().equals("Devil's Ivy")){
                     if(tempSmileyDevilsIvy(plants.get(i))>=75){
                         tempData+= " " + emojiHappy + "\n";
@@ -386,58 +366,43 @@ public class MainActivity extends AppCompatActivity {
                         tempData+= " " + emojiSad + "\n";
                     }
                 }
-
-                else{
-
-                }
             }
 
-//            tempData+= "Humidity: ";
-//
-//            if(plants.get(i).getHumidity() <= -10000){
-//                tempData+= "N/A" + "\n";
-//            }
-//            else{
-//                tempData+= String.format("%.f",plants.get(i).getHumidity()) + "\n";
-//            }
-            //tempData+= "Test: ";
-            //tempData+= plants.get(i).getTest() + "\n";
-
-
             tempData+= "Health Percentage: ";
+
+            //Depending on the plant type, a different criteria is used to calculate the plant's health.
             switch (plants.get(i).getType()) {
                 case "Devil's Ivy": {
                     percentage = healthBarAlgoDevilsIvy(plants.get(i));
 
+                    //If the plant's health falls below 50%, notify the user as an intervention is necessary.
                     if (percentage < 50 && percentage >=0) {
-                        //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
-                        //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,CHANNEL_1_ID);
                         createNotificationChannel();
                         notificationBuilder.setSmallIcon(R.drawable.alert);
                         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.devilivy));
                         notificationBuilder.setContentTitle(plants.get(i).getName() + " needs your attention!");
                         notificationBuilder.setOnlyAlertOnce(true);
                         notificationBuilder.setOngoing(false);
-                        //.setContentTitle("Test")
                         notificationBuilder.setContentText("Your plant's health is lower than 50%!");
                         notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
-                        //notificationBuilder.setDefaults(
-                        //Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
                         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
                         //notificationId is a unique int for each notification that you must define
                         //4 and 5 is high and max importance respectively. Try 4 first
 
                         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                                 new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
-
                         notificationBuilder.setContentIntent(contentIntent);
                         notificationManager.notify(4, notificationBuilder.build());
                     }
 
+                    //If no value is collected yet, set the percentage as 0.
                     if(percentage < 0){
                         percentage = 0;
                     }
+
+                    //Formats the health data to have one decimal value.
                     tempData += String.format("%.1f", percentage) + "%\n";
 
                     tempImages = R.drawable.devilivy;
@@ -447,22 +412,18 @@ public class MainActivity extends AppCompatActivity {
                 case "Sansevieria": {
                     percentage = healthBarAlgoSansevieria(plants.get(i));
 
-                    //Notification sent when health reaches less than 50%.
+                    //If the plant's health falls below 50%, notify the user as an intervention is necessary.
                     if (percentage < 50 && percentage >=0) {
-                        //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
-                        // NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,CHANNEL_1_ID);
                         createNotificationChannel();
                         notificationBuilder.setSmallIcon(R.drawable.alert);
                         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.sanseivieria));
                         notificationBuilder.setContentTitle(plants.get(i).getName() + " needs your attention!");
-                        //.setContentTitle("Test")
                         notificationBuilder.setContentText("Your plant's health is lower than 50%!");
                         notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
                         notificationBuilder.setOnlyAlertOnce(true);
                         notificationBuilder.setOngoing(false);
-                        //notificationBuilder.setDefaults(
-                        //Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
                         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
                         //notificationId is a unique int for each notification that you must define
                         //4 and 5 is high and max importance respectively. Try 4 first
 
@@ -470,16 +431,15 @@ public class MainActivity extends AppCompatActivity {
                                 new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
                         notificationBuilder.setContentIntent(contentIntent);
-
                         notificationManager.notify(4, notificationBuilder.build());
-
-
                     }
 
+                    //If no value is collected yet, set the percentage as 0.
                     if(percentage < 0){
                         percentage = 0;
                     }
 
+                    //Formats the health data to have one decimal value.
                     tempData += String.format("%.1f", percentage) + "%\n";
 
                     tempImages = R.drawable.sanseivieria;
@@ -489,22 +449,18 @@ public class MainActivity extends AppCompatActivity {
                 case "English Ivy": {
                     percentage = healthBarAlgoEnglishIvy(plants.get(i));
 
-                    //Notification sent when health reaches less than 50%.
+                    //If the plant's health falls below 50%, notify the user as an intervention is necessary.
                     if (percentage < 50 && percentage >=0) {
-                        //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
-                        //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,CHANNEL_1_ID);
                         createNotificationChannel();
                         notificationBuilder.setSmallIcon(R.drawable.alert);
                         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.englishivy));
                         notificationBuilder.setContentTitle(plants.get(i).getName() + " needs your attention!");
-                        //.setContentTitle("Test")
                         notificationBuilder.setContentText("Your plant's health is lower than 50%!");
                         notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
                         notificationBuilder.setOnlyAlertOnce(true);
                         notificationBuilder.setOngoing(false);
-                        //notificationBuilder.setDefaults(
-                        //Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
                         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
                         //notificationId is a unique int for each notification that you must define
                         //4 and 5 is high and max importance respectively. Try 4 first
 
@@ -513,39 +469,35 @@ public class MainActivity extends AppCompatActivity {
 
 
                         notificationBuilder.setContentIntent(contentIntent);
-
                         notificationManager.notify(4, notificationBuilder.build());
                     }
 
+                    //If no value is collected yet, set the percentage as 0.
                     if(percentage < 0){
                         percentage = 0;
                     }
 
+                    //Formats the health data to have one decimal value.
                     tempData += String.format("%.1f", percentage) + "%\n";
 
                     tempImages = R.drawable.englishivy;
                     break;
                 }
-                //********************************************//             //*************************************//
                 case "Spider": {
                     percentage = healthBarAlgoSpider(plants.get(i));
 
-                    //Notification sent when health reaches less than 50%.
+                    //If the plant's health falls below 50%, notify the user as an intervention is necessary.
                     if (percentage < 50 && percentage >=0) {
-                        //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
-                        //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,CHANNEL_1_ID);
                         createNotificationChannel();
                         notificationBuilder.setSmallIcon(R.drawable.alert);
                         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.spider));
                         notificationBuilder.setContentTitle(plants.get(i).getName() + " needs your attention!");
-                        //.setContentTitle("Test")
                         notificationBuilder.setContentText("Your plant's health is lower than 50%!");
                         notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
                         notificationBuilder.setOnlyAlertOnce(true);
                         notificationBuilder.setOngoing(false);
-                        //notificationBuilder.setDefaults(
-                        //Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
                         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
                         //notificationId is a unique int for each notification that you must define
                         //4 and 5 is high and max importance respectively. Try 4 first
 
@@ -554,14 +506,15 @@ public class MainActivity extends AppCompatActivity {
 
 
                         notificationBuilder.setContentIntent(contentIntent);
-
                         notificationManager.notify(4, notificationBuilder.build());
                     }
 
+                    //If no value is collected yet, set the percentage as 0.
                     if(percentage < 0){
                         percentage = 0;
                     }
 
+                    //Formats the health data to have one decimal value.
                     tempData += String.format("%.1f", percentage) + "%\n";
 
                     tempImages = R.drawable.spider;
@@ -572,36 +525,35 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
+            //Store the values collected.
             plantTitles.add(tempTitle);
             plantImages.add(tempImages);
             plantData.add(tempData);
             plantPercents.add((int)percentage);
         }
 
+        //Lets the user keep track of how many plants there are on the app.
         if(plantCount == 1){
-            String temp = plantCount + " plant is being monitored.";
+            String temp = "You currently have " + plantCount + " plant.";
             plantNumber.setText(temp);
         }
         else{
-            String temp = plantCount + " plants are being monitored.";
+            String temp = "You currently have " + plantCount + " plants.";
             plantNumber.setText(temp);
         }
 
-
+        //Send the values collected to our custom Listview.
         CustomListView customListView = new CustomListView(this,plantTitles,plantData,plantImages,plantPercents);
 
         plantsListView.setAdapter(customListView);
     }
 
-    protected double healthBarAlgoSansevieria(Plant givenPlant){       //specifically for Sansevieria
+    //An algorithm is used here that calculates the health percentage of the plant, which is a criteria we use to find the overall status of the plant.
+    protected double healthBarAlgoSansevieria(Plant givenPlant){    //Specifically for Sansevieria
 
         double FinalTemperaturePercentage;
         double FinalMoisturePercentage;
         double FinalLightIntensityPercentage;
-
-
-        // Do all calculations and store in 'FinalPercentage'.
-        //givenPlant.getTemperature()' accesses temperature.
 
         if (givenPlant.getTemperature() >= 23){
             FinalTemperaturePercentage = 100-((givenPlant.getTemperature()-23)*4.3478);     // 46 deg C = 0%
@@ -611,8 +563,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if ((1023-givenPlant.getMoisture()) >= 767){
-            FinalMoisturePercentage = 100-(((1023-givenPlant.getMoisture())-767)*0.1953);          // 1023 pts = 50%
-        }                                                                                   // 767 pts = 100%
+            FinalMoisturePercentage = 100-(((1023-givenPlant.getMoisture())-767)*0.1953);           // 1023 pts = 50%
+        }                                                                                           // 767 pts = 100%
         else{
             FinalMoisturePercentage = (1023-givenPlant.getMoisture()) * 0.1304;                    // 0 pts = 0 %
         }
@@ -631,33 +583,28 @@ public class MainActivity extends AppCompatActivity {
             FinalLightIntensityPercentage = 0;
         }
 
-        // calculation final
-        //double FinalPercentage = 0.33*FinalMoisturePercentage + 0.33*FinalLightIntensityPercentage + 0.33*FinalTemperaturePercentage;   // weighting , all equal 1/3
         return 0.33*FinalMoisturePercentage + 0.33*FinalTemperaturePercentage + 0.33*FinalLightIntensityPercentage;
     }
 
-    protected double moistureSmileySansevieria(Plant givenPlant){       //specifically for Sansevieria
+    //An algorithm is used here that gives us an insight on how far is the moisture level of our plant from its desired value.
+    protected double moistureSmileySansevieria(Plant givenPlant){   //Specifically for Sansevieria
 
         double FinalMoisturePercentage;
 
         if ((1023-givenPlant.getMoisture()) >= 767){
-            FinalMoisturePercentage = 100-(((1023-givenPlant.getMoisture())-767)*0.1953);          // 1023 pts = 50%
-        }                                                                                   // 767 pts = 100%
+            FinalMoisturePercentage = 100-(((1023-givenPlant.getMoisture())-767)*0.1953);   // 1023 pts = 50%, 767 pts = 100% & 0 pts = 0 %
+        }
         else{
-            FinalMoisturePercentage = (1023-givenPlant.getMoisture()) * 0.1304;                    // 0 pts = 0 %
+            FinalMoisturePercentage = (1023-givenPlant.getMoisture()) * 0.1304;
         }
 
         return FinalMoisturePercentage;
     }
 
-    protected double tempSmileySansevieria(Plant givenPlant){       //specifically for Sansevieria
+    //An algorithm is used here that gives us an insight on how far is the temperature of our plant from its desired value.
+    protected double tempSmileySansevieria(Plant givenPlant){   //Specifically for Sansevieria
 
         double FinalTemperaturePercentage;
-
-
-        // Do all calculations and store in 'FinalPercentage'.
-        //givenPlant.getTemperature()' accesses temperature.
-
         if (givenPlant.getTemperature() >= 23){
             FinalTemperaturePercentage = 100-((givenPlant.getTemperature()-23)*4.3478);     // 46 deg C = 0%
         }                                                                                   // 23 deg C = 100%
@@ -668,13 +615,11 @@ public class MainActivity extends AppCompatActivity {
         return FinalTemperaturePercentage;
     }
 
+    //An algorithm is used here that gives us an insight on how far is the UV index of our plant from its desired value.
 	protected double lightintensitySmileySansevieria(Plant givenPlant){
 
         double FinalLightIntensityPercentage;
 
-
-        // Do all calculations and store in 'FinalPercentage'.
-        //givenPlant.getTemperature()' accesses temperature.
         if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
             FinalLightIntensityPercentage = 0;}
         else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
@@ -691,14 +636,12 @@ public class MainActivity extends AppCompatActivity {
         return FinalLightIntensityPercentage;
     }
 
+    //An algorithm is used here that calculates the health percentage of the plant, which is a criteria we use to find the overall status of the plant.
     protected double healthBarAlgoEnglishIvy(Plant givenPlant){       //specifically for English Ivy/Ivy String
 
         double FinalTemperaturePercentage;
         double FinalMoisturePercentage;
 		double FinalLightIntensityPercentage;
-
-        //Do all calculations and store in 'FinalPercentage'.
-        //givenPlant.getTemperature()' accesses temperature.
 
         if (givenPlant.getTemperature() >= 20){
             FinalTemperaturePercentage = 100-((givenPlant.getTemperature()-20)*3.75);       // 40deg C = 25%
@@ -728,13 +671,11 @@ public class MainActivity extends AppCompatActivity {
             FinalLightIntensityPercentage = 0;
         }
 
-        // calculation final
-        //double FinalPercentage = 0.33*FinalMoisturePercentage + 0.33*FinalLightIntensityPercentage + 0.33*FinalTemperaturePercentage;   // weighting , all equal 1/3
         return 0.33*FinalMoisturePercentage + 0.33*FinalTemperaturePercentage + 0.33*FinalLightIntensityPercentage;
-
     }
 
-    protected double moistureSmileyEnglishIvy(Plant givenPlant){       //specifically for Sansevieria
+    //An algorithm is used here that gives us an insight on how far is the moisture level of our plant from its desired value.
+    protected double moistureSmileyEnglishIvy(Plant givenPlant){       //specifically for English Ivy/Ivy String
 
         double FinalMoisturePercentage;
 
@@ -748,7 +689,8 @@ public class MainActivity extends AppCompatActivity {
         return FinalMoisturePercentage;
     }
 
-    protected double tempSmileyEnglishIvy(Plant givenPlant){       //specifically for Sansevieria
+    //An algorithm is used here that gives us an insight on how far is the temperature of our plant from its desired value.
+    protected double tempSmileyEnglishIvy(Plant givenPlant){       //specifically for English Ivy/Ivy String
 
         double FinalTemperaturePercentage;
 
@@ -762,12 +704,11 @@ public class MainActivity extends AppCompatActivity {
         return FinalTemperaturePercentage;
     }
 
-	protected double lightintensitySmileyEnglishIvy(Plant givenPlant){
+    //An algorithm is used here that gives us an insight on how far is the UV index of our plant from its desired value.
+	protected double lightintensitySmileyEnglishIvy(Plant givenPlant){  //specifically for English Ivy/Ivy String
 
         double FinalLightIntensityPercentage;
 
-        // Do all calculations and store in 'FinalPercentage'.
-        //givenPlant.getTemperature()' accesses temperature.
         if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
             FinalLightIntensityPercentage = 0;}
         else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
@@ -784,6 +725,7 @@ public class MainActivity extends AppCompatActivity {
         return FinalLightIntensityPercentage;
     }
 
+    //An algorithm is used here that calculates the health percentage of the plant, which is a criteria we use to find the overall status of the plant.
     protected double healthBarAlgoDevilsIvy(Plant givenPlant){       //specifically for Devil's Ivy
 
         double FinalTemperaturePercentage;
@@ -819,12 +761,11 @@ public class MainActivity extends AppCompatActivity {
             FinalLightIntensityPercentage = 0;
         }
 
-        // calculation final
-        //double FinalPercentage = 0.33*FinalMoisturePercentage + 0.33*FinalLightIntensityPercentage + 0.33*FinalTemperaturePercentage;   // weighting , all equal 1/3
         return 0.33*FinalMoisturePercentage + 0.33*FinalTemperaturePercentage + 0.33*FinalLightIntensityPercentage;
     }
 
-    protected double moistureSmileyDevilsIvy(Plant givenPlant){       //specifically for Sansevieria
+    //An algorithm is used here that gives us an insight on how far is the moisture level of our plant from its desired value.
+    protected double moistureSmileyDevilsIvy(Plant givenPlant){       //specifically for Devil's Ivy
 
         double FinalMoisturePercentage;
 
@@ -838,7 +779,8 @@ public class MainActivity extends AppCompatActivity {
         return FinalMoisturePercentage;
     }
 
-    protected double tempSmileyDevilsIvy(Plant givenPlant){       //specifically for Sansevieria
+    //An algorithm is used here that gives us an insight on how far is the temperature of our plant from its desired value.
+    protected double tempSmileyDevilsIvy(Plant givenPlant){       //specifically for Devil's Ivy
 
         double FinalTemperaturePercentage;
 
@@ -852,11 +794,10 @@ public class MainActivity extends AppCompatActivity {
         return FinalTemperaturePercentage;
     }
 
-	protected double lightintensitySmileyDevilsIvy(Plant givenPlant){
+    //An algorithm is used here that gives us an insight on how far is the UV index of our plant from its desired value.
+	protected double lightintensitySmileyDevilsIvy(Plant givenPlant){   //specifically for Devil's Ivy
 
         double FinalLightIntensityPercentage;
-        // Do all calculations and store in 'FinalPercentage'.
-        //givenPlant.getTemperature()' accesses temperature.
         if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
             FinalLightIntensityPercentage = 0;}
         else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
@@ -873,16 +814,11 @@ public class MainActivity extends AppCompatActivity {
         return FinalLightIntensityPercentage;
     }
 
-    //********************************************//             //*************************************//
-    protected double healthBarAlgoSpider(Plant givenPlant){       //specifically for English Ivy/Ivy String
-
+    //An algorithm is used here that calculates the health percentage of the plant, which is a criteria we use to find the overall status of the plant.
+    protected double healthBarAlgoSpider(Plant givenPlant){       //specifically for Spider
         double FinalTemperaturePercentage;
         double FinalMoisturePercentage;
         double FinalLightIntensityPercentage;
-
-
-        //Do all calculations and store in 'FinalPercentage'.
-        //givenPlant.getTemperature()' accesses temperature.
 
         if (givenPlant.getTemperature() >= 23){
             FinalTemperaturePercentage = 100-((givenPlant.getTemperature()-23)*4.3478);     // 46 deg C = 0%
@@ -912,12 +848,11 @@ public class MainActivity extends AppCompatActivity {
             FinalLightIntensityPercentage = 0;
         }
 
-       // calculation final
-        //double FinalPercentage = 0.33*FinalMoisturePercentage + 0.33*FinalLightIntensityPercentage + 0.33*FinalTemperaturePercentage;   // weighting , all equal 1/3
         return 0.33*FinalMoisturePercentage + 0.33*FinalTemperaturePercentage + 0.33*FinalLightIntensityPercentage;
     }
 
-    protected double moistureSmileySpider(Plant givenPlant){       //specifically for Sansevieria
+    //An algorithm is used here that gives us an insight on how far is the moisture level of our plant from its desired value.
+    protected double moistureSmileySpider(Plant givenPlant){       //specifically for Spider
         double FinalMoisturePercentage;
 
         if ((1023-givenPlant.getMoisture()) >= 256){
@@ -930,8 +865,8 @@ public class MainActivity extends AppCompatActivity {
         return FinalMoisturePercentage;
     }
 
-
-    protected double tempSmileySpider(Plant givenPlant){       //specifically for Sansevieria
+    //An algorithm is used here that gives us an insight on how far is the temperature of our plant from its desired value.
+    protected double tempSmileySpider(Plant givenPlant){       //specifically for Spider
 
         double FinalTemperaturePercentage;
 
@@ -945,12 +880,11 @@ public class MainActivity extends AppCompatActivity {
         return FinalTemperaturePercentage;
     }
 
-	protected double lightintensitySmileySpider(Plant givenPlant){
+    //An algorithm is used here that gives us an insight on how far is the UV index of our plant from its desired value.
+	protected double lightintensitySmileySpider(Plant givenPlant){  //specifically for Spider
 
         double FinalLightIntensityPercentage;
 
-        // Do all calculations and store in 'FinalPercentage'.
-        //givenPlant.getTemperature()' accesses temperature.
         if (givenPlant.getLightIntensity() == 0){                                           // case uv = 0
             FinalLightIntensityPercentage = 0;}
         else if (givenPlant.getLightIntensity()==1) {                                       // case uv = 1
@@ -967,11 +901,13 @@ public class MainActivity extends AppCompatActivity {
         return FinalLightIntensityPercentage;
     }
 
+    //This method is used the extract the Emoji image from the phone.
     protected String getEmoji(int unicode){
         return new String(Character.toChars(unicode));
     }
 
 
+    //Every time the app runs, the List's data needs to be re-collected in order to have the latest data.
     @Override
     protected void onStart() {
         super.onStart();

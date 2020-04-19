@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
+//This is used as an Adapter for the Listview on the main page of the app in order to format the List into the custom style we created.
 public class CustomListView extends ArrayAdapter<String> {
     private ArrayList<String> plantNames;
     private ArrayList<String> plantData;

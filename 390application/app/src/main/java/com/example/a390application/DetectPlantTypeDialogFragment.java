@@ -30,6 +30,12 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+/*
+-This dialog fragment is used to send a given photo of a plant to the Raspberry Pi that the user owns (hence why the Pi Id & Password is needed) in order for the AI in
+the Raspberry Pi to detect and show the user the type of that plant.
+-This feature is optional for the user. It is only used to inform the user of the plant's type in case the user doesn't know (since upon adding a plant to the app, the
+plant's type needs to be known beforehand)
+ */
 public class DetectPlantTypeDialogFragment extends DialogFragment {
 
     private EditText IdEditText;
@@ -69,13 +75,13 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
 
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
+                //This portion checks the validity of the data entered by the user and notifies the user of any problems concerning the data entered.
                 if(!PiPassword.equals("") && !PiPassword.contains(".") && !PiPassword.contains("#") && !PiPassword.contains("$") && !PiPassword.contains("[") && !PiPassword.contains("]") && !PiId.equals("") && !PiId.contains(".") && !PiId.contains("#") && !PiId.contains("$") && !PiId.contains("[") && !PiId.contains("]")) {
                     reference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             try {
                                 checkPiPassword(PiId, dataSnapshot.child("PIs").child(PiId).child("password").getValue().toString(), PiPassword);
-                                //Toast.makeText(getContext(), dataSnapshot.child("PIs").child(PiId).child("password").getValue().toString(), Toast.LENGTH_SHORT).show();
                             } catch (Exception e) {
                                 Toast.makeText(getContext(), "There is no PI with that Id!", Toast.LENGTH_SHORT).show();
                             }
@@ -94,6 +100,7 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
             }
         });
 
+        //Closes the dialog when 'cancel' is pressed.
         cancelButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -106,23 +113,13 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
         return view;
     }
 
+    //This portion checks the validity of the data entered by the user and notifies the user of any problems with the data entered.
     private void checkPiPassword(String PiId, String PiPassword, String givenPassword) {
         if (PiPassword.equals(givenPassword)) {
             givenPiId = PiId;
             startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
-            //onLaunchCamera();
         } else {
             Toast.makeText(getContext(), "Password is incorrect!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    // not using this anymore
-    public void onLaunchCamera() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-
         }
     }
 
@@ -137,7 +134,7 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(getActivity()).getContentResolver(), uri);
 
-                //Since no plant has been added yet at this stage, naming the plant isn't needed right?
+                //Since no plant has been added yet at this stage, naming the plant isn't needed.
                 new ImageSaver(getActivity())
                         .setFileName("givenPlant.jpg")
                         .setExternal(false)//image save in external directory or app folder default value is false
@@ -178,9 +175,9 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
                         try {
                             plantTypeReceived = dataSnapshot.child("PIs").child(givenPiId).child("type").getValue().toString();
 
-                            responseAndExplanation.setText("Type of given Plant: \n" + plantTypeReceived);
+                            String text = "Type of given Plant: \n" + plantTypeReceived;
+                            responseAndExplanation.setText(text);
 
-                            //Toast.makeText(getContext(), dataSnapshot.child("PIs").child(PiId).child("password").getValue().toString(), Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             Toast.makeText(getContext(), "Response from Pi not back in time.", Toast.LENGTH_SHORT).show();
                         }
@@ -192,9 +189,6 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
                     }
                 });
 
-
-                // Log.d(TAG, String.valueOf(bitmap));
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -203,10 +197,9 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //plantImage.setImageBitmap(imageBitmap);
             encodeBitmapAndSaveToFirebase(imageBitmap);
 
-            //Since no plant has been added yet at this stage, naming the plant isn't needed right?
+            //Since no plant has been added yet at this stage, naming the plant isn't needed.
             new ImageSaver(getActivity())
                     .setFileName("givenPlant.jpg")
                     .setExternal(false)//image save in external directory or app folder default value is false
@@ -214,24 +207,6 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
                     .save(imageBitmap); //Bitmap from your code
         }
     }
-
-    /*@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //plantImage.setImageBitmap(imageBitmap);
-            encodeBitmapAndSaveToFirebase(imageBitmap);
-
-            //Since no plant has been added yet at this stage, naming the plant isn't needed right?
-            new ImageSaver(getActivity())
-                    .setFileName("givenPlant.jpg")
-                    .setExternal(false)//image save in external directory or app folder default value is false
-                    .setDirectory("dir_name")
-                    .save(imageBitmap); //Bitmap from your code
-        }
-    }*/
 
 
     public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {

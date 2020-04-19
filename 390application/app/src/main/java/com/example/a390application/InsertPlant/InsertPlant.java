@@ -8,13 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
-
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+//This class is used to locally store and modify all the data of the plants that the user created for usage when Firebase cannot be accessed for any reason (due to being offline for example).
 public class InsertPlant extends SQLiteOpenHelper {
 
     private Context context;
@@ -87,9 +86,6 @@ public class InsertPlant extends SQLiteOpenHelper {
                     List<Plant> plants = new ArrayList<>();
 
                     do {
-                        //FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        //String key = database.getReference().push().getKey();
-
                         int id = cursor.getInt(cursor.getColumnIndex(Config.COLUMN_PLANT_ID));
                         String name = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_NAME));
                         String type = cursor.getString(cursor.getColumnIndex(Config.COLUMN_PLANT_TYPE));

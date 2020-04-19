@@ -1,9 +1,6 @@
 package com.example.a390application;
 
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
 import com.example.a390application.InsertPlant.Plant;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,6 +10,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+This class is used to:  - detect any changes in the plant data of the user's plants in Firebase.
+                        - read the plant data of a user's plants from Firebase.
+ */
 class DatabaseHelper {
     private DatabaseReference reference;
     private List<Plant> plantData = new ArrayList<>();
@@ -28,27 +29,24 @@ class DatabaseHelper {
         ownerID = uniqueID;
     }
 
+    //This method is used to keep track of any changes in the data of the user's plants, the new data is read upon detection of a change.
     void readPlants(final DataStatus dataStatus){
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 plantData.clear();
-                // for(DataSnapshot root : dataSnapshot.getChildren()){
-                // if((root.getKey()).equals("Users")) {
                 for (DataSnapshot users : dataSnapshot.child("Users").getChildren()) {
                     if (ownerID.equals(users.getKey())) {
                         for (DataSnapshot eachPlantData : users.getChildren()) {
-                            if(!eachPlantData.getKey().equals("ImageImageImage")){
-                                String name = eachPlantData.child("name").getValue().toString();
-                                String type = eachPlantData.child("type").getValue().toString();
-                                double moisture = Double.parseDouble(eachPlantData.child("moisture").getValue().toString());
-                                double lightIntensity = Double.parseDouble(eachPlantData.child("lightIntensity").getValue().toString());
-                                String test = eachPlantData.child("test").getValue().toString();
-                                double humidity = Double.parseDouble(eachPlantData.child("humidity").getValue().toString());
-                                double temperature = Double.parseDouble(eachPlantData.child("temperature").getValue().toString());
+                            String name = eachPlantData.child("name").getValue().toString();
+                            String type = eachPlantData.child("type").getValue().toString();
+                            double moisture = Double.parseDouble(eachPlantData.child("moisture").getValue().toString());
+                            double lightIntensity = Double.parseDouble(eachPlantData.child("lightIntensity").getValue().toString());
+                            String test = eachPlantData.child("test").getValue().toString();
+                            double humidity = Double.parseDouble(eachPlantData.child("humidity").getValue().toString());
+                            double temperature = Double.parseDouble(eachPlantData.child("temperature").getValue().toString());
 
-                                plantData.add(new Plant(name, type, moisture, lightIntensity, test, humidity, temperature, ownerID));
-                            }
+                            plantData.add(new Plant(name, type, moisture, lightIntensity, test, humidity, temperature, ownerID));
                         }
                     }
                 }

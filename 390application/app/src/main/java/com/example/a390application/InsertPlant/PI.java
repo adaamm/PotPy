@@ -1,5 +1,6 @@
 package com.example.a390application.InsertPlant;
 
+//This Object is used to store the data concerning a Raspberry PI for further usage.
 public class PI {
 
     private String PlantName;
@@ -7,8 +8,6 @@ public class PI {
     private String Password;
     private String imgUpdate;
     private String image;
-
-
 
     public PI(String PlantName, String id, String pw, String imgu, String img) {
         this.PlantName = PlantName;

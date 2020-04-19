@@ -5,9 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,7 +15,6 @@ public class ImageSaver {
     private String directoryName = "images";
     private String fileName = "image.png";
     private Context context;
-    private File dir;
     private boolean external = false;
 
     public ImageSaver(Context context) {
@@ -113,8 +110,4 @@ public class ImageSaver {
         return null;
     }
 
-    public boolean deleteFile() {
-        File file = createFile();
-        return file.delete();
-    }
 }

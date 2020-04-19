@@ -1,6 +1,7 @@
 
 package com.example.a390application.InsertPlant;
 
+//This class is used to set up the SQL tables which were used to store data locally.
 class Config {
 
     static final String DATABASE_NAME = "Plants-db";

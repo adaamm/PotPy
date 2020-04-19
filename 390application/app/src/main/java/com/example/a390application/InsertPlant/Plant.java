@@ -1,5 +1,6 @@
 package com.example.a390application.InsertPlant;
 
+//This Object is used upon creation to store the data concerning a plant for further usage.
 public class Plant {
 
     private Integer ID;

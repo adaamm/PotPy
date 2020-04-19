@@ -26,8 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
+//This dialog fragment is used to direct the Raspberry Pi to send its data to a plant on the app which the user specifies.
 public class LinkPiDialogFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
     private List<Plant> plants;
@@ -66,23 +65,21 @@ public class LinkPiDialogFragment extends DialogFragment implements AdapterView.
         linkButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
-
-
                 final String PiId = PiIdEditText.getText().toString();
                 final String PiPassword = PiPwEditText.getText().toString();
 
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
+                //These characters can't be used in Firebase.
                 if(!PiPassword.equals("") && !PiPassword.contains(".") && !PiPassword.contains("#") && !PiPassword.contains("$") && !PiPassword.contains("[") && !PiPassword.contains("]") && !PiId.equals("") && !PiId.contains(".") && !PiId.contains("#") && !PiId.contains("$") && !PiId.contains("[") && !PiId.contains("]")) {
                     reference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             try {
+                                //Checks the validity of the data entered.
                                 checkPiPassword(PiId, dataSnapshot.child("PIs").child(PiId).child("password").getValue().toString(), PiPassword);
-                                //Toast.makeText(getContext(), dataSnapshot.child("PIs").child(PiId).child("password").getValue().toString(), Toast.LENGTH_SHORT).show();
                             } catch (Exception e) {
-                                //Toast.makeText(getContext(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
+                                //If an error is found due to not finding the Pi Id in Firebase, then that Pi Id doesn't exist there and the user is notified.
                                 Toast.makeText(getContext(), "There is no PI with that Id!", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -94,13 +91,13 @@ public class LinkPiDialogFragment extends DialogFragment implements AdapterView.
                     });
                 }
                 else{
+                    //The user is notified that the Pi Id & password must not be empty nor contain these characters: .#$[]
                     Toast.makeText(getContext(), "Pi Id & Password must not be empty nor contain any of '.#$[]'", Toast.LENGTH_SHORT).show();
                 }
-
-                getDialog().dismiss();
             }
         });
 
+        //Closes the dialog when 'cancel' is pressed.
         cancelPlantButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -108,11 +105,10 @@ public class LinkPiDialogFragment extends DialogFragment implements AdapterView.
             }
         });
 
-
-
         return view;
     }
 
+    //This method extracts the data of the plant picked in the Spinner (the dropdown).
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         plantPicked = parent.getItemAtPosition(position).toString();
@@ -123,6 +119,7 @@ public class LinkPiDialogFragment extends DialogFragment implements AdapterView.
 
     }
 
+    //This portion checks the validity of the data entered by the user and notifies the user of any problems with the data entered.
     private void checkPiPassword(String PiId, String PiPassword, String givenPassword) {
         if (PiPassword.equals(givenPassword)) {
             InsertPlant dbInsertPlant = new InsertPlant(getActivity());
@@ -131,15 +128,19 @@ public class LinkPiDialogFragment extends DialogFragment implements AdapterView.
             for (int i = 0; i < plants.size(); i++) {
                 if (plants.get(i).getName().equals(plantPicked)) {
                     linkPlant(plants.get(i), PiId,PiPassword);
+
+                    //Closes the dialog upon finishing.
+                    getDialog().dismiss();
                     break;
                 }
             }
         } else {
+            //If the entered password doesn't match the one associated with the Pi in Firebase, the user is notified.
             Toast.makeText(getContext(), "Password is incorrect!", Toast.LENGTH_SHORT).show();
         }
     }
 
-
+    //This method is used to direct the Raspberry Pi to send its data to a plant on the app which the user specifies (given that the information provided by the user were valid).
     private void linkPlant(Plant givenPlant, String PiId, String password) {
         DatabaseReference PiReference = FirebaseDatabase.getInstance().getReference().child("PIs").child(PiId);
         PiReference.setValue(new PI(givenPlant.getName(),givenPlant.getOwnerID(),password,"true","N/A"));
