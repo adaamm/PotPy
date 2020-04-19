@@ -21,32 +21,34 @@ public class ImageSaver {
         this.context = context;
     }
 
+    // initializes filename
     public ImageSaver setFileName(String fileName) {
         this.fileName = fileName;
         return this;
     }
-
+    // initializes external
     public ImageSaver setExternal(boolean external) {
         this.external = external;
         return this;
     }
-
+    // sets directory name
     public ImageSaver setDirectory(String directoryName) {
         this.directoryName = directoryName;
         return this;
     }
 
+    // here a bitmap is saved in an external directory of the app
     public void save(Bitmap bitmapImage) {
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream(createFile());
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            fileOutputStream = new FileOutputStream(createFile()); //file is created where the image would be saved
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream); // given bitmap is compressed and saved in fileOutputStream
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
                 if (fileOutputStream != null) {
-                    fileOutputStream.close();
+                    fileOutputStream.close(); // file is closed
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -55,6 +57,7 @@ public class ImageSaver {
     }
 
     @NonNull
+    // file is created in the external drive in the directory given
     private File createFile() {
         File directory;
         if (external) {
@@ -72,6 +75,7 @@ public class ImageSaver {
         return new File(directory, fileName);
     }
 
+    // here the file stored in the external storage is fetched
     private File getAlbumStorageDir(String albumName) {
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), albumName);
         if (!file.mkdirs()) {
@@ -80,17 +84,20 @@ public class ImageSaver {
         return file;
     }
 
+    // the external storage is made writable
     public static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state);
     }
 
+    // the external storage is made readable only
     public static boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state) ||
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
 
+    // all bitmap saved in file is loaded and decoded
     public Bitmap load() {
         FileInputStream inputStream = null;
         try {

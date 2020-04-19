@@ -55,11 +55,13 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_detect_type, container, false);
+        View view = inflater.inflate(R.layout.fragment_detect_type, container, false); // open the dialog fragment
 
+       // Activity elements are defined
         IdEditText = view.findViewById(R.id.AiPiId);
         PwEditText = view.findViewById(R.id.AiPiPw);
 
+        // Type of plant will be shown here
         responseAndExplanation = view.findViewById(R.id.ResponseAndExplanation);
         responseAndExplanation.setText("Type of given Plant: \n");
 
@@ -67,9 +69,11 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
 
         sendImageButton = view.findViewById(R.id.takeImageDialogFrag);
 
+        // here the image will be fetched from gallery and sent to the firebase database as a string value encoded in base 64
         sendImageButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                // information required to connect the app to the pi to use AI
                 final String PiId = IdEditText.getText().toString();
                 final String PiPassword = PwEditText.getText().toString();
 
@@ -132,28 +136,32 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
             Uri uri = data.getData();
 
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(getActivity()).getContentResolver(), uri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(getActivity()).getContentResolver(), uri); //bitmap object where the image fetched will be stored is created
 
                 //Since no plant has been added yet at this stage, naming the plant isn't needed.
+                // Image saved on app for further use if needed
                 new ImageSaver(getActivity())
                         .setFileName("givenPlant.jpg")
                         .setExternal(false)//image save in external directory or app folder default value is false
                         .setDirectory("dir_name")
                         .save(bitmap); //Bitmap from your code
 
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream(); //byte stream created
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos); // image stored in "bitmap" is now compressed as a PNG and saved in "baos"
+                String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT); // image in "baos" now encoded as a string in base 64
+                // image in string format added to firebase database
                 DatabaseReference ref = FirebaseDatabase.getInstance()
                         .getReference().child("PIs")
                         .child(givenPiId)
                         .child("Image");
                 ref.setValue(imageEncoded);
+                // imgUpdate branch in firebase updated as false to let know to the pi that it has an image to process
                 ref = FirebaseDatabase.getInstance()
                         .getReference().child("PIs")
                         .child(givenPiId)
                         .child("imgUpdate");
                 ref.setValue("false");
+                // type is given initially as N/A to see if there is a change
                 ref = FirebaseDatabase.getInstance()
                         .getReference().child("PIs")
                         .child(givenPiId)
@@ -173,6 +181,7 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         try {
+                            // information about the plant type is fetched from firebase and stored here
                             plantTypeReceived = dataSnapshot.child("PIs").child(givenPiId).child("type").getValue().toString();
 
                             String text = "Type of given Plant: \n" + plantTypeReceived;
@@ -194,7 +203,8 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
             }
         }
 
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
+// Use the following if you want to use the camera instead of the gallery.
+        /*if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             encodeBitmapAndSaveToFirebase(imageBitmap);
@@ -205,14 +215,15 @@ public class DetectPlantTypeDialogFragment extends DialogFragment {
                     .setExternal(false)//image save in external directory or app folder default value is false
                     .setDirectory("dir_name")
                     .save(imageBitmap); //Bitmap from your code
-        }
+        }*/
     }
 
-
+// This function can be used to encode any bitmap in base 64 and return the value as a string
     public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(); //byte stream created
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);// image stored in "bitmap" is now compressed as a PNG and saved in "baos"
+        String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);// image in "baos" now encoded as a string in base 64
+        // image in string format added to firebase database
         DatabaseReference ref = FirebaseDatabase.getInstance()
                 .getReference().child("PIs")
                 .child(givenPiId)
