@@ -1,4 +1,6 @@
 /env
 .env
-/plant/Classifier/data/
-/plant/Classifier/data_dir.py
+/plant/classifier/data/
+/plant/classifier/data_dir.py
+/firebase/tmpimage.jpg
+/ai/data/plants
