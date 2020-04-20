@@ -8,18 +8,16 @@ public class Plant {
     private String Type;
     private double Moisture;
     private double LightIntensity;
-    private String Test;
     private double Humidity;
     private double Temperature;
     private String OwnerID;
 
-    Plant(Integer ID, String name, String type, double moisture, double lightIntensity, String test, double humidity, double temperature, String id) {
+    Plant(Integer ID, String name, String type, double moisture, double lightIntensity, double humidity, double temperature, String id) {
         this.ID = ID;
         Name = name;
         Type = type;
         Moisture = moisture;
         LightIntensity = lightIntensity;
-        Test = test;
         Humidity = humidity;
         Temperature = temperature;
         OwnerID = id;
@@ -30,19 +28,16 @@ public class Plant {
         Type = type;
         Moisture = -10000;
         LightIntensity = -10000;
-        Test = "default";
         Humidity = -10000;
         Temperature = -10000;
         OwnerID = id;
-
     }
 
-    public Plant(String name, String type, double moisture, double lightIntensity, String test, double humidity, double temperature, String id) {
+    public Plant(String name, String type, double moisture, double lightIntensity, double humidity, double temperature, String id) {
         Name = name;
         Type = type;
         Moisture = moisture;
         LightIntensity = lightIntensity;
-        Test = test;
         Humidity = humidity;
         Temperature = temperature;
         OwnerID = id;
@@ -86,14 +81,6 @@ public class Plant {
 
     public void setLightIntensity(double lightIntensity) {
         LightIntensity = lightIntensity;
-    }
-
-    public String getTest() {
-        return Test;
-    }
-
-    public void setTest(String test) {
-        Test = test;
     }
 
     public double getHumidity() {

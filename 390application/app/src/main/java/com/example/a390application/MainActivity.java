@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String CHANNEL_1_ID =  "channel1";
     protected Button linkPiButton;
     protected FloatingActionButton findType;
-    //private NotificationManagerCompat notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

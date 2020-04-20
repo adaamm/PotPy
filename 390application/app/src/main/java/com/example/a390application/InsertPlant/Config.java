@@ -14,7 +14,7 @@ class Config {
     static final String COLUMN_PLANT_TYPE = "type";
     static final String COLUMN_PLANT_MOISTURE = "moisture";
     static final String COLUMN_PLANT_LIGHT_INTENSITY = "light";
-    static final String COLUMN_PLANT_TEST = "test";
+
     static final String COLUMN_PLANT_HUMIDITY = "humidity";
     static final String COLUMN_PLANT_TEMPERATURE = "temperature";
     static final String COLUMN_PLANT_OWNER = "owner";
