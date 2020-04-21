@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".inspectPlantActivity" >
+
+    <ImageView
+        android:id="@+id/plantImage"
+        android:layout_width="162dp"
+        android:layout_height="213dp"
+        android:layout_below="@id/plantType"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentBottom="false"
+        android:layout_marginLeft="-18dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="267dp"
+        android:layout_marginRight="211dp"
+        android:layout_marginBottom="441dp"
+        android:background="#009688"
+        app:srcCompat="@drawable/notfound" />
+
+    <TextView
+        android:id="@+id/idealCondition"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_alignTop="@id/plantImage"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="142dp"
+        android:layout_marginLeft="142dp"
+        android:layout_marginTop="-5dp"
+        android:fontFamily="casual"
+        android:text="My Ideal Conditions"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/design_default_color_primary_dark"
+        android:textColorHighlight="#673AB7"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/speciality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_below="@id/plantImage"
+        android:layout_alignTop="@id/plantImage"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="9dp"
+        android:layout_marginLeft="-6dp"
+        android:layout_marginTop="192dp"
+        android:fontFamily="casual"
+        android:text="My Personality"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/design_default_color_primary_dark"
+        android:textColorHighlight="#673AB7"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/plantType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/plantName"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:text="Plant Type"
+        android:textColorHighlight="#040303"
+        android:textIsSelectable="false"
+        android:textSize="30sp"
+        android:textStyle="bold|italic"
+        app:autoSizeTextType="uniform" />
+
+    <TextView
+        android:id="@+id/plantInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idealCondition"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="142dp"
+        android:layout_marginLeft="142dp"
+        android:layout_marginTop="1dp"
+        android:fontFamily="sans-serif-light"
+        android:text="plant info"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:autoSizeTextType="none" />
+
+    <TextView
+        android:id="@+id/plantInfo2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/speciality"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="0dp"
+        android:fontFamily="sans-serif-light"
+        android:text="plant info"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        app:autoSizeTextType="none" />
+
+    <TextView
+        android:id="@+id/plantName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:fontFamily="serif"
+        android:soundEffectsEnabled="true"
+        android:text="Plant Name"
+        android:textAllCaps="true"
+        android:textColor="#01685F"
+        android:textIsSelectable="false"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:autoSizeTextType="uniform" />
+
+    <Button
+        android:id="@+id/deletePlant"
+        android:layout_width="wrap_content"
+        android:layout_height="58dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="19dp"
+        android:layout_marginLeft="29dp"
+        android:layout_marginBottom="24dp"
+        android:text="DELETE Plant" />
+</RelativeLayout>

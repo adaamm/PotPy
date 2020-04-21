@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/AiPiId"
+        android:layout_width="wrap_content"
+        android:layout_height="103dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginRight="26dp"
+        android:ems="10"
+        android:hint="ID of the Potpy Kit"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/AiPiPw"
+        android:layout_width="wrap_content"
+        android:layout_height="103dp"
+        android:layout_below="@+id/AiPiId"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="51dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/cancelBT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="47dp"
+        android:layout_marginLeft="47dp"
+        android:layout_marginBottom="124dp"
+        android:hint="Code"
+        android:text="CANCEL" />
+
+    <TextView
+        android:id="@+id/ResponseAndExplanation"
+        android:layout_width="wrap_content"
+        android:layout_height="133dp"
+        android:layout_below="@+id/AiPiPw"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginRight="29dp"
+        android:text="Type of given Plant:"
+        android:textColor="#333"
+        android:textSize="30sp"
+        android:textStyle="normal"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/takeImageDialogFrag"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginEnd="53dp"
+        android:layout_marginRight="53dp"
+        android:layout_marginBottom="121dp"
+        android:layout_toEndOf="@+id/linkPiButton"
+        android:layout_toRightOf="@+id/linkPiButton"
+        android:clickable="true"
+        android:focusable="true"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+</RelativeLayout>

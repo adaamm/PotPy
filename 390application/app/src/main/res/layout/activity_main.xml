@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <ListView
+        android:id="@+id/plantsListView"
+        android:layout_width="wrap_content"
+        android:layout_height="590dp"
+        android:layout_above="@+id/linkPiButton"
+        android:layout_below="@+id/plantName"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="-2dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="10dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addPlantFloatingButton"
+        android:layout_width="85dp"
+        android:layout_height="59dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="9dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginBottom="12dp"
+        android:clickable="true"
+        android:focusable="auto"
+        android:tint="#00351F1F"
+        app:backgroundTint="#000000"
+        app:fabSize="auto"
+        app:rippleColor="#00990707"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <TextView
+        android:id="@+id/plantName"
+        android:layout_width="306dp"
+        android:layout_height="33dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="0dp"
+        android:text="0 Plants are being monitored"
+        android:textColor="#333"
+        android:textSize="30sp"
+        android:textStyle="normal"
+        app:autoSizeTextType="uniform" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="77dp"
+        android:layout_height="59dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_toEndOf="@+id/plantName"
+        android:layout_toRightOf="@+id/plantName" />
+
+    <Button
+        android:id="@+id/linkPiButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="9dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginBottom="20dp"
+        android:text="LINK SENSORS" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/takeImage"
+        android:layout_width="56dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/linkPiButton"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginRight="57dp"
+        android:layout_marginBottom="15dp"
+        android:layout_toStartOf="@+id/addPlantFloatingButton"
+        android:layout_toLeftOf="@+id/addPlantFloatingButton"
+        android:clickable="true"
+        android:focusable="true"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+</RelativeLayout>
