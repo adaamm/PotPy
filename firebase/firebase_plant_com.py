@@ -25,7 +25,7 @@ class FirebasePlantCom:
     """
     def __init__(self, piID):
         self.config = {
-        "apiKey": "AIzaSyAeLC1SPoeniyf98IpanvSTzFc_Yh_DS1w",
+        "apiKey": "",
         "authDomain": "coen390-guarduino.firebaseapp.com",
         "databaseURL": "https://coen390-guarduino.firebaseio.com/",
         "storageBucket": "coen390-guarduino.appspot.com"
